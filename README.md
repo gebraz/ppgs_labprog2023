@@ -54,8 +54,13 @@ Objetivos:
 
 ### Instalação
 
-- Usando Git Bash
-  Após o git bash instalado basta abri-lo
+- Usando Git Bash:
+
+Com o Git Bash instalado basta escolher um diretorio apertar com o botão direito do mouse e clicar em Git Bash. Como no exemplo abaixo:
+
+![Git Bash](https://jcutrer.com/wp-content/uploads/2018/01/git-bash-here-right-click.png.webp)
+
+Após o tê-lo aberto basta seguir os seguintes passos:
 
 ```bash
 # Clonando o repositório
@@ -69,15 +74,18 @@ $ code .
 
 ```
 
+- Usando o Git GUI:
+  > TODO: Caso alguém use por favor adicionar aqui
+
 ## Uso
 
 ### Backend
 
-Acesse o [README](./backend/README.md).
+Acesse o arquivo [README](./backend/README.md).
 
 ### Frontend
 
-Acesse o [README](./frontend/README.md).
+Acesse o arquivo [README](./frontend/README.md).
 
 <!-- CONTRIBUTING -->
 

@@ -4,7 +4,7 @@
 <br />
 <div align="center"  width="40vw"  height="30vw">
   <a href="https://github.com/gebraz/ppgs_labprog2023">
-    <img src="assets/images/logo.png" alt="Logo">
+    <img src="assets/logo.png" alt="Logo">
   </a>
   <h3 align="center">sPPg - Sistema de Acompanhamento de Produção - PPG </h3>
 </div>
@@ -60,11 +60,17 @@ Após a criação do seu fork basta seguir a instalação:
 
 ### Instalação
 
-- Usando Git Bash:
+#### 1. Usando Git Bash:
 
-Com o Git Bash instalado basta escolher um diretorio apertar com o botão direito do mouse e clicar em Git Bash. Como no exemplo abaixo:
+- Copie o link do repositorio:
 
-![Git Bash](https://jcutrer.com/wp-content/uploads/2018/01/git-bash-here-right-click.png.webp)
+![Git Clone](./assets/images/clone-git.png)
+
+- Abra o Git bash
+
+> Com o Git Bash instalado basta escolher um diretorio apertar com o botão direito do mouse e clicar em Git Bash. Como no exemplo abaixo:
+>
+> ![Git Bash](https://jcutrer.com/wp-content/uploads/2018/01/git-bash-here-right-click.png.webp)
 
 Após o tê-lo aberto basta seguir os seguintes passos:
 

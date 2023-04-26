@@ -23,6 +23,17 @@ public class DocenteTest {
     @Autowired
     ProgramaRepository prog;
 
+    @Test
+    public void deveSalvarDocente(){
+        Docente docente = Docente.builder().nome("John Doe").build();
+
+        repo.save(docente);
+
+        List<?> queryResult = repo.findByNome("John Doe");
+
+        Assertions.assertFalse(queryResult.isEmpty());
+        Assertions.assertNotNull(queryResult.get(0));
+    }
 
     @Test
     public void deveSalvarDocentComPrograma() throws ParseException {

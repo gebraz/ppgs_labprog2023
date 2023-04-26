@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
+import br.ufma.sppg.repo.OrientacaoRepository;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ public class DocenteTest {
 
     @Autowired
     ProgramaRepository prog;
+
+    @Autowired
+    OrientacaoRepository orientacaoRepository;
 
     @Test
     public void deveSalvarDocente(){
@@ -39,13 +44,13 @@ public class DocenteTest {
     public void deveSalvarDocentComPrograma() throws ParseException {
         //cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
-        Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
                                         .lattes("123")
                                         .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
                                         .build();
         
         Programa progSalvo = prog.save(novoPPg);
-        Docente docSalvo = repo.save(novDocente);
+        Docente docSalvo = repo.save(novoDocente);
 
         //ação
         ArrayList<Programa> programas = new ArrayList<>();
@@ -57,6 +62,31 @@ public class DocenteTest {
         //teste
         Assertions.assertNotNull(docSalvo2);
         Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
+    }
+
+    @Test
+    public void deveSalvarDocenteComOrientacao() throws ParseException{
+        Orientacao novoOrientecao = Orientacao.builder().titulo("Projeto de Pesquisa").build();
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
+                                           .lattes("123")
+                                           .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+                                           .build();
+
+        Orientacao orientacaoSalvo = orientacaoRepository.save(novoOrientecao);
+        Docente docenteSalvo = repo.save(novoDocente);
+
+        //acao
+        ArrayList<Orientacao> orientacaos = new ArrayList<>();
+        orientacaos.add(orientacaoSalvo);
+        docenteSalvo.setOrientacoes(orientacaos);
+
+        
+
+        
+
 
     }
+
+
+
 }

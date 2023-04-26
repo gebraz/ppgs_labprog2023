@@ -4,7 +4,7 @@
 <br />
 <div align="center"  width="40vw"  height="30vw">
   <a href="https://github.com/gebraz/ppgs_labprog2023">
-    <img src="assets/logo.png" alt="Logo">
+    <img src="assets/images/logo.png" alt="Logo">
   </a>
   <h3 align="center">sPPg - Sistema de Acompanhamento de Produção - PPG </h3>
 </div>

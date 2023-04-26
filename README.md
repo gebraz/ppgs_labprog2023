@@ -2,9 +2,9 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="assets/logo.png" alt="Logo" width="80" height="80">
+<div align="center"  width="40vw"  height="30vw">
+  <a href="https://github.com/gebraz/ppgs_labprog2023">
+    <img src="assets/logo.png" alt="Logo">
   </a>
   <h3 align="center">sPPg - Sistema de Acompanhamento de Produção - PPG </h3>
 </div>
@@ -52,6 +52,12 @@ Objetivos:
 - [SpringBoot3](https://spring.io/)
 - [VS Code](https://code.visualstudio.com/)
 
+### Fazendo um fork
+
+![pagina no git](./assets/images/pagina-git.png)
+
+Após a criação do seu fork basta seguir a instalação:
+
 ### Instalação
 
 - Usando Git Bash:
@@ -64,7 +70,7 @@ Após o tê-lo aberto basta seguir os seguintes passos:
 
 ```bash
 # Clonando o repositório
-$ git clone https://github.com/gebraz/ppgs_labprog2023.git
+$ git clone https://github.com/'user'/ppgs_labprog2023.git
 
 # Acessando a pasta do repositório
 $ cd ppgs_labprog2023
@@ -95,10 +101,54 @@ Se você tiver uma sugestão para melhorar isso, fork o repositório e crie uma 
 Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 
 1. Fork o projeto
-2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas alterações (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`recurso de origem do git push/AmazingFeature`)
-5. Abra uma solicitação pull
+2. Crie sua feature branch
+
+```bash
+# criando uma branch caso
+# ela não exista
+$ git checkout -b feature/AmazingFeature
+
+# caso ja tenha sido
+# criada basta
+$ git checkout feature/AmazingFeature
+
+```
+
+3. Commit suas alterações
+
+```bash
+# verifique os arquivos modificados
+# e adicione-os:
+$ git add nome-do-arquivo
+
+# ou adicione todas as mudanças
+$ git add .
+
+# faça o commit
+$ git commit -m 'Add some AmazingFeature'
+
+```
+
+> DICAS:
+> Utilize o VS code para verificar os arquivos modificados
+>
+> ![aba git](./assets//images/aba-git.png)
+
+4. Faça um push
+
+```bash
+# primeiro push para
+# publicar o branch
+$ git push -u origin feature/AmazingFeature
+
+# seguintes
+$ git push
+
+#(recurso de origem do git push/AmazingFeature)
+
+```
+
+5. Abra uma solicitação pull (Pull Request) e torça para ele ser aceito!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

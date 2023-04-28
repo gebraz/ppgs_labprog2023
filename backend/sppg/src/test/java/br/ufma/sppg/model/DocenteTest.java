@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
+import br.ufma.sppg.repo.TecnicaRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
 
 import java.lang.reflect.Array;
@@ -15,10 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @SpringBootTest
 public class DocenteTest {
-    
+
     @Autowired
     DocenteRepository repo;
 
@@ -28,8 +28,11 @@ public class DocenteTest {
     @Autowired
     OrientacaoRepository orientacaoRepository;
 
+    @Autowired
+    TecnicaRepository tecnicaRepository;
+
     @Test
-    public void deveSalvarDocente(){
+    public void deveSalvarDocente() {
         Docente docente = Docente.builder().nome("John Doe").build();
 
         repo.save(docente);
@@ -42,44 +45,64 @@ public class DocenteTest {
 
     @Test
     public void deveSalvarDocenteComPrograma() throws ParseException {
-        //cenário
+        // cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
         Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
-                                        .lattes("123")
-                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
-                                        .build();
-        
+                .lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+                .build();
+
         Programa progSalvo = prog.save(novoPPg);
         Docente docSalvo = repo.save(novoDocente);
 
-        //ação
+        // ação
         ArrayList<Programa> programas = new ArrayList<>();
         programas.add(progSalvo);
-        docSalvo.setProgramas(programas); //adicionar lista de programas em Docente
+        docSalvo.setProgramas(programas); // adicionar lista de programas em Docente
 
         Docente docSalvo2 = repo.save(docSalvo);
 
         Assertions.assertNotNull(docSalvo2);
-                                    //Tamanho esperado            //valor
+        // Tamanho esperado //valor
         Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
     }
 
     @Test
-    public void deveSalvarDocenteComOrientacao() throws ParseException{
+    public void deveSalvarDocenteComOrientacao() throws ParseException {
         Orientacao novoOrientecao = Orientacao.builder().titulo("Projeto de Pesquisa").build();
         Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
-                                           .lattes("123")
-                                           .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
-                                           .build();
+                .lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+                .build();
 
         Orientacao orientacaoSalvo = orientacaoRepository.save(novoOrientecao);
         Docente docenteSalvo = repo.save(novoDocente);
 
-        //acao
+        // acao
         ArrayList<Orientacao> orientacaos = new ArrayList<>();
         orientacaos.add(orientacaoSalvo);
         docenteSalvo.setOrientacoes(orientacaos);
 
-        
+    }
+
+    @Test
+    void deveSalvarDocenteComTecnica() throws ParseException {
+        // Cenario
+        Docente novoDocente = Docente.builder().nome("Gebraz").lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023")).build();
+        Tecnica novaTecnica = Tecnica.builder().titulo("Qualquer").build();
+
+        Docente docenteSalvo = repo.save(novoDocente);
+        Tecnica tecnicaSalva = tecnicaRepository.save(novaTecnica);
+
+        List<Tecnica> tecnicas = new ArrayList<Tecnica>();
+        tecnicas.add(tecnicaSalva);
+        docenteSalvo.setTecnicas(tecnicas);
+
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        Assertions.assertNotNull(novoDocenteSalvo);
+        // Tamanho esperado
+        Assertions.assertEquals(novoDocenteSalvo.getTecnicas().size(), 1);
     }
 }

@@ -8,3 +8,5 @@ public interface TecnicaRepository
         extends JpaRepository<Tecnica, Integer> {
 
 }
+
+

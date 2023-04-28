@@ -99,7 +99,6 @@ public class DocenteTest {
         Docente novoDocenteSalvo = repo.save(docenteSalvo);
 
         Assertions.assertNotNull(novoDocenteSalvo);
-        // Tamanho esperado
         Assertions.assertEquals(novoDocenteSalvo.getTecnicas().size(), 1);
     }
 

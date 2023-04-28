@@ -34,14 +34,14 @@ public class DocenteTest {
 
         repo.save(docente);
 
-        List<?> queryResult = repo.findByNome("John Doe");
+        List<Docente> queryResult = repo.findByNome("John Doe");
 
         Assertions.assertFalse(queryResult.isEmpty());
         Assertions.assertNotNull(queryResult.get(0));
     }
 
     @Test
-    public void deveSalvarDocentComPrograma() throws ParseException {
+    public void deveSalvarDocenteComPrograma() throws ParseException {
         //cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
         Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
@@ -55,12 +55,12 @@ public class DocenteTest {
         //ação
         ArrayList<Programa> programas = new ArrayList<>();
         programas.add(progSalvo);
-        docSalvo.setProgramas(programas);
-        
+        docSalvo.setProgramas(programas); //adicionar lista de programas em Docente
+
         Docente docSalvo2 = repo.save(docSalvo);
 
-        //teste
         Assertions.assertNotNull(docSalvo2);
+                                    //Tamanho esperado            //valor
         Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
     }
 
@@ -81,12 +81,5 @@ public class DocenteTest {
         docenteSalvo.setOrientacoes(orientacaos);
 
         
-
-        
-
-
     }
-
-
-
 }

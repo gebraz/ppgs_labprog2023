@@ -41,6 +41,7 @@ public class Docente {
     @Column(name = "nome")
     String nome;
 
+    //Relacionamentos 
     @Temporal(TemporalType.DATE)
     @Column(name="data_atualizacao")
     Date dataAtualizacao;

@@ -57,4 +57,7 @@ public class Producao {
 
     @Column(name="qtd_doutorado")
     Integer qtdDoutorado;
+
+    @ManyToMany(mappedBy = "producoes")
+    List<Orientacao> orientacoes;
 }

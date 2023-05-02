@@ -21,16 +21,16 @@ public interface TecnicaRepository extends JpaRepository<Tecnica, Long> {
 
     @Transactional
     @Modifying()
-    @Query("update Tecnica t set t.qtdGrad = :qtd_Grad where t.idTecnica = :id_Tecnica")
+    @Query("update Tecnica t set t.qtdGrad = :qtd_Grad where t.id = :id_Tecnica")
     void atualizarQtdGrad(@Param("id_Tecnica") Integer idTecnica, @Param("qtd_Grad") Integer qtdGrad);
 
     @Transactional
     @Modifying()
-    @Query("update Tecnica t set t.qtdMestrado = :qtd_Mestrado where t.idTecnica = :id_Tecnica")
+    @Query("update Tecnica t set t.qtdMestrado = :qtd_Mestrado where t.id = :id_Tecnica")
     void atualizarQtdMestrado(@Param("id_Tecnica") Integer idTecnica, @Param("qtd_Mestrado") Integer qtdMestrado);
 
     @Transactional
     @Modifying()
-    @Query("update Tecnica t set t.qtdDoutorado = :qtd_Doutorado where t.idTecnica = :id_Tecnica")
+    @Query("update Tecnica t set t.qtdDoutorado = :qtd_Doutorado where t.id = :id_Tecnica")
     void atualizarQtdDoutorado(@Param("id_Tecnica") Integer idTecnica, @Param("qtd_Doutorado") Integer qtdDoutorado);
 }

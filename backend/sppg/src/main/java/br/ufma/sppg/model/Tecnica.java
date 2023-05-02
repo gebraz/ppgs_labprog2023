@@ -1,10 +1,13 @@
 package br.ufma.sppg.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +50,10 @@ public class Tecnica {
 
     @Column(name="qtd_doutorado")
     Integer qtdDoutorado;
+
+    @ManyToMany(mappedBy = "tecnicas")
+    List<Orientacao> orientacoes;
+
+    @ManyToMany(mappedBy= "tecnicas")
+    List<Docente> docentes;
 }

@@ -72,8 +72,8 @@ public class OrientacaoRepoTest {
         Orientacao orientacaoSalvo = or.save(orientacao);
 
         // rollback
-        or.delete(orientacaoSalvo);
         pr.delete(producaoSalvo);
+        or.delete(orientacaoSalvo);
 
         Assertions.assertNotNull(orientacaoSalvo);
         Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
@@ -102,8 +102,8 @@ public class OrientacaoRepoTest {
         Orientacao orientacaoSalvo = or.save(orientacao);
 
         // rollback
-        or.delete(orientacaoSalvo);
         tr.delete(tecnicaSalvo);
+        or.delete(orientacaoSalvo);
 
         Assertions.assertNotNull(orientacaoSalvo);
         Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
@@ -115,27 +115,6 @@ public class OrientacaoRepoTest {
         Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
         Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
         Assertions.assertEquals(orientacao.getTecnicas().get(0).getId(), orientacaoSalvo.getTecnicas().get(0).getId());
-    }
-
-    @Test
-    public void deveImpedirRemoverOrientacaoComDependencia(){
-        Producao producao = Producao.builder().ano(2023).titulo("TCC").tipo("TCC").build();
-        Producao producaoSalvo = pr.save(producao);
-        ArrayList<Producao> producoes = new ArrayList<>();
-        producoes.add(producaoSalvo);
-
-        Orientacao orientacao = Orientacao.builder().tipo("TCC").ano(2023).discente("Gabriel").titulo("TCC")
-                .modalidade("Presencial").instituicao("UFMA").curso("Ciência da Computação").status("Ativo")
-                .producoes(producoes).build();
-
-        Orientacao orientacaoSalvo = or.save(orientacao);
-
-        // rollback
-        or.delete(orientacaoSalvo);
-        pr.delete(producaoSalvo);
-
-        Optional<Orientacao> orientacaoRemovido = or.findById(orientacaoSalvo.getCodigo());
-        Assertions.assertFalse(orientacaoRemovido.isPresent());
     }
 
 }

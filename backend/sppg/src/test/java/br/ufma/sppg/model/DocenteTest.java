@@ -9,6 +9,7 @@ import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
+import br.ufma.sppg.repo.ProducaoRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,9 @@ public class DocenteTest {
 
     @Autowired
     TecnicaRepository tecnicaRepository;
+
+    @Autowired
+    ProducaoRepository prodRepository;
 
     @Test
     public void deveSalvarDocente() {
@@ -83,7 +87,7 @@ public class DocenteTest {
     }
 
     @Test
-    void deveSalvarDocenteComTecnica() throws ParseException {
+    public void deveSalvarDocenteComTecnica() throws ParseException {
         // Cenario
         Docente novoDocente = Docente.builder().nome("Gebraz").lattes("123")
                 .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023")).build();
@@ -103,7 +107,42 @@ public class DocenteTest {
     }
 
     @Test
-    void deveImpedirRemoverDocenteComDependencia() throws ParseException {
+    public void deveSalvarDocenteComProducao() throws ParseException {
+        // Cenario
+        Docente novoDocente = criaDocente();
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+
+        Docente docenteSalvo = repo.save(novoDocente);
+        Producao prodSalva = prodRepository.save(novaProd);
+
+        List<Producao> prods = new ArrayList<Producao>();
+        prods.add(prodSalva);
+        docenteSalvo.setProducoes(prods);
+
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        Assertions.assertNotNull(novoDocenteSalvo);
+        Assertions.assertEquals(novoDocenteSalvo.getProducoes().size(), 1);
+        
+    }
+
+    @Test
+    public void deveAtualizarDataAtualizacaoDocente() throws ParseException{
+        // cenário
+        Docente novoDocente = criaDocente();
+        Docente docenteSalvo = repo.save(novoDocente);
+
+        // ação
+        docenteSalvo.setNome("Novo nomet");
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        // teste
+        // verifica se a data foi atualizada
+        Assertions.assertNotEquals(novoDocenteSalvo.getDataAtualizacao(), docenteSalvo.getDataAtualizacao());
+    }
+
+    @Test
+    public void deveImpedirRemoverDocenteComDependencia() throws ParseException {
         // Cenário -----------------------------------------------------
         // Cria-se um docente e suas depedencias
         Docente novoDocente = criaDocente();
@@ -136,11 +175,18 @@ public class DocenteTest {
         tecnicas.add(tecnicaSalva);
 
         Docente docenteSalvoSemTecnica = repo.save(novoDocente);
-        tecnicas.add(tecnicaSalva);
         docenteSalvoSemTecnica.setTecnicas(tecnicas);
         Docente docenteSalvoComTecnica = repo.save(docenteSalvoSemTecnica);
 
         // Producao
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+        Producao prodSalva = prodRepository.save(novaProd);
+        List<Producao> prods = new ArrayList<Producao>();
+        prods.add(prodSalva);
+        
+        Docente docenteSalvoSemProd = repo.save(novoDocente);
+        docenteSalvoSemProd.setProducoes(prods);
+        Docente docenteSalvoComProd = repo.save(docenteSalvoSemProd);
 
         // Ação -----------------------------------------------------
         // Tenta-se remover docentes
@@ -155,6 +201,7 @@ public class DocenteTest {
         repo.delete(docenteSalvoComTecnica);
 
         // Producao
+        repo.delete(docenteSalvoComProd);
 
         // Teste -----------------------------------------------------
         // Verifica-se a integridade dos docentes salvos
@@ -172,7 +219,8 @@ public class DocenteTest {
         Assertions.assertNotNull(docenteComTecnica);
 
         // Producao
-        // Assertions.assertNotNull();
+        Optional<Docente> docenteComProducao = repo.findById(docenteSalvoComProd.id);
+        Assertions.assertNotNull(docenteComProducao);
 
     }
 

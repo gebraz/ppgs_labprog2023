@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -23,16 +24,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table (name = "docente")
+@Table(name = "docente")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Docente {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_docente")
+    @Column(name = "id_docente")
     Integer id;
 
     @Column(name = "id_lattes")
@@ -41,38 +42,29 @@ public class Docente {
     @Column(name = "nome")
     String nome;
 
-    //Relacionamentos 
+    // Relacionamentos
     @Temporal(TemporalType.DATE)
-    @Column(name="data_atualizacao")
+    @Column(name = "data_atualizacao")
     Date dataAtualizacao;
 
     @ManyToMany()
-    @JoinTable(
-        name="programa_docente",
-        joinColumns = @JoinColumn(name="id_docente"),
-        inverseJoinColumns = @JoinColumn(name="id_programa")
-    )
+    @JoinTable(name = "programa_docente", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_programa"))
     List<Programa> programas;
 
-
     @ManyToMany()
-    @JoinTable(
-        name="docente_producao",
-        joinColumns = @JoinColumn(name="id_docente"),
-        inverseJoinColumns = @JoinColumn(name="id_producao")
-    )
+    @JoinTable(name = "docente_producao", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_producao"))
     List<Producao> producoes;
 
-
     @ManyToMany()
-    @JoinTable(
-        name="docente_tecnica",
-        joinColumns = @JoinColumn(name="id_docente"),
-        inverseJoinColumns = @JoinColumn(name="id_tecnica")
-    )
+    @JoinTable(name = "docente_tecnica", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_tecnica"))
     List<Tecnica> tecnicas;
 
-    @OneToMany(mappedBy = "orientador")    
+    @OneToMany(mappedBy = "orientador")
     List<Orientacao> orientacoes;
+
+    @PreUpdate
+    protected void onUpdate() {
+        dataAtualizacao = new Date();
+    }
 
 }

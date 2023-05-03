@@ -86,16 +86,20 @@ public class TecnicaTest {
         repositoryTec.save(tecnicaG);
         repositoryTec.save(tecnicaM);
         repositoryTec.save(tecnicaD);
-        
-        repositoryTec.atualizarQtdGrad(tecnicaG.getId(), 321);
-        repositoryTec.atualizarQtdMestrado(tecnicaM.getId(), 456);
-        repositoryTec.atualizarQtdDoutorado(tecnicaD.getId(), 789);
+
+        tecnicaG.setQtdGrad(123);
+        tecnicaM.setQtdMestrado(456);
+        tecnicaD.setQtdDoutorado(789);
+
+        repositoryTec.save(tecnicaG);
+        repositoryTec.save(tecnicaM);
+        repositoryTec.save(tecnicaD);
 
         //Verificação
         Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).isPresent(), true);
         Assertions.assertEquals(repositoryTec.findById(tecnicaM.getId()).isPresent(), true);
         Assertions.assertEquals(repositoryTec.findById(tecnicaD.getId()).isPresent(), true);
-        Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).get().getQtdGrad(), 321);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).get().getQtdGrad(), 123);
         Assertions.assertEquals(repositoryTec.findById(tecnicaM.getId()).get().getQtdMestrado(), 456);
         Assertions.assertEquals(repositoryTec.findById(tecnicaD.getId()).get().getQtdDoutorado(), 789);
     }
@@ -103,6 +107,7 @@ public class TecnicaTest {
     @Test
     public void deveImpedirRemoverTecnicaComDependencia(){
         //Cenario
+        repositoryOri.deleteAll();
         repositoryTec.deleteAll();
         Tecnica tecnica = Tecnica.builder().tipo("tipo1")
                                             .titulo("titulo1")
@@ -133,7 +138,7 @@ public class TecnicaTest {
         repositoryTec.save(tecnica);
 
         //Ação
-        repositoryTec.remover(tecnica.getId());
+        repositoryTec.delete(tecnica);
 
         Optional<Tecnica> tecnicaMantido = repositoryTec.findById(tecnica.getId());
 

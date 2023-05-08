@@ -1,6 +1,8 @@
 package br.ufma.sppg.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +40,6 @@ public class Programa {
         joinColumns = @JoinColumn(name="id_programa"),
         inverseJoinColumns = @JoinColumn(name="id_docente")
     )    
-    List<Docente> docentes;    
+    List<Docente> docentes;  
     
 }

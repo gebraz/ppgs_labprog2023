@@ -1,7 +1,10 @@
 package br.ufma.sppg.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -43,14 +46,10 @@ public class Docente {
 
     @Temporal(TemporalType.DATE)
     @Column(name="data_atualizacao")
-    Date dataAtualizacao;
+    SimpleDateFormat dataAtualizacao;
+    
 
-    @ManyToMany()
-    @JoinTable(
-        name="programa_docente",
-        joinColumns = @JoinColumn(name="id_docente"),
-        inverseJoinColumns = @JoinColumn(name="id_programa")
-    )
+    @ManyToMany(mappedBy = "docentes")
     List<Programa> programas;
 
 

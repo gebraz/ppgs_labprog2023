@@ -130,44 +130,5 @@ public class OrientacaoTest {
 
 
     }
-
-    @Test
-    public void deveImpedirRemoverOrientacaoComDependencia(){
-
-        Orientacao novaOri = Orientacao.builder()
-                                        .tipo("Teste")
-                                        .build();
-
-        Producao novaProd = Producao.builder()
-                                    .tipo("Teste")
-                                    .build();
-        
-        Tecnica novaTec = Tecnica.builder()
-                                 .tipo("Teste")
-                                 .build();
-
-        Orientacao oriSalva = oriRepo.save(novaOri);
-
-        Producao prodSalva = prodRepo.save(novaProd);
-
-        Tecnica tecSalva = tecRepo.save(novaTec);
-
-        ArrayList<Producao> producoes = new ArrayList<>();
-        producoes.add(prodSalva);
-        oriSalva.setProducoes(producoes);
-
-        ArrayList<Tecnica> tecnicas = new ArrayList<>();
-        tecnicas.add(tecSalva);
-        oriSalva.setTecnicas(tecnicas);
-        
-        Orientacao oriSalvaComDep = oriRepo.save(oriSalva);
-
-       if(oriSalvaComDep.getTecnicas() == null && oriSalvaComDep.getProducoes() ==null){
-            oriRepo.delete(oriSalvaComDep);
-       }
-
-       Assertions.assertNotNull(oriSalvaComDep);
-
-    }
     
 }

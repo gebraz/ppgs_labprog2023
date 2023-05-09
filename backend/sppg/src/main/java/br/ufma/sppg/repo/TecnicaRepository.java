@@ -12,6 +12,7 @@ import br.ufma.sppg.model.Tecnica;
 
 public interface TecnicaRepository extends JpaRepository<Tecnica, Long> {
     Optional<Tecnica> findById(Integer idTecnica);
+
     Boolean existsById(Integer idTecnica);
-    
+
 }

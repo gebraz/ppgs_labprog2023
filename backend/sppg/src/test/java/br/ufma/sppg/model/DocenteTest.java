@@ -123,11 +123,11 @@ public class DocenteTest {
 
         Assertions.assertNotNull(novoDocenteSalvo);
         Assertions.assertEquals(novoDocenteSalvo.getProducoes().size(), 1);
-        
+
     }
 
     @Test
-    public void deveAtualizarDataAtualizacaoDocente() throws ParseException{
+    public void deveAtualizarDataAtualizacaoDocente() throws ParseException {
         // cenário
         Docente novoDocente = criaDocente();
         Docente docenteSalvo = repo.save(novoDocente);
@@ -183,7 +183,7 @@ public class DocenteTest {
         Producao prodSalva = prodRepository.save(novaProd);
         List<Producao> prods = new ArrayList<Producao>();
         prods.add(prodSalva);
-        
+
         Docente docenteSalvoSemProd = repo.save(novoDocente);
         docenteSalvoSemProd.setProducoes(prods);
         Docente docenteSalvoComProd = repo.save(docenteSalvoSemProd);

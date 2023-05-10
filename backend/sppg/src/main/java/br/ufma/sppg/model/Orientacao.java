@@ -2,7 +2,7 @@ package br.ufma.sppg.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,14 +32,37 @@ public class Orientacao {
     @Column(name="id_orientacao")
     Integer id;
 
-    String tipo;
+    /*String tipo;
     String discente;
     String titulo;
     Integer ano;
     String modalidade;
     String instituicao;
     String curso;
-    String status;
+    String status;*/
+    @Column(name = "tipo")
+    private String tipo;
+
+    @Column(name = "discente")
+    private String discente;
+    
+    @Column(name = "titulo")
+    private String titulo;
+
+    @Column(name = "ano")
+    private Integer ano;
+
+    @Column(name = "modalidade")
+    private String modalidade;
+
+    @Column(name = "instituicao")
+    private String instituicao;
+
+    @Column(name = "curso")
+    private String curso;
+    
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name="id_docente")

@@ -1,8 +1,5 @@
 package br.ufma.sppg.model;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 
-
 @SpringBootTest
 public class TecnicaTest {
-    
+
     @Autowired
     TecnicaRepository repositoryTec;
 
@@ -22,22 +18,22 @@ public class TecnicaTest {
     OrientacaoRepository repositoryOri;
 
     @Test
-    public void deveSalvarTecnica(){
-        //Cenario
+    public void deveSalvarTecnica() {
+        // Cenario
         Tecnica tecnica = Tecnica.builder().tipo("tipo1")
-                                            .titulo("titulo1")
-                                            .ano(1111)
-                                            .financiadora("financiadora1")
-                                            .outrasInformacoes("informações1")
-                                            .qtdGrad(1)
-                                            .qtdDoutorado(11)
-                                            .qtdMestrado(111)
-                                            .build();
-        
-        //Ação
+                .titulo("titulo1")
+                .ano(1111)
+                .financiadora("financiadora1")
+                .outrasInformacoes("informações1")
+                .qtdGrad(1)
+                .qtdDoutorado(11)
+                .qtdMestrado(111)
+                .build();
+
+        // Ação
         Tecnica salvo = repositoryTec.save(tecnica);
 
-        //Verificação
+        // Verificação
         Assertions.assertNotNull(salvo);
         Assertions.assertEquals(tecnica.getId(), salvo.getId());
         Assertions.assertEquals(tecnica.getTipo(), salvo.getTipo());
@@ -51,38 +47,38 @@ public class TecnicaTest {
     }
 
     @Test
-    public void deveAtualizarEstatisticasTecnica(){
-        //Cenario
+    public void deveAtualizarEstatisticasTecnica() {
+        // Cenario
         Tecnica tecnicaG = Tecnica.builder().tipo("tipo1")
-                                            .titulo("titulo1")
-                                            .ano(1111)
-                                            .financiadora("financiadora1")
-                                            .outrasInformacoes("informações1")
-                                            .qtdGrad(1)
-                                            .qtdDoutorado(11)
-                                            .qtdMestrado(111)
-                                            .build();
+                .titulo("titulo1")
+                .ano(1111)
+                .financiadora("financiadora1")
+                .outrasInformacoes("informações1")
+                .qtdGrad(1)
+                .qtdDoutorado(11)
+                .qtdMestrado(111)
+                .build();
 
         Tecnica tecnicaD = Tecnica.builder().tipo("tipo2")
-                                            .titulo("titulo2")
-                                            .ano(2222)
-                                            .financiadora("financiadora2")
-                                            .outrasInformacoes("informações2")
-                                            .qtdGrad(2)
-                                            .qtdDoutorado(22)
-                                            .qtdMestrado(222)
-                                            .build();
-        
+                .titulo("titulo2")
+                .ano(2222)
+                .financiadora("financiadora2")
+                .outrasInformacoes("informações2")
+                .qtdGrad(2)
+                .qtdDoutorado(22)
+                .qtdMestrado(222)
+                .build();
+
         Tecnica tecnicaM = Tecnica.builder().tipo("tipo3")
-                                            .titulo("titulo3")
-                                            .ano(3333)
-                                            .financiadora("financiadora3")
-                                            .outrasInformacoes("informações3")
-                                            .qtdGrad(3)
-                                            .qtdDoutorado(33)
-                                            .qtdMestrado(333)
-                                            .build();
-        //Ação
+                .titulo("titulo3")
+                .ano(3333)
+                .financiadora("financiadora3")
+                .outrasInformacoes("informações3")
+                .qtdGrad(3)
+                .qtdDoutorado(33)
+                .qtdMestrado(333)
+                .build();
+        // Ação
         repositoryTec.save(tecnicaG);
         repositoryTec.save(tecnicaM);
         repositoryTec.save(tecnicaD);
@@ -95,7 +91,7 @@ public class TecnicaTest {
         repositoryTec.save(tecnicaM);
         repositoryTec.save(tecnicaD);
 
-        //Verificação
+        // Verificação
         Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).isPresent(), true);
         Assertions.assertEquals(repositoryTec.findById(tecnicaM.getId()).isPresent(), true);
         Assertions.assertEquals(repositoryTec.findById(tecnicaD.getId()).isPresent(), true);

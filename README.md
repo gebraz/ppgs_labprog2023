@@ -1,10 +1,10 @@
-<a name="readme-top"></a>
+<a id="readme-top" name="readme-top"/>
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center"  width="40vw"  height="30vw">
   <a href="https://github.com/gebraz/ppgs_labprog2023">
-    <img src="assets/logo.png" alt="Logo">
+    <img src="assets/images/logo.png" alt="Logo">
   </a>
   <h3 align="center">sPPg - Sistema de Acompanhamento de Produção - PPG </h3>
 </div>
@@ -106,6 +106,8 @@ Acesse o arquivo [README](./frontend/README.md).
 Se você tiver uma sugestão para melhorar isso, fork o repositório e crie uma pull request. Você também pode simplesmente abrir um problema com a tag "melhoria".
 Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 
+### Fazendo um Fork
+
 1. Fork o projeto
 2. Crie sua feature branch
 
@@ -159,6 +161,11 @@ $ git push
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
+
+## Pull Requests
+
+Após ser feito o pull-request por favor envie o link dele na aba pull-requests no discord oficial do repositório. Caso não tenha acesso ao Discord basta pedir para um dos colaboradores.
+![discord1](./assets/images/discord1.png)
 
 ## License
 

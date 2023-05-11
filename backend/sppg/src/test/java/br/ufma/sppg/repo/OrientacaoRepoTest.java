@@ -12,24 +12,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import br.ufma.sppg.model.Orientacao;
-import br.ufma.sppg.repo.OrientacaoRepo;
+import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.model.Producao;
-import br.ufma.sppg.repo.ProducaoRepo;
+import br.ufma.sppg.repo.ProducaoRepository;
 import br.ufma.sppg.model.Tecnica;
-import br.ufma.sppg.repo.TecnicaRepo;
+import br.ufma.sppg.repo.TecnicaRepository;
 
 @SpringBootTest
 @ActiveProfiles("test")
 public class OrientacaoRepoTest {
 
     @Autowired
-    private OrientacaoRepo or;
+    private OrientacaoRepository or;
 
     @Autowired
-    private ProducaoRepo pr;
+    private ProducaoRepository pr;
 
     @Autowired
-    private TecnicaRepo tr;
+    private TecnicaRepository tr;
 
     @Test
     public void deveSalvarOrientacao() {
@@ -84,7 +84,8 @@ public class OrientacaoRepoTest {
         Assertions.assertEquals(orientacao.getInstituicao(), orientacaoSalvo.getInstituicao());
         Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
         Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
-        Assertions.assertEquals(orientacao.getProducoes().get(0).getId(), orientacaoSalvo.getProducoes().get(0).getId());
+        Assertions.assertEquals(orientacao.getProducoes().get(0).getId(),
+                orientacaoSalvo.getProducoes().get(0).getId());
     }
 
     @Test

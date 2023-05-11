@@ -11,9 +11,6 @@ import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProducaoRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 
-//deveSalvarOrientacao
-//devesSalvarOrientacaoComProducao
-//deveSalvarOrientacaoComTecnica
 @SpringBootTest
 public class OrientacaoTest {
 
@@ -44,6 +41,7 @@ public class OrientacaoTest {
 
         Assertions.assertNotNull(oriSalva);
 
+
     }
 
     @Test
@@ -73,7 +71,7 @@ public class OrientacaoTest {
 
         Orientacao oriSalva = oriRepo.save(novaOri);
 
-       Tecnica tecSalva = tecRepo.save(novaTec);
+        Tecnica tecSalva = tecRepo.save(novaTec);
 
         ArrayList<Tecnica> tecnicas = new ArrayList<>();
         tecnicas.add(tecSalva);
@@ -84,6 +82,7 @@ public class OrientacaoTest {
         Assertions.assertNotNull(tecSalva);
         Assertions.assertNotNull(oriSalvaComTecnica);
         Assertions.assertEquals(oriSalvaComTecnica.getTecnicas().size(),1);
+
 
     }
 
@@ -128,7 +127,34 @@ public class OrientacaoTest {
         Assertions.assertNotNull(oriSalvaComProducao);
         Assertions.assertEquals(oriSalvaComProducao.getProducoes().size(),1);
 
-
     }
-    
+
+    @Test
+    public void deveImpedirRemoverOrientacaoComDependencia(){
+
+        Orientacao novaOri = Orientacao.builder()
+                                        .tipo("Teste")
+                                        .build();
+
+        Producao novaProd = Producao.builder()
+                                    .tipo("Teste")
+                                    .build();
+        
+        Orientacao oriSalva = oriRepo.save(novaOri);
+
+        Producao prodSalva = prodRepo.save(novaProd);
+
+        ArrayList<Producao> producoes = new ArrayList<>();
+        producoes.add(prodSalva);
+        oriSalva.setProducoes(producoes);
+        
+        oriRepo.save(oriSalva);
+        Orientacao ori = oriRepo.getReferenceById(oriSalva.getId());
+
+        oriRepo.delete(ori);
+        Assertions.assertNotNull(oriRepo.getReferenceById(oriSalva.getId()));
+
+        
+    }
+
 }

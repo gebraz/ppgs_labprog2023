@@ -1,4 +1,4 @@
-package br.ufma.sppg.repo;
+package br.ufma.sppg.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import br.ufma.sppg.repo.TecnicaRepo;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class OrientacaoRepoTest {
+public class OrientacaoTest {
 
     @Autowired
     private OrientacaoRepo or;

@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -51,9 +53,18 @@ public class Tecnica {
     @Column(name="qtd_doutorado")
     Integer qtdDoutorado;
 
-    @ManyToMany(mappedBy = "tecnicas")
+    @ManyToMany
+    @JoinTable(
+        name="tecnica_orientacao",
+        joinColumns = @JoinColumn(name="id_tecnica"),
+        inverseJoinColumns = @JoinColumn(name="id_orientacao")
+    )
     List<Orientacao> orientacoes;
 
-    @ManyToMany(mappedBy= "tecnicas")
-    List<Docente> docentes;
+    @ManyToMany
+    @JoinTable(
+        name="docente_tecnica",
+        joinColumns = @JoinColumn(name="id_tecnica")
+    )
+     List<Docente> docentes;
 }

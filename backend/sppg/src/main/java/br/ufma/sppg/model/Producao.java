@@ -56,6 +56,20 @@ public class Producao {
     @Column(name = "qtd_doutorado")
     Integer qtdDoutorado;
 
-    @ManyToMany(mappedBy = "producoes")
+    @ManyToMany
+    @JoinTable(
+        name="producao_orientacao",
+        joinColumns = @JoinColumn(name="id_producao"),
+        inverseJoinColumns = @JoinColumn(name="id_orientacao")
+    )
     List<Orientacao> orientacoes;
+
+    @ManyToMany
+    @JoinTable(
+        name="docente_producao",
+        joinColumns = @JoinColumn(name="id_producao"),
+        inverseJoinColumns = @JoinColumn(name="id_docente")
+    )
+    List<Docente> docentes;
+
 }

@@ -18,6 +18,11 @@ import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.service.exceptions.RegrasRunTime;
 import jakarta.transaction.Transactional;
 
+
+/*
+ * A QUANTIDADE DE A1,A2,... POR ANO
+ * SORT()
+ */
 @Service
 public class ProducaoService {
     
@@ -109,6 +114,8 @@ public class ProducaoService {
         throw new RegrasRunTime("Docente Inexistente");
     }
 
+
+    
     private void verificarProducao(Producao producao){
         if(producao==null)
             throw new RegrasRunTime("Produção deve ser Informada");
@@ -149,6 +156,16 @@ public class ProducaoService {
         return prodRepo.save(producao);
     }
 
+
+    public List<Orientacao> obterOrientacaoProducao(Integer idProducao){
+        Optional<Producao> producao = prodRepo.findById(idProducao);
+        if(producao.isPresent()){
+            if(prodRepo.getReferenceById(idProducao).getOrientacoes() != null)
+                return prodRepo.getReferenceById(idProducao).getOrientacoes();
+        }
+        throw new RegrasRunTime("A Producao não existe");
+    }
+/*
     public boolean excluirProducao(Integer idProducao){
         Optional<Producao> producao = prodRepo.findById(idProducao);
         if(producao.isPresent()){
@@ -238,4 +255,5 @@ public class ProducaoService {
         }
         throw new RegrasRunTime("Producao Inexistente");
     }
+    */
 }

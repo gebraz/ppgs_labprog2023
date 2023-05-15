@@ -28,7 +28,7 @@ public class Orientacao {
     @Id
     @Column(name = "id_orientacao")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer codigo;
+    private Integer id;
 
     @Column(name="tipo")
     private String tipo;

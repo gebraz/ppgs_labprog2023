@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -56,6 +58,7 @@ public class Producao {
     @Column(name = "qtd_doutorado")
     Integer qtdDoutorado;
 
+    
     @ManyToMany
     @JoinTable(
         name="producao_orientacao",

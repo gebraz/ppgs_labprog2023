@@ -2,6 +2,8 @@ package br.ufma.sppg.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="programa")
+@Table(name = "programa")
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,15 +31,12 @@ public class Programa {
     @Column(name = "id_programa")
     Integer id;
 
-    @Column(name="nome")
+    @Column(name = "nome")
     String nome;
 
+    @JsonIgnore
     @ManyToMany
-    @JoinTable(
-        name="programa_docente",
-        joinColumns = @JoinColumn(name="id_programa"),
-        inverseJoinColumns = @JoinColumn(name="id_docente")
-    )    
-    List<Docente> docentes;    
-    
+    @JoinTable(name = "programa_docente", joinColumns = @JoinColumn(name = "id_programa"), inverseJoinColumns = @JoinColumn(name = "id_docente"))
+    List<Docente> docentes;
+
 }

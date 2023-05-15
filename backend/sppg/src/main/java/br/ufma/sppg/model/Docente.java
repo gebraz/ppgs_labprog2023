@@ -3,6 +3,8 @@ package br.ufma.sppg.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,18 +47,22 @@ public class Docente {
     @Column(name = "data_atualizacao")
     Date dataAtualizacao;
 
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(name = "programa_docente", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_programa"))
     List<Programa> programas;
 
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(name = "docente_producao", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_producao"))
     List<Producao> producoes;
 
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(name = "docente_tecnica", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_tecnica"))
     List<Tecnica> tecnicas;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "orientador")
     List<Orientacao> orientacoes;
 

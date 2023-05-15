@@ -66,4 +66,5 @@ public class Tecnica {
         name="docente_tecnica",
         joinColumns = @JoinColumn(name="id_tecnica")
     )
+     List<Docente> docentes;
 }

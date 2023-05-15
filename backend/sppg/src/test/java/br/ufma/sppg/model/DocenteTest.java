@@ -7,45 +7,229 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
+import br.ufma.sppg.repo.TecnicaRepository;
+import br.ufma.sppg.repo.OrientacaoRepository;
+import br.ufma.sppg.repo.ProducaoRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 @SpringBootTest
 public class DocenteTest {
-    
+
     @Autowired
     DocenteRepository repo;
 
     @Autowired
     ProgramaRepository prog;
 
+    @Autowired
+    OrientacaoRepository orientacaoRepository;
+
+    @Autowired
+    TecnicaRepository tecnicaRepository;
+
+    @Autowired
+    ProducaoRepository prodRepository;
 
     @Test
-    public void deveSalvarDocentComPrograma() throws ParseException {
-        //cenário
-        Programa novoPPg = Programa.builder().nome("PPGCC").build();
-        Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
-                                        .lattes("123")
-                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
-                                        .build();
-        
-        Programa progSalvo = prog.save(novoPPg);
-        Docente docSalvo = repo.save(novDocente);
+    public void deveSalvarDocente() {
+        Docente docente = Docente.builder().nome("John Doe").build();
 
-        //ação
+        repo.save(docente);
+
+        List<Docente> queryResult = repo.findByNome("John Doe");
+
+        Assertions.assertFalse(queryResult.isEmpty());
+        Assertions.assertNotNull(queryResult.get(0));
+    }
+
+    @Test
+    public void deveSalvarDocenteComPrograma() throws ParseException {
+        // cenário
+        Programa novoPPg = Programa.builder().nome("PPGCC").build();
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
+                .lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+                .build();
+
+        Programa progSalvo = prog.save(novoPPg);
+        Docente docSalvo = repo.save(novoDocente);
+
+        // ação
         ArrayList<Programa> programas = new ArrayList<>();
         programas.add(progSalvo);
-        docSalvo.setProgramas(programas);
-        
+        docSalvo.setProgramas(programas); // adicionar lista de programas em Docente
+
         Docente docSalvo2 = repo.save(docSalvo);
 
-        //teste
         Assertions.assertNotNull(docSalvo2);
+        // Tamanho esperado //valor
         Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
+    }
 
+    @Test
+    public void deveSalvarDocenteComOrientacao() throws ParseException {
+        Orientacao novoOrientecao = Orientacao.builder().titulo("Projeto de Pesquisa").build();
+        Docente novoDocente = criaDocente();
+
+        Orientacao orientacaoSalvo = orientacaoRepository.save(novoOrientecao);
+        Docente docenteSalvo = repo.save(novoDocente);
+
+        // acao
+        ArrayList<Orientacao> orientacaos = new ArrayList<>();
+        orientacaos.add(orientacaoSalvo);
+        docenteSalvo.setOrientacoes(orientacaos);
+
+    }
+
+    @Test
+    public void deveSalvarDocenteComTecnica() throws ParseException {
+        // Cenario
+        Docente novoDocente = Docente.builder().nome("Gebraz").lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023")).build();
+        Tecnica novaTecnica = Tecnica.builder().titulo("Qualquer").build();
+
+        Docente docenteSalvo = repo.save(novoDocente);
+        Tecnica tecnicaSalva = tecnicaRepository.save(novaTecnica);
+
+        List<Tecnica> tecnicas = new ArrayList<Tecnica>();
+        tecnicas.add(tecnicaSalva);
+        docenteSalvo.setTecnicas(tecnicas);
+
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        Assertions.assertNotNull(novoDocenteSalvo);
+        Assertions.assertEquals(novoDocenteSalvo.getTecnicas().size(), 1);
+    }
+
+    @Test
+    public void deveSalvarDocenteComProducao() throws ParseException {
+        // Cenario
+        Docente novoDocente = criaDocente();
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+
+        Docente docenteSalvo = repo.save(novoDocente);
+        Producao prodSalva = prodRepository.save(novaProd);
+
+        List<Producao> prods = new ArrayList<Producao>();
+        prods.add(prodSalva);
+        docenteSalvo.setProducoes(prods);
+
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        Assertions.assertNotNull(novoDocenteSalvo);
+        Assertions.assertEquals(novoDocenteSalvo.getProducoes().size(), 1);
+
+    }
+
+    @Test
+    public void deveAtualizarDataAtualizacaoDocente() throws ParseException {
+        // cenário
+        Docente novoDocente = criaDocente();
+        Docente docenteSalvo = repo.save(novoDocente);
+
+        // ação
+        docenteSalvo.setNome("Novo nomet");
+        Docente novoDocenteSalvo = repo.save(docenteSalvo);
+
+        // teste
+        // verifica se a data foi atualizada
+        Assertions.assertNotEquals(novoDocenteSalvo.getDataAtualizacao(), docenteSalvo.getDataAtualizacao());
+    }
+
+    @Test
+    public void deveImpedirRemoverDocenteComDependencia() throws ParseException {
+        // Cenário -----------------------------------------------------
+        // Cria-se um docente e suas depedencias
+        Docente novoDocente = criaDocente();
+
+        // Programa
+        Programa novoPrograma = Programa.builder().nome("PPGCC").build();
+        Programa programaSalvo = prog.save(novoPrograma);
+        List<Programa> programas = new ArrayList<>();
+
+        Docente docenteSalvoSemPrograma = repo.save(novoDocente);
+        programas.add(programaSalvo);
+        docenteSalvoSemPrograma.setProgramas(programas);
+        Docente docenteSalvoComPrograma = repo.save(docenteSalvoSemPrograma);
+
+        // Orientacao
+        Orientacao novoOrientecao = Orientacao.builder().titulo("Projeto de Pesquisa").build();
+        Orientacao orientacaoSalva = orientacaoRepository.save(novoOrientecao);
+        List<Orientacao> orientacaos = new ArrayList<>();
+        orientacaos.add(orientacaoSalva);
+
+        Docente docenteSalvoSemOrientacao = repo.save(novoDocente);
+        orientacaos.add(orientacaoSalva);
+        docenteSalvoSemOrientacao.setOrientacoes(orientacaos);
+        Docente docenteSalvoComOrientacao = repo.save(docenteSalvoSemPrograma);
+
+        // Tecnica
+        Tecnica novaTecnica = Tecnica.builder().titulo("Qualquer").build();
+        Tecnica tecnicaSalva = tecnicaRepository.save(novaTecnica);
+        List<Tecnica> tecnicas = new ArrayList<Tecnica>();
+        tecnicas.add(tecnicaSalva);
+
+        Docente docenteSalvoSemTecnica = repo.save(novoDocente);
+        docenteSalvoSemTecnica.setTecnicas(tecnicas);
+        Docente docenteSalvoComTecnica = repo.save(docenteSalvoSemTecnica);
+
+        // Producao
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+        Producao prodSalva = prodRepository.save(novaProd);
+        List<Producao> prods = new ArrayList<Producao>();
+        prods.add(prodSalva);
+
+        Docente docenteSalvoSemProd = repo.save(novoDocente);
+        docenteSalvoSemProd.setProducoes(prods);
+        Docente docenteSalvoComProd = repo.save(docenteSalvoSemProd);
+
+        // Ação -----------------------------------------------------
+        // Tenta-se remover docentes
+
+        // Programa
+        repo.delete(docenteSalvoComPrograma);
+
+        // Orientacao
+        repo.delete(docenteSalvoComOrientacao);
+
+        // Tecnica
+        repo.delete(docenteSalvoComTecnica);
+
+        // Producao
+        repo.delete(docenteSalvoComProd);
+
+        // Teste -----------------------------------------------------
+        // Verifica-se a integridade dos docentes salvos
+
+        // Programa
+        Optional<Docente> docenteComPrograma = repo.findById(docenteSalvoComPrograma.id);
+        Assertions.assertNotNull(docenteComPrograma);
+
+        // Orientacao
+        Optional<Docente> docenteComOrientacao = repo.findById(docenteSalvoComOrientacao.id);
+        Assertions.assertNotNull(docenteComOrientacao);
+
+        // Tecnica
+        Optional<Docente> docenteComTecnica = repo.findById(docenteSalvoComTecnica.id);
+        Assertions.assertNotNull(docenteComTecnica);
+
+        // Producao
+        Optional<Docente> docenteComProducao = repo.findById(docenteSalvoComProd.id);
+        Assertions.assertNotNull(docenteComProducao);
+
+    }
+
+    private Docente criaDocente() throws ParseException {
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
+                .lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+                .build();
+
+        return novoDocente;
     }
 }

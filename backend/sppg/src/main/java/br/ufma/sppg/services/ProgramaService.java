@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.ufma.sppg.dto.Indice;
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
@@ -30,50 +31,56 @@ public class ProgramaService {
         return repository.obterDocentes(idPrograma);
     }
 
-    public List<Double> obterProducaoIndices(Integer idPrograma, Integer anoIni, Integer anoFin){ 
+    public Indice obterProducaoIndices(Integer idPrograma, Integer anoIni, Integer anoFin){ 
         verificarId(idPrograma);
         verificarData(anoIni, anoFin);
-        List<Docente> docentes = repository.obterDocentes(idPrograma); 
-        List<Double> indices = new ArrayList<>();
-        Double indice = 0.0;
+        List<Docente> docentes = repository.obterDocentes(idPrograma);
+        Double iRestrito = 0.0;
+        Double iNRestrito = 0.0;
+        Double iGeral = 0.0;
         List<Producao> producoes = new ArrayList<>();
+        ArrayList<Integer> indicesProd = new ArrayList<>();
 
         for(Docente docente : docentes){
-            indice = 0.0;
+
             producoes = docente.getProducoes();
+
             for(Producao producao : producoes){
-                if(producao.getAno() >= anoIni && producao.getAno() <= anoFin){
+
+                if(producao.getAno() >= anoIni && producao.getAno() <= anoFin && !indicesProd.contains(producao.getId())){
+                    
+                    indicesProd.add(producao.getId());
                     switch (producao.getQualis()) {
                         case "A1":
-                            indice += 1;
+                            iRestrito += 1;
                             break;
                             
                         case "A2":
-                            indice += 0.85;
+                            iRestrito += 0.85;
                             break;
 
                         case "A3":
-                            indice += 0.725;
+                            iRestrito += 0.725;
                             break;
 
                         case "A4":
-                            indice += 0.625;
+                            iRestrito += 0.625;
                             break;
 
                         case "B1":
-                            indice += 0.5;
+                            iNRestrito += 0.5;
                             break;
 
                         case "B2":
-                            indice += 0.25;
+                            iNRestrito += 0.25;
                             break;
 
                         case "B3":
-                            indice += 0.1;
+                            iNRestrito += 0.1;
                             break;
                         
                         case "B4":
-                            indice += 0.05;
+                            iNRestrito += 0.05;
                             break;
                     
                         default:
@@ -81,10 +88,10 @@ public class ProgramaService {
                     }
                 }
             }
-            indices.add(indice);
         }
+        iGeral = iRestrito + iNRestrito;
 
-        return indices;
+        return new Indice(iRestrito, iNRestrito, iGeral);
     }
 
     public List<Orientacao> obterOrientacoes(Integer idPrograma, Integer anoIni, Integer anoFin){ 
@@ -93,14 +100,16 @@ public class ProgramaService {
         List<Orientacao> orientacoes = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Orientacao> orientacoesDoc = new ArrayList<>();
+        ArrayList<Integer> idOrientacoes = new ArrayList<>();
         
         for(Docente docente : docentes){
             
             orientacoesDoc = docente.getOrientacoes();
             for(Orientacao orientacao : orientacoesDoc){
                 
-                if(orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin){
+                if(orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin && !idOrientacoes.contains(orientacao.getId())){
                     
+                    idOrientacoes.add(orientacao.getId());
                     orientacoes.add(orientacao);
                 }
             }
@@ -115,14 +124,16 @@ public class ProgramaService {
         List<Producao> producoes = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Producao> producoesDoc = new ArrayList<>();
+        ArrayList<Integer> idProducoes = new ArrayList<>();
         
         for(Docente docente : docentes){
             
             producoesDoc = docente.getProducoes();
             for(Producao producao : producoesDoc){
                 
-                if(producao.getAno() >= anoIni && producao.getAno() <= anoFin){
+                if(producao.getAno() >= anoIni && producao.getAno() <= anoFin && !idProducoes.contains(producao.getId())){
                     
+                    idProducoes.add(producao.getId());
                     producoes.add(producao);
                 }
             }
@@ -137,14 +148,16 @@ public class ProgramaService {
         List<Tecnica> tecnicas = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Tecnica> tecnicasDoc = new ArrayList<>();
+        ArrayList<Integer> idTecnicas = new ArrayList<>();
         
         for(Docente docente : docentes){
             
             tecnicasDoc = docente.getTecnicas();
             for(Tecnica tecnica : tecnicasDoc){
                 
-                if(tecnica.getAno() >= anoIni && tecnica.getAno() <= anoFin){
+                if(tecnica.getAno() >= anoIni && tecnica.getAno() <= anoFin && !idTecnicas.contains(tecnica.getId())){
                     
+                    idTecnicas.add(tecnica.getId());
                     tecnicas.add(tecnica);
                 }
             }

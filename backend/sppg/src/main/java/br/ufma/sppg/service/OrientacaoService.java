@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Programa;
+import br.ufma.sppg.model.Docente;
+import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
+import br.ufma.sppg.service.dto.CriarOrientacaoDTO;
 
 @Service
 public class OrientacaoService {
@@ -20,37 +23,50 @@ public class OrientacaoService {
     @Autowired
     ProgramaRepository programaRepository;
 
+    @Autowired
+    DocenteRepository docenteRepository;
+
     public List<Orientacao> obterTodasOrientacoes() {
         return orientacaoRepository.findAll();
     }
 
-    // public List<Orientacao> obterOrientacoesPPG(Integer idPrograma) {
+    public List<Orientacao> obterOrientacoesPPG(Integer idPrograma) {
 
-    // validarIdPrograma(idPrograma);
-    // Optional<Programa> programa = programaRepository.findById(idPrograma);
+        validarOrientacoes(idPrograma);
+        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(idPrograma).get();
 
-    // validarOrientacoes(programa);
-    // Optional<List<Orientacao>> orientacoes =
-    // orientacaoRepository.findByPrograma(programa.get());
+        return orientacoes;
+    }
 
-    // return orientacoes.get();
-    // }
+    public Orientacao criarOrientacao(CriarOrientacaoDTO dto) {
 
-    // private void validarIdPrograma(Integer idPrograma) {
-    // Optional<Programa> programa = programaRepository.findById(idPrograma);
+        validarDocente(dto.getIdDocente());
+        Docente docente = docenteRepository.findById(dto.getIdDocente()).get();
 
-    // if (programa.isEmpty())
-    // throw new RuntimeException("Não foi encontrado um programa.");
-    // }
+        // não pode criar orientacao com o mesmo titulo e mesmo orientador
+        // TODO: validar orientacao
 
-    // private void validarOrientacoes(Optional<Programa> programa) {
+        Orientacao novaOrientacao = Orientacao.builder().orientador(docente).titulo(dto.getTitulo()).build();
 
-    // Optional<List<Orientacao>> orientacoes =
-    // orientacaoRepository.findByPrograma(programa.get());
+        return orientacaoRepository.save(novaOrientacao);
+    }
 
-    // if (orientacoes.isEmpty())
-    // throw new RuntimeException("Não foram encontradas orientacoes para este
-    // programa.");
-    // }
+    private void validarOrientacoes(Integer idPrograma) {
 
+        Optional<Programa> programa = programaRepository.findById(idPrograma);
+
+        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma);
+
+        if (programa.isEmpty())
+            throw new RuntimeException("Não foram encontrados  programas com este Id.");
+        if (orientacoes.isEmpty())
+            throw new RuntimeException("Não foram encontradas orientações para este docente.");
+
+    }
+
+    private void validarDocente(Integer idDocente) {
+        Optional<Docente> docente = docenteRepository.findById(idDocente);
+        if (docente.isEmpty())
+            throw new RuntimeException("Não foram encontrados docentes com este Id.");
+    }
 }

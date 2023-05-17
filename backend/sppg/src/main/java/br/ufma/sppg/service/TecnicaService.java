@@ -40,4 +40,23 @@ public class TecnicaService {
 
     throw new RegrasRunTime("A técnica informada não existe!");
   }
+
+  // Obter todas as Orientações de uma téncnica
+  public ArrayList<Orientacao> obterOrientacoesTecnica(Integer idTecnica) {
+    ArrayList<Orientacao> orientacoes = new ArrayList<>();
+
+    Optional<Tecnica> tecnica = tecnicaRepo.findById(idTecnica);
+
+    if (tecnica.isPresent()) {
+
+      for (Orientacao orientacao : tecnica.get().getOrientacoes()) {
+        orientacoes.add(orientacao);
+      }
+
+      return orientacoes;
+    }
+
+    throw new RegrasRunTime("A técnica informada não existe");
+  }
+
 }

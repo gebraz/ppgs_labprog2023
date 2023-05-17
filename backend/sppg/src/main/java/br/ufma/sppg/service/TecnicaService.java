@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.TecnicaRepository;
+import br.ufma.sppg.service.exceptions.RegrasRunTime;
 
 @Service
 public class TecnicaService {
@@ -14,7 +15,7 @@ public class TecnicaService {
   @Autowired
   TecnicaRepository tecnicaRepo;
 
-  public boolean atualizarEstatisticas(Integer idTecnica, Integer qtdGrad, Integer qtdMestrado, Integer qtdDoutorado) {
+  public Tecnica atualizarEstatisticas(Integer idTecnica, Integer qtdGrad, Integer qtdMestrado, Integer qtdDoutorado) {
 
     Optional<Tecnica> tecnica = tecnicaRepo.findById(idTecnica);
 
@@ -25,10 +26,10 @@ public class TecnicaService {
       tecnicaObj.setQtdMestrado(qtdMestrado);
       tecnicaObj.setQtdDoutorado(qtdDoutorado);
 
-      tecnicaRepo.save(tecnicaObj);
-      return true;
+      return tecnicaRepo.save(tecnicaObj);
     }
 
-    return false;
+    throw new RegrasRunTime("A técnica informada não existe!");
   }
+
 }

@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Orientacao;
+import br.ufma.sppg.model.Programa;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.DocenteRepository;
+import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 import br.ufma.sppg.service.exceptions.RegrasRunTime;
 import jakarta.transaction.Transactional;
@@ -24,6 +26,9 @@ public class TecnicaService {
 
   @Autowired
   DocenteRepository docenteRepo;
+
+  @Autowired
+  ProgramaRepository programaRepo;
 
   public Tecnica salvarTecnica(Tecnica tecnica) {
     return tecnicaRepo.save(tecnica);
@@ -115,4 +120,38 @@ public class TecnicaService {
 
     throw new RegrasRunTime("O docente informado não existe!");
   }
+
+  // public ArrayList<Tecnica> obterTecnicasPPGPorPeriodo(Integer idPrograma,
+  // Integer anoInicio, Integer anoFim) {
+  // Optional<Programa> programa = programaRepo.findById(idPrograma);
+
+  // // verificando se o docente existe
+  // if (programa.isPresent()) {
+
+  // if (anoInicio > anoFim) {
+  // Integer dataAuxiliar = anoInicio;
+
+  // anoInicio = anoFim;
+  // anoFim = dataAuxiliar;
+  // }
+
+  // List<Tecnica> tecnicasPrograma = programa.get().get();
+
+  // // verificando se o docente tem técnicas
+  // if (tecnicasDocente.size() > 0) {
+
+  // ArrayList<Tecnica> tecnicasDocenteNoPeriodo = new ArrayList<>();
+
+  // for (Tecnica tecnica : tecnicasDocente) {
+  // if (tecnica.getAno() >= anoInicio && tecnica.getAno() <= anoFim) {
+  // tecnicasDocenteNoPeriodo.add(tecnica);
+  // }
+  // }
+
+  // return tecnicasDocenteNoPeriodo;
+  // }
+  // }
+
+  // throw new RegrasRunTime("O docente informado não existe!");
+  // }
 }

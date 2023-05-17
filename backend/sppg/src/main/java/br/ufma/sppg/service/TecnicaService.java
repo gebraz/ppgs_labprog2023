@@ -59,4 +59,21 @@ public class TecnicaService {
     throw new RegrasRunTime("A técnica informada não existe");
   }
 
+  // Obter todos os Docentes de uma técnica
+  public ArrayList<Docente> obterDocentesTecnica(Integer idTecnica) {
+    ArrayList<Docente> docentes = new ArrayList<>();
+
+    Optional<Tecnica> tecnica = tecnicaRepo.findById(idTecnica);
+
+    if (tecnica.isPresent()) {
+
+      for (Docente docente : tecnica.get().getDocentes()) {
+        docentes.add(docente);
+      }
+
+      return docentes;
+    }
+
+    throw new RegrasRunTime("A técnica informada não existe");
+  }
 }

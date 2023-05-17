@@ -1,12 +1,13 @@
 package br.ufma.sppg.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.ufma.sppg.excecao.ServicoRuntimeException;
-import br.ufma.sppg.model.Docente;
+import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.TecnicaRepo;
 
@@ -23,18 +24,44 @@ public class TecnicaServ {
          return repository.save(tecnica);
     }
 
-    public List<Docente> obterTecnicasDocente(Tecnica tecnica){
-        verificarTecnica(tecnica);
-        verificarIdTecnica(tecnica);
-        List<Docente> docente = repository.obterTecnicasDocente(tecnica.getId());
-        return docente;
+    public List<Tecnica> obterTecnicasDocente(Integer docenteId, Integer anoInicio, Integer anoFim){
+        if (anoFim == null){
+            LocalDate dataAtual = LocalDate.now();
+            anoFim = dataAtual.getYear();        
+        }
+        if (anoInicio == null){
+            anoInicio = anoFim - 3;
+        }
+        List<Tecnica> tecnica = repository.obterTecnicasDocente(docenteId, anoInicio, anoFim);
+        return tecnica;
     }
 
-    public Tecnica informarEstatisticasTecnica(Tecnica tecnica){
-        verificarTecnica(tecnica);
-        verificarIdTecnica(tecnica);
-        Tecnica estatisticas = repository.informarEstatisticasTecnica(tecnica.getId());
-        return estatisticas;
+    public List<Tecnica> obterTecnicasPPG(Integer programaId, Integer anoInicio, Integer anoFim){
+        if (anoFim == null){
+            LocalDate dataAtual = LocalDate.now();
+            anoFim = dataAtual.getYear();        
+        }
+        if (anoInicio == null){
+            anoInicio = anoFim - 3;
+        }
+        List<Tecnica> tecnica = repository.obterTecnicasPPG(programaId, anoInicio, anoFim);
+        return tecnica;
+    }
+
+    public List<Orientacao> obterOrientacoesTecnica(Integer tecnicaId, Integer anoInicio, Integer anoFim){
+        if (anoFim == null){
+            LocalDate dataAtual = LocalDate.now();
+            anoFim = dataAtual.getYear();        
+        }
+        if (anoInicio == null){
+            anoInicio = anoFim - 3;
+        }
+        List<Orientacao> orientacao = repository.obterOrientacoesTecnica(tecnicaId, anoInicio, anoFim);
+        return orientacao;
+    }
+
+    public void informarEstatisticasTecnica(Integer tecnicaId, Integer qtdGrand, Integer qtdMestrado, Integer qtdDoutorado  ){
+        repository.associarEstatisticasTecnica(tecnicaId, qtdGrand, qtdMestrado, qtdDoutorado);;
     }
 
     public Tecnica atualizar(Tecnica tecnica){

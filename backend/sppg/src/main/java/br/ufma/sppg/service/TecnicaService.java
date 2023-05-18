@@ -101,34 +101,21 @@ public class TecnicaService {
     throw new RegrasRunTime("A técnica informada não existe");
   }
 
-  public ArrayList<Tecnica> obterTecnicasDocentePorPeriodo(Integer idDocente, Integer anoInicio, Integer anoFim) {
+  public Optional<List<Tecnica>> obterTecnicasDocentePorPeriodo(Integer idDocente, Integer dataInicio,
+      Integer dataFim) {
     Optional<Docente> docente = docenteRepo.findById(idDocente);
 
     // verificando se o docente existe
     if (docente.isPresent()) {
 
-      if (anoInicio > anoFim) {
-        Integer dataAuxiliar = anoInicio;
+      if (dataInicio > dataFim) {
+        Integer dataAuxiliar = dataInicio;
 
-        anoInicio = anoFim;
-        anoFim = dataAuxiliar;
+        dataInicio = dataFim;
+        dataInicio = dataAuxiliar;
       }
 
-      List<Tecnica> tecnicasDocente = docente.get().getTecnicas();
-
-      // verificando se o docente tem técnicas
-      if (tecnicasDocente.size() > 0) {
-
-        ArrayList<Tecnica> tecnicasDocenteNoPeriodo = new ArrayList<>();
-
-        for (Tecnica tecnica : tecnicasDocente) {
-          if (tecnica.getAno() >= anoInicio && tecnica.getAno() <= anoFim) {
-            tecnicasDocenteNoPeriodo.add(tecnica);
-          }
-        }
-
-        return tecnicasDocenteNoPeriodo;
-      }
+      return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, dataInicio, dataFim);
     }
 
     throw new RegrasRunTime("O docente informado não existe!");

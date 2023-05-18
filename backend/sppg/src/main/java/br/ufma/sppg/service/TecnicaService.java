@@ -13,6 +13,7 @@ import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Programa;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.DocenteRepository;
+import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 import br.ufma.sppg.service.exceptions.RegrasRunTime;
@@ -29,6 +30,9 @@ public class TecnicaService {
 
   @Autowired
   ProgramaRepository programaRepo;
+
+  @Autowired
+  OrientacaoRepository orientacaoRepo;
 
   public Tecnica salvarTecnica(Tecnica tecnica) {
     return tecnicaRepo.save(tecnica);
@@ -102,6 +106,26 @@ public class TecnicaService {
       }
 
       return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, dataInicio, dataFim);
+    }
+
+    throw new RegrasRunTime("O docente informado não existe!");
+  }
+
+  public Optional<List<Tecnica>> obterTecnicasOrientacoesPorPeriodo(Integer idOrientacao, Integer dataInicio,
+      Integer dataFim) {
+    Optional<Orientacao> orientacao = orientacaoRepo.findById(idOrientacao);
+
+    // verificando se o docente existe
+    if (orientacao.isPresent()) {
+
+      if (dataInicio > dataFim) {
+        Integer dataAuxiliar = dataInicio;
+
+        dataInicio = dataFim;
+        dataInicio = dataAuxiliar;
+      }
+
+      return tecnicaRepo.obterTecnicasOrientacaoPorPeriodo(idOrientacao, dataInicio, dataFim);
     }
 
     throw new RegrasRunTime("O docente informado não existe!");

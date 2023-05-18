@@ -64,7 +64,6 @@ public class TecnicaService {
   }
 
   // Obter todas as técnicas de um docente
-
   public List<Tecnica> obterTecnicasDocente(Integer idDocente) {
 
     Optional<Docente> docente = docenteRepo.findById(idDocente);
@@ -77,18 +76,12 @@ public class TecnicaService {
   }
 
   // Obter todos os Docentes de uma técnica
-  public ArrayList<Docente> obterDocentesTecnica(Integer idTecnica) {
-    ArrayList<Docente> docentes = new ArrayList<>();
+  public List<Docente> obterDocentesTecnica(Integer idTecnica) {
 
     Optional<Tecnica> tecnica = tecnicaRepo.findById(idTecnica);
 
     if (tecnica.isPresent()) {
-
-      for (Docente docente : tecnica.get().getDocentes()) {
-        docentes.add(docente);
-      }
-
-      return docentes;
+      return tecnica.get().getDocentes();
     }
 
     throw new RegrasRunTime("A técnica informada não existe");

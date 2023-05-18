@@ -5,15 +5,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 
 import br.ufma.sppg.excecao.ServicoRuntimeException;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Tecnica;
-import br.ufma.sppg.repo.TecnicaRepo;
+import br.ufma.sppg.repo.TecnicaRepository;
 
 public class TecnicaServ {
     @Autowired
-    TecnicaRepo repository;
+    TecnicaRepository repository;
 
     public Tecnica salvar(Tecnica tecnica){
         verificarTecnica(tecnica);
@@ -60,8 +63,17 @@ public class TecnicaServ {
         return orientacao;
     }
 
-    public void informarEstatisticasTecnica(Integer tecnicaId, Integer qtdGrand, Integer qtdMestrado, Integer qtdDoutorado  ){
-        repository.associarEstatisticasTecnica(tecnicaId, qtdGrand, qtdMestrado, qtdDoutorado);;
+    public void informarEstatisticasTecnica(Integer tecnicaId, Integer qtdGrad, Integer qtdMestrado, Integer qtdDoutorado  ){
+        if (tecnicaId == null){
+            throw new ServicoRuntimeException("O ID da tecnica não pode ser nulo");
+        }else{
+            Optional<Tecnica> tecnica = repository.findById(tecnicaId);
+            Tecnica tecnicaAtualizada = tecnica.get();
+            tecnicaAtualizada.setQtdGrad(qtdGrad);
+            tecnicaAtualizada.setQtdMestrado(qtdMestrado);
+            tecnicaAtualizada.setQtdDoutorado(qtdDoutorado);
+            repository.save(tecnicaAtualizada);
+        }
     }
 
     public Tecnica atualizar(Tecnica tecnica){
@@ -72,6 +84,16 @@ public class TecnicaServ {
 
     public List<Tecnica> buscar(){
         return repository.findAll();
+    }
+
+    public List<Tecnica> buscar(Tecnica filtro) {
+        if (filtro == null)
+            throw new ServicoRuntimeException("O filtro está nulo");
+        Example<Tecnica> example = Example.of(filtro, ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withStringMatcher(StringMatcher.CONTAINING));
+
+        return repository.findAll(example);
     }
 
     public void remover(Tecnica tecnica){

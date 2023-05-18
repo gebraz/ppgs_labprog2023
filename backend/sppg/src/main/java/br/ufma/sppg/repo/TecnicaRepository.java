@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.ufma.sppg.model.Tecnica;
 
-public interface TecnicaRepository extends JpaRepository<Tecnica, Long> {
+public interface TecnicaRepository extends JpaRepository<Tecnica, Integer> {
     Optional<Tecnica> findById(Integer idTecnica);
-
-    Boolean existsById(Integer idTecnica);
-
 }

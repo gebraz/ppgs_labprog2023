@@ -179,7 +179,7 @@ public class DocenteTest {
         Docente docenteSalvoComTecnica = repo.save(docenteSalvoSemTecnica);
 
         // Producao
-        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").tipo("P").build();
         Producao prodSalva = prodRepository.save(novaProd);
         List<Producao> prods = new ArrayList<Producao>();
         prods.add(prodSalva);

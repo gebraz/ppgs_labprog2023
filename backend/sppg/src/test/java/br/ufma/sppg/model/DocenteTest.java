@@ -53,9 +53,9 @@ public class DocenteTest {
     public void deveSalvarDocenteComPrograma() throws ParseException {
         // cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
-        Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
                                         .lattes("123")
-                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy"))
+                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/05/2022"))
                                         .build();
         
         Programa progSalvo = prog.save(novoPPg);

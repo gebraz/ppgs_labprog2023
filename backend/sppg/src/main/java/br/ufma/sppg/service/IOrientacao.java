@@ -1,9 +1,8 @@
-package br.ufma.sppg.services;
+package br.ufma.sppg.service;
 
 import java.util.ArrayList;
 
-import br.ufma.sppg.Dto.Orientação.OrientacaoRequest;
-import br.ufma.sppg.Dto.Orientação.OrientacaoResponse;
+import br.ufma.sppg.dto.OrientacaoResponse;
 import br.ufma.sppg.model.Orientacao;
 
 public interface IOrientacao {

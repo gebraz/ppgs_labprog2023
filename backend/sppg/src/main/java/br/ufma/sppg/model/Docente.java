@@ -46,7 +46,7 @@ public class Docente {
     // Relacionamentos
     @Temporal(TemporalType.DATE)
     @Column(name="data_atualizacao")
-    SimpleDateFormat dataAtualizacao;
+    Date dataAtualizacao;
     
     @ManyToMany(mappedBy = "docentes")
     List<Programa> programas;
@@ -61,10 +61,5 @@ public class Docente {
 
     @OneToMany(mappedBy = "orientador")
     List<Orientacao> orientacoes;
-
-    @PreUpdate
-    protected void onUpdate() {
-        dataAtualizacao = new Date();
-    }
 
 }

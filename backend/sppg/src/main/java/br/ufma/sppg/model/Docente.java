@@ -1,7 +1,10 @@
 package br.ufma.sppg.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,11 +45,10 @@ public class Docente {
 
     // Relacionamentos
     @Temporal(TemporalType.DATE)
-    @Column(name = "data_atualizacao")
-    Date dataAtualizacao;
-
-    @ManyToMany()
-    @JoinTable(name = "programa_docente", joinColumns = @JoinColumn(name = "id_docente"), inverseJoinColumns = @JoinColumn(name = "id_programa"))
+    @Column(name="data_atualizacao")
+    SimpleDateFormat dataAtualizacao;
+    
+    @ManyToMany(mappedBy = "docentes")
     List<Programa> programas;
 
     @ManyToMany()

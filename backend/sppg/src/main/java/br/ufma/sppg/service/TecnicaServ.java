@@ -9,10 +9,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 
-import br.ufma.sppg.excecao.ServicoRuntimeException;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.TecnicaRepository;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 public class TecnicaServ {
     @Autowired

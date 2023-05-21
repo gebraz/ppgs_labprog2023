@@ -1,4 +1,4 @@
-package br.ufma.sppg.services.exceptions;
+package br.ufma.sppg.service.exceptions;
 
 public class RegraAcessoRunTime extends RuntimeException{
     

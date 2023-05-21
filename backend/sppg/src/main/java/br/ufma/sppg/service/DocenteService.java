@@ -1,4 +1,4 @@
-package br.ufma.sppg.services;
+package br.ufma.sppg.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import br.ufma.sppg.dto.Indice;
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.repo.DocenteRepository;
-import br.ufma.sppg.services.exceptions.RegraAcessoRunTime;
+import br.ufma.sppg.service.exceptions.RegraAcessoRunTime;
 
 @Service
 public class DocenteService {

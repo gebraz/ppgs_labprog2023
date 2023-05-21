@@ -1,4 +1,4 @@
-package br.ufma.sppg.services;
+package br.ufma.sppg.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Programa;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.ProgramaRepository;
-import br.ufma.sppg.services.exceptions.RegraAcessoRunTime;
+import br.ufma.sppg.service.exceptions.RegraAcessoRunTime;
 
 @Service
 public class ProgramaService {

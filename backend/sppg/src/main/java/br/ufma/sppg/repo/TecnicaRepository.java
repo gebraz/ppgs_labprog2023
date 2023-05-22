@@ -10,7 +10,9 @@ import br.ufma.sppg.model.Tecnica;
 
 public interface TecnicaRepository extends JpaRepository<Tecnica, Integer> {
     Optional<Tecnica> findById(Integer idTecnica);
-
+   
+    Boolean existsById(Integer idTecnica);
+    
     // Obter todas as técnicas de um docente em um período
     @Query("SELECT t FROM Tecnica t " +
             "JOIN Docente d " +

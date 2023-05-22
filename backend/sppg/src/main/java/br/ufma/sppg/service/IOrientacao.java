@@ -9,7 +9,7 @@ public interface IOrientacao {
     
     public ArrayList<OrientacaoResponse> obterOrientacaoPPG(Integer id);
     public ArrayList<OrientacaoResponse> obterOrientacaoDocentes(Integer idDocente);
-    public String associarOrientacaoProducao(Integer idOrientacao,Integer idProducao);
+    public Orientacao associarOrientacaoProducao(Integer idOrientacao,Integer idProducao);
     public String obterOrientacaoTecnica();
 
 }

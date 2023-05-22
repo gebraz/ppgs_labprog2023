@@ -17,54 +17,46 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="tecnica")
+@Table(name = "tecnica")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tecnica {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_tecnica")
+    @Column(name = "id_tecnica")
     Integer id;
 
     @Column(name = "tipo")
     String tipo;
 
-    @Column(name="titulo")
+    @Column(name = "titulo")
     String titulo;
 
-    @Column(name="ano")
+    @Column(name = "ano")
     Integer ano;
 
     @Column(name = "financiadora")
     String financiadora;
 
-    @Column(name="outras_informacoes")
+    @Column(name = "outras_informacoes")
     String outrasInformacoes;
 
-    @Column(name="qtd_grad")
+    @Column(name = "qtd_grad")
     Integer qtdGrad;
 
-    @Column(name="qtd_mestrado")
+    @Column(name = "qtd_mestrado")
     Integer qtdMestrado;
 
-    @Column(name="qtd_doutorado")
+    @Column(name = "qtd_doutorado")
     Integer qtdDoutorado;
 
     @ManyToMany
-    @JoinTable(
-        name="tecnica_orientacao",
-        joinColumns = @JoinColumn(name="id_tecnica"),
-        inverseJoinColumns = @JoinColumn(name="id_orientacao")
-    )
+    @JoinTable(name = "tecnica_orientacao", joinColumns = @JoinColumn(name = "id_tecnica"), inverseJoinColumns = @JoinColumn(name = "id_orientacao"))
     List<Orientacao> orientacoes;
 
-    @ManyToMany
-    @JoinTable(
-        name="docente_tecnica",
-        joinColumns = @JoinColumn(name="id_tecnica")
-    )
-     List<Docente> docentes;
+    @ManyToMany(mappedBy = "tecnicas")
+    List<Docente> docentes;
 }

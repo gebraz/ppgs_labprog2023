@@ -1,11 +1,18 @@
 package br.ufma.sppg.repo;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.ufma.sppg.model.Docente;
-                                                //Tipo do repository e Tipo do ID
-public interface DocenteRepository extends JpaRepository<Docente, Integer> {
+import java.util.List;
+
+public interface DocenteRepository
+        extends JpaRepository<Docente, Integer> {
+
+    Optional<Docente> findById(Integer idDocente);
+
+    boolean existsById(Integer idDocente);
+
     List<Docente> findByNome(String nome);
 }

@@ -46,9 +46,8 @@ public class Docente {
     // Relacionamentos
     @Temporal(TemporalType.DATE)
     @Column(name="data_atualizacao")
-    SimpleDateFormat dataAtualizacao;
+    Date dataAtualizacao;
     
-
     @ManyToMany(mappedBy = "docentes")
     List<Programa> programas;
 

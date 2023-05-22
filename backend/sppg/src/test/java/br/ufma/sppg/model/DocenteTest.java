@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.Optional;
 
 @SpringBootTest
 public class DocenteTest {
@@ -53,15 +53,15 @@ public class DocenteTest {
     public void deveSalvarDocenteComPrograma() throws ParseException {
         // cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
-        Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
-                                        .lattes("123")
-                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy"))
-                                        .build();
-        
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
+                .lattes("123")
+                .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/05/2022"))
+                .build();
+
         Programa progSalvo = prog.save(novoPPg);
         Docente docSalvo = repo.save(novoDocente);
 
-        //ação
+        // ação
         List<Programa> programas = new ArrayList<Programa>();
         programas.add(progSalvo);
         docSalvo.setProgramas(programas); // adicionar lista de programas em Docente
@@ -125,11 +125,11 @@ public class DocenteTest {
 
         Assertions.assertNotNull(novoDocenteSalvo);
         Assertions.assertEquals(novoDocenteSalvo.getProducoes().size(), 1);
-        
+
     }
 
     @Test
-    public void deveAtualizarDataAtualizacaoDocente() throws ParseException{
+    public void deveAtualizarDataAtualizacaoDocente() throws ParseException {
         // cenário
         Docente novoDocente = criaDocente();
         Docente docenteSalvo = repo.save(novoDocente);
@@ -181,11 +181,11 @@ public class DocenteTest {
         Docente docenteSalvoComTecnica = repo.save(docenteSalvoSemTecnica);
 
         // Producao
-        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").build();
+        Producao novaProd = Producao.builder().titulo("Desenvolvimento de sistemas").tipo("P").build();
         Producao prodSalva = prodRepository.save(novaProd);
         List<Producao> prods = new ArrayList<Producao>();
         prods.add(prodSalva);
-        
+
         Docente docenteSalvoSemProd = repo.save(novoDocente);
         docenteSalvoSemProd.setProducoes(prods);
         Docente docenteSalvoComProd = repo.save(docenteSalvoSemProd);

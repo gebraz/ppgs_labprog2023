@@ -1,4 +1,4 @@
-package br.ufma.sppg.repo;
+package br.ufma.sppg.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,8 +72,8 @@ public class OrientacaoRepoTest {
         Orientacao orientacaoSalvo = or.save(orientacao);
 
         // rollback
-        pr.delete(producaoSalvo);
         or.delete(orientacaoSalvo);
+        pr.delete(producaoSalvo);        
 
         Assertions.assertNotNull(orientacaoSalvo);
         Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
@@ -84,8 +84,7 @@ public class OrientacaoRepoTest {
         Assertions.assertEquals(orientacao.getInstituicao(), orientacaoSalvo.getInstituicao());
         Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
         Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
-        Assertions.assertEquals(orientacao.getProducoes().get(0).getId(),
-                orientacaoSalvo.getProducoes().get(0).getId());
+        Assertions.assertEquals(orientacao.getProducoes().get(0).getId(), orientacaoSalvo.getProducoes().get(0).getId());
     }
 
     @Test
@@ -103,9 +102,9 @@ public class OrientacaoRepoTest {
         Orientacao orientacaoSalvo = or.save(orientacao);
 
         // rollback
-        tr.delete(tecnicaSalvo);
         or.delete(orientacaoSalvo);
-
+        tr.delete(tecnicaSalvo);
+        
         Assertions.assertNotNull(orientacaoSalvo);
         Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
         Assertions.assertEquals(orientacao.getAno(), orientacaoSalvo.getAno());

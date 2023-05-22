@@ -1,72 +1,54 @@
 package br.ufma.sppg.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import br.ufma.sppg.dto.OrientacaoResponse;
 import br.ufma.sppg.model.Orientacao;
-import br.ufma.sppg.model.Programa;
-import br.ufma.sppg.model.Docente;
-import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
-import br.ufma.sppg.repo.ProgramaRepository;
-import br.ufma.sppg.service.dto.CriarOrientacaoDTO;
 
-@Service
-public class OrientacaoService {
+public class OrientacaoService implements IOrientacao {
 
     @Autowired
-    OrientacaoRepository orientacaoRepository;
+    private OrientacaoRepository orientacaoRepository;
 
-    @Autowired
-    ProgramaRepository programaRepository;
+    @Override
+    public ArrayList<OrientacaoResponse> obterOrientacaoPPG(Integer id) {
 
-    @Autowired
-    DocenteRepository docenteRepository;
-
-    public List<Orientacao> obterTodasOrientacoes() {
-        return orientacaoRepository.findAll();
+        var orientacoes = orientacaoRepository.findAllById(id);
+        var responses = new ArrayList<OrientacaoResponse>();
+        for (var orientacao : orientacoes) {
+            var response = new OrientacaoResponse(orientacao);
+            responses.add(response);
+        }
+        return responses;
     }
 
-    public List<Orientacao> obterOrientacoesPPG(Integer idPrograma) {
-
-        validarOrientacoes(idPrograma);
-        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(idPrograma).get();
-
-        return orientacoes;
-    }
-
-    public Orientacao criarOrientacao(CriarOrientacaoDTO dto) {
-
-        validarDocente(dto.getIdDocente());
-        Docente docente = docenteRepository.findById(dto.getIdDocente()).get();
-
-        // não pode criar orientacao com o mesmo titulo e mesmo orientador
-        // TODO: validar orientacao
-
-        Orientacao novaOrientacao = Orientacao.builder().orientador(docente).titulo(dto.getTitulo()).build();
-
-        return orientacaoRepository.save(novaOrientacao);
-    }
-
-    private void validarOrientacoes(Integer idPrograma) {
-
-        Optional<Programa> programa = programaRepository.findById(idPrograma);
-
-        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma);
-
-        if (programa.isEmpty())
-            throw new RuntimeException("Não foram encontrados  programas com este Id.");
-        if (orientacoes.isEmpty())
-            throw new RuntimeException("Não foram encontradas orientações para este docente.");
+    @Override
+    public ArrayList<OrientacaoResponse> obterOrientacaoDocentes(Integer idDocente) {
+        var orientacoes = orientacaoRepository.findAllById(idDocente);
+        var responses = new ArrayList<OrientacaoResponse>();
+        for (var orientacao : orientacoes) {
+            var response = new OrientacaoResponse(orientacao);
+            responses.add(response);
+        }
+        return responses;
 
     }
 
-    private void validarDocente(Integer idDocente) {
-        Optional<Docente> docente = docenteRepository.findById(idDocente);
-        if (docente.isEmpty())
-            throw new RuntimeException("Não foram encontrados docentes com este Id.");
+    @Override
+    public String associarOrientacaoProducao(Integer idOrientacao, Integer idProducao) {
+        var orientacao = orientacaoRepository.findAllById(idOrientacao);
+        throw new UnsupportedOperationException("Unimplemented method 'obterOrientacaoTecnica'");
+
     }
+
+    @Override
+    public String obterOrientacaoTecnica() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obterOrientacaoTecnica'");
+    }
+
 }

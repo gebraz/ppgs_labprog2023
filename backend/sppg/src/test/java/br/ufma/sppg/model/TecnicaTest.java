@@ -77,6 +77,62 @@ public class TecnicaTest {
         Assertions.assertEquals(novaQtdDout, tecSalva.getQtdDoutorado());
 
     }
+
+    /*@Test
+    public void deveImpedirRemoverTecnicaComDependencia() throws ParseException{
+        //cenário
+        Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
+                                            .ano(2023)
+                                            .financiadora("teste_financiadora")
+                                            .outrasInformacoes("teste_outrasInformacoes")
+                                            .qtdGrad(1)
+                                            .qtdMestrado(2)
+                                            .qtdDoutorado(3).build();
+
+        //ação
+        Tecnica tecSalva = tec.save(novTecnica);
+        
+        //verificação
+
+    }*/
+
+    // @Test
+    // public void deveVerificarRemoverPrograma() throws ParseException{
+    //     //cenário
+    //     Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
+    //                                         .ano(2023)
+    //                                         .financiadora("teste_financiadora")
+    //                                         .outrasInformacoes("teste_outrasInformacoes")
+    //                                         .qtdGrad(1)
+    //                                         .qtdMestrado(2)
+    //                                         .qtdDoutorado(3).build();
+        
+    //     Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
+    //                                         .lattes("123")
+    //                                         .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
+    //                                         .build();
+
+
+    //     Orientacao novOrientacao = Orientacao.builder().id(1).tipo("teste").discente("teste_disc")
+    //                                         .titulo("teste_titulo")
+    //                                         .ano(2023)
+    //                                         .modalidade("teste_modalidade")
+    //                                         .instituicao("teste_orientacao")
+    //                                         .curso("teste_curso")
+    //                                         .status("teste_status")
+    //                                         .orientador(novDocente).build();
+                                            
+
+    //     //ação
+    //     Tecnica tecSalva = tec.save(novTecnica);
+    //     Integer id = tecSalva.getId();
+    //     tec.deleteById(tecSalva.getId());
+
+    //     //verificação
+        
+    //     Optional<Tecnica> temp = tec.findById(id);        
+    //     Assertions.assertFalse(temp.isPresent());
+    // }
     
 
 }

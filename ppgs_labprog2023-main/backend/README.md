@@ -1,3 +1,0 @@
-# Backend - Spring Boot
-
-## Server

@@ -9,5 +9,6 @@ import br.ufma.sppg.model.Orientacao;
 
 public interface OrientacaoRepository 
     extends JpaRepository<Orientacao, Integer>{
+
     
 }

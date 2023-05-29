@@ -33,18 +33,18 @@ public class OrientacaoService {
     @Autowired
     private TecnicaRepository tecnicaRepository;
 
-    public List<Orientacao> obterOrientacaoPPG(Integer id) {
+    public List<Orientacao> obterOrientacaoPPG(Integer id, Integer anoIni, Integer anoFim) {
 
-        validarOrientacoesPpg(id);
-        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(id).get();
+        validarOrientacoesPpg(id, anoIni, anoFim);
+        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(id, anoIni, anoFim).get();
 
         return orientacoes;
     }
 
-    public List<Orientacao> obterOrientacaoDocente(Integer id) {
+    public List<Orientacao> obterOrientacaoDocente(Integer id, Integer anoIni, Integer anoFim) {
 
-        validarOrientacoesDoc(id);
-        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(id).get();
+        validarOrientacoesDoc(id, anoIni, anoFim);
+        List<Orientacao> orientacoes = orientacaoRepository.findByPPG(id, anoIni, anoFim).get();
 
         return orientacoes;
     }
@@ -69,23 +69,23 @@ public class OrientacaoService {
         return orientacaoRepository.save(orientacao);
     }
 
-    private void validarOrientacoesPpg(Integer idPrograma) {
+    private void validarOrientacoesPpg(Integer idPrograma, Integer anoIni, Integer anoFim) {
 
         Optional<Programa> programa = programaRepository.findById(idPrograma);
 
-        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma);
-
+        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma,  anoIni, anoFim);
+        
         if (programa.isEmpty())
             throw new RuntimeException("Não foram encontrados  programas com este Id.");
         if (orientacoes.isEmpty())
             throw new RuntimeException("Não foram encontradas orientações para este docente.");
     }
 
-    private void validarOrientacoesDoc(Integer idDocente) {
+    private void validarOrientacoesDoc(Integer idDocente Integer anoIni, Integer anoFim) {
 
         Optional<Docente> docente = docenteRepository.findById(idDocente);
 
-        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByDocente(idDocente);
+        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByDocente(idDocente, anoIni, anoFim);
 
         if (docente.isEmpty())
             throw new RuntimeException("Não foram encontrados  programas com este Id.");

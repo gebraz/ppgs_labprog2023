@@ -40,8 +40,8 @@ public class DocenteController{
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    //@GetMapping
+    /*
+    @GetMapping
     public ResponseEntity<?> obterOrientacoesDeDocente(
             @RequestParam("docente") Integer idDocente){
 
@@ -52,6 +52,7 @@ public class DocenteController{
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+     */
 
     public ResponseEntity<?> obterTecnicasDeDocente(
             @RequestParam("docente") Integer idDocente){

@@ -83,7 +83,7 @@ public class OrientacaoService  {
             throw new RuntimeException("Não foram encontradas orientações para este docente.");
     }
 
-    private void validarOrientacoesDoc(Integer idDocente Integer anoIni, Integer anoFim) {
+    private void validarOrientacoesDoc(Integer idDocente, Integer anoIni, Integer anoFim) {
 
         Optional<Docente> docente = docenteRepository.findById(idDocente);
 

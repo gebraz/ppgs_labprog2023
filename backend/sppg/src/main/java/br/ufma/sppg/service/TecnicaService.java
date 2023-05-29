@@ -1,7 +1,6 @@
 package br.ufma.sppg.service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,6 @@ import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 import jakarta.transaction.Transactional;
 
@@ -39,6 +37,7 @@ public class TecnicaService {
     OrientacaoRepository orientacaoRepo;
 
     // Salva uma técnica
+    @Transactional
     public Tecnica salvarTecnica(Tecnica tecnica) {
         verificarTecnica(tecnica);
         if (tecnica.getId() != null) {
@@ -48,6 +47,7 @@ public class TecnicaService {
         return tecnicaRepo.save(tecnica);
     }
 
+    @Transactional
     public Tecnica atualizarTecnica(Tecnica tecnica) {
         verificarTecnica(tecnica);
         verificarIdTecnica(tecnica);
@@ -67,28 +67,18 @@ public class TecnicaService {
 
         return tecnicaRepo.findAll(example);
     }
-
+    
+    @Transactional
     public void removerTecnica(Tecnica tecnica) {
         verificarIdTecnica(tecnica);
         verificarTecnica(tecnica);
         tecnicaRepo.delete(tecnica);
     }
 
+    @Transactional
     public void removerTecnicaPorId(Integer id) {
         Optional<Tecnica> tecnica = tecnicaRepo.findById(id);
         removerTecnica(tecnica.get());
-    }
-
-    public void verificarTecnica(Tecnica tecnica) {
-        if (tecnica == null) {
-            throw new ServicoRuntimeException("A técnica não pode ser nulo!");
-        }
-    }
-
-    public void verificarIdTecnica(Tecnica tecnica) {
-        if (tecnica == null || tecnica.getId() == null || !(tecnicaRepo.existsById(tecnica.getId()))) {
-            throw new ServicoRuntimeException("Id inválido!");
-        }
     }
 
     // Atualiza as estatísticas de uma técnica
@@ -108,8 +98,20 @@ public class TecnicaService {
             return tecnicaRepo.save(tecnicaObj);
         }
 
-        throw new RegrasRunTime("A técnica informada não existe!");
+        throw new ServicoRuntimeException("A técnica informada não existe!");
     }
+
+    private void verificarTecnica(Tecnica tecnica) {
+        if (tecnica == null) {
+            throw new ServicoRuntimeException("A técnica não pode ser nulo!");
+        }
+    }
+
+    private void verificarIdTecnica(Tecnica tecnica) {
+        if (tecnica == null || tecnica.getId() == null || !(tecnicaRepo.existsById(tecnica.getId()))) {
+            throw new ServicoRuntimeException("Id inválido!");
+        }
+    }    
 
     // Retorna todas as orientações de uma téncnica
     public List<Orientacao> obterOrientacoesTecnica(Integer idTecnica) {
@@ -119,7 +121,7 @@ public class TecnicaService {
             return tecnica.get().getOrientacoes();
         }
 
-        throw new RegrasRunTime("A técnica informada não existe");
+        throw new ServicoRuntimeException("A técnica informada não existe");
     }
 
     // Retorna todas as técnicas de uma orientação em um período
@@ -140,7 +142,7 @@ public class TecnicaService {
             return tecnicaRepo.obterTecnicasOrientacaoPorPeriodo(idOrientacao, anoInicio, anoFim);
         }
 
-        throw new RegrasRunTime("O docente informado não existe!");
+        throw new ServicoRuntimeException("O docente informado não existe!");
     }
 
     // Retorna todas as técnicas de um docente
@@ -152,7 +154,7 @@ public class TecnicaService {
             return docente.get().getTecnicas();
         }
 
-        throw new RegrasRunTime("O docente informado não existe");
+        throw new ServicoRuntimeException("O docente informado não existe");
     }
 
     // Retorna todos os docentes de uma técnica
@@ -164,7 +166,7 @@ public class TecnicaService {
             return tecnica.get().getDocentes();
         }
 
-        throw new RegrasRunTime("A técnica informada não existe");
+        throw new ServicoRuntimeException("A técnica informada não existe");
     }
 
     // Retorna todas as técnicas de um docente em um período
@@ -185,7 +187,7 @@ public class TecnicaService {
             return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, anoInicio, anoFim);
         }
 
-        throw new RegrasRunTime("O docente informado não existe!");
+        throw new ServicoRuntimeException("O docente informado não existe!");
     }
 
     // Retorna todas as técnicas de um programa
@@ -197,7 +199,7 @@ public class TecnicaService {
             return tecnicaRepo.obterTecnicasPPG(idPrograma);
         }
 
-        throw new RegrasRunTime("O programa informado não existe!");
+        throw new ServicoRuntimeException("O programa informado não existe!");
     }
 
     // Retorna todas as técnicas de um programa em um período
@@ -217,6 +219,6 @@ public class TecnicaService {
 
             return tecnicaRepo.obterTecnicasPPGPorPeriodo(idPrograma, anoInicio, anoFim);
         }
-        throw new RegrasRunTime("O programa informado não existe!");
+        throw new ServicoRuntimeException("O programa informado não existe!");
     }
 }

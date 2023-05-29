@@ -30,16 +30,16 @@ public class Producao {
     @Column(name = "id_producao")
     Integer id;
 
-    @Column(name = "tipo")
+    @Column(name = "tipo", nullable = true)
     String tipo;
 
-    @Column(name = "issn_ou_sigla")
+    @Column(name = "issn_ou_sigla", nullable = true)
     String issnOuSigla;
 
-    @Column(name = "nome_local")
+    @Column(name = "nome_local", nullable = true)
     String nomeLocal;
 
-    @Column(name = "titulo")
+    @Column(name = "titulo", nullable = true)
     String titulo;
 
     @Column(name = "ano")
@@ -48,33 +48,24 @@ public class Producao {
     @Column(name = "qualis")
     String qualis;
 
-    @Column(name = "percentile_ou_h5")
-    float percentileOuH5;
+    @Column(name = "percentile_ou_h5", nullable = true)
+    Float percentileOuH5;
 
-    @Column(name = "qtd_grad")
+    @Column(name = "qtd_grad", nullable = true)
     Integer qtdGrad;
 
-    @Column(name = "qtd_mestrado")
+    @Column(name = "qtd_mestrado", nullable = true)
     Integer qtdMestrado;
 
-    @Column(name = "qtd_doutorado")
+    @Column(name = "qtd_doutorado", nullable = true)
     Integer qtdDoutorado;
 
-    
     @ManyToMany
-    @JoinTable(
-        name="producao_orientacao",
-        joinColumns = @JoinColumn(name="id_producao"),
-        inverseJoinColumns = @JoinColumn(name="id_orientacao")
-    )
+    @JoinTable(name = "producao_orientacao", joinColumns = @JoinColumn(name = "id_producao"), inverseJoinColumns = @JoinColumn(name = "id_orientacao"))
     List<Orientacao> orientacoes;
 
     @ManyToMany
-    @JoinTable(
-        name="docente_producao",
-        joinColumns = @JoinColumn(name="id_producao"),
-        inverseJoinColumns = @JoinColumn(name="id_docente")
-    )
+    @JoinTable(name = "docente_producao", joinColumns = @JoinColumn(name = "id_producao"), inverseJoinColumns = @JoinColumn(name = "id_docente"))
     List<Docente> docentes;
 
 }

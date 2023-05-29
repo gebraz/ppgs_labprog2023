@@ -14,10 +14,9 @@ public class OrientacaoService implements IOrientacao {
     @Autowired
     private OrientacaoRepository orientacaoRepository;
 
-
     @Override
     public ArrayList<OrientacaoResponse> obterOrientacaoPPG(Integer id) {
-       
+
         var orientacoes = orientacaoRepository.findAllById(id);
         var responses = new ArrayList<OrientacaoResponse>();
         for (var orientacao : orientacoes) {
@@ -36,15 +35,14 @@ public class OrientacaoService implements IOrientacao {
             responses.add(response);
         }
         return responses;
-        
+
     }
 
     @Override
-    public String associarOrientacaoProducao(Integer idOrientacao,Integer idProducao){
+    public String associarOrientacaoProducao(Integer idOrientacao, Integer idProducao) {
         var orientacao = orientacaoRepository.findAllById(idOrientacao);
         throw new UnsupportedOperationException("Unimplemented method 'obterOrientacaoTecnica'");
-       
-      
+
     }
 
     @Override
@@ -52,5 +50,5 @@ public class OrientacaoService implements IOrientacao {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'obterOrientacaoTecnica'");
     }
-    
+
 }

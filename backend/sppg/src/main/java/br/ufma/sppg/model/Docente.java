@@ -68,4 +68,9 @@ public class Docente {
     @OneToMany(mappedBy = "orientador")
     List<Orientacao> orientacoes;
 
+    @PreUpdate
+    protected void onUpdate() {
+        dataAtualizacao = new Date();
+    }
+
 }

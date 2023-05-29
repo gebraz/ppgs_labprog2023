@@ -32,6 +32,9 @@ public class Orientacao {
 
     @Column(name="tipo")
     private String tipo;
+
+    @Column(name="natureza")
+    private String natureza;
     
     @Column(name="discente")
     private String discente;

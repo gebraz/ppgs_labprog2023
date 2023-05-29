@@ -15,5 +15,7 @@ public interface DocenteRepository
 
     boolean existsById(Integer idDocente);
 
-    List<Docente> findByNome(String nome);
+    Docente findByNome(String nome);
+
+    
 }

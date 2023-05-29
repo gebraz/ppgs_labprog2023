@@ -35,6 +35,9 @@ public class Tecnica {
     @Column(name="titulo")
     String titulo;
 
+    @Column(name = "autores")
+    String autores;
+
     @Column(name="ano")
     Integer ano;
 

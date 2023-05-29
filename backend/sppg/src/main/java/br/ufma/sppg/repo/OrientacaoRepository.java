@@ -8,4 +8,6 @@ import br.ufma.sppg.model.Orientacao;
 
 public interface OrientacaoRepository extends JpaRepository<Orientacao,Integer> {
     List<Orientacao> findAllById(Integer id);
+
+    Orientacao findByTipoAndDiscenteAndTitulo(String tipo, String discente, String titulo);
 }

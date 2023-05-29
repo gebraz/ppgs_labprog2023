@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,8 +43,17 @@ public class Producao {
     @Column(name = "titulo")
     String titulo;
 
+    @Column(name = "autores")
+    String autores;
+
     @Column(name = "ano")
     Integer ano;
+
+    @Column(name = "doi")
+    String doi;
+
+    @Column(name = "natureza")
+    String natureza;
 
     @Column(name = "qualis")
     String qualis;
@@ -60,7 +70,10 @@ public class Producao {
     @Column(name = "qtd_doutorado")
     Integer qtdDoutorado;
 
-    
+    @ManyToOne
+    @JoinColumn(name="id_qualis")
+    Qualis qualisRef;
+
     @ManyToMany
     @JoinTable(
         name="producao_orientacao",

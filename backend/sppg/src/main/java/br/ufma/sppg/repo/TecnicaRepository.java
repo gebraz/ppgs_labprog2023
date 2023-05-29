@@ -23,4 +23,5 @@ public interface TecnicaRepository extends JpaRepository<Tecnica, Long> {
     @Query("SELECT o FROM Orientacao o join Tecnica t where t.id = :tecnicaId and o.ano >= :anoInicio and o.ano <= :anoFim")
     List<Orientacao> obterOrientacoesTecnica(Integer tecnicaId, Integer anoInicio, Integer anoFim);
 
+    Tecnica findByTitulo(String titulo);
 }

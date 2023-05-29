@@ -15,7 +15,8 @@ import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.service.OrientacaoService;
 import br.ufma.sppg.service.ProducaoService;
 import br.ufma.sppg.service.TecnicaService;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
+
 
 @RestController
 public class DocenteController{
@@ -28,26 +29,26 @@ public class DocenteController{
     @Autowired
     OrientacaoService orientacaoServivce;
 
-    @GetMapping
+   // @GetMapping
     public ResponseEntity<?> obterProducoesDeDocente(
             @RequestParam("docente") Integer idDocente, Integer data1, Integer data2){
 
         try{
             List<Producao> producaoDocente = producaoServivce.obterProducoesDocente(idDocente, data1, data2);
             return ResponseEntity.ok(producaoDocente);
-        }catch (RegrasRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping
+    //@GetMapping
     public ResponseEntity<?> obterOrientacoesDeDocente(
             @RequestParam("docente") Integer idDocente){
 
         try{
             ArrayList<OrientacaoResponse> orientacaoDocente = orientacaoServivce.obterOrientacaoDocentes(idDocente); //não vou setar o get mapping ainda
             return ResponseEntity.ok(orientacaoDocente);
-        }catch (RegrasRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -58,7 +59,7 @@ public class DocenteController{
         try{
             List<Tecnica> tecnicaDocente = tecnicaServivce.obterTecnicasDocente(idDocente); //não vou setar o get mapping ainda
             return ResponseEntity.ok(tecnicaDocente);
-        }catch (RegrasRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

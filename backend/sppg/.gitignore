@@ -34,3 +34,4 @@ build/
 
 ### Spring ###
 application.properties
+application-test.properties

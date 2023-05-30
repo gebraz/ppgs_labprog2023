@@ -15,14 +15,17 @@ import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
-
 @Service
 public class ProgramaService {
 
     @Autowired
     ProgramaRepository repository;
 
-    //TODO faltou incluir obterPrograma por ID
+    public List<Programa> todos() {
+        return repository.findAll();
+    }
+
+    // TODO faltou incluir obterPrograma por ID
     public List<Programa> obterPrograma(String nome) {
         verificarNome(nome);
         return repository.findAllByNome(nome);

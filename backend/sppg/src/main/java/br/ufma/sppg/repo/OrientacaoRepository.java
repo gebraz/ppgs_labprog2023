@@ -16,4 +16,6 @@ public interface OrientacaoRepository extends JpaRepository<Orientacao, Integer>
 
     @Query("SELECT o FROM Orientacao o JOIN o.orientador d WHERE d.id = :idDocente AND o.ano >= :anoInicio AND o.ano<= :anoFim")
     Optional<List<Orientacao>> findByDocente(Integer idDocente, Integer anoInicio, Integer anoFim);
+
+    Orientacao findByTipoAndDiscenteAndTitulo(String tipo, String discente, String titulo);
 }

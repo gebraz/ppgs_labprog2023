@@ -1,14 +1,14 @@
 package br.ufma.sppg.service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.ufma.sppg.dto.OrientacaoResponse;
-import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.repo.OrientacaoRepository;
 
+@Service
 public class OrientacaoService implements IOrientacao {
 
     @Autowired

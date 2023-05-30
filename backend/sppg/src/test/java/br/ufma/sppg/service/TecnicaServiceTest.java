@@ -117,7 +117,7 @@ public class TecnicaServiceTest {
   }
 
   @Test
-  public void deveConseguirRecuperarTecnicasPPGNumIntervaloDeTempo() throws ParseException {
+  public void deveRecuperarTecnicasPPGNumIntervaloDeTempo() throws ParseException {
 
     // Cenario
     Tecnica tecnica = tecnicaFactory();
@@ -143,6 +143,10 @@ public class TecnicaServiceTest {
     docenteSalvo.setProgramas(programas);
     tecnicaSalva.setDocentes(docentes);
     programaSalvo.setDocentes(docentes);
+
+    tecnicaSalva = tecnicaRepository.save(tecnicaSalva);
+    docenteSalvo = docenteRepository.save(docenteSalvo);
+    programaSalvo = programaRepository.save(programaSalvo);
 
     // Ação
 
@@ -174,5 +178,72 @@ public class TecnicaServiceTest {
 
     // o intervalo do tecnicasBanco3 é de 2023 - 2023
     Assertions.assertEquals(tecnicaSalva.getId(), tecnicasBanco3.get(0).getId());
+  }
+
+  @Test
+  public void deveRecuperarTecnicasPorDocenteNumIntervaloDeTempo() throws ParseException {
+
+    // Cenario
+    Tecnica tecnica = tecnicaFactory();
+    Docente docente = docenteFactory();
+    Programa programa = programaFactory();
+
+    Integer anoInicio = 2020;
+    Integer anoFim = 2023;
+
+    Tecnica tecnicaSalva = tecnicaRepository.save(tecnica);
+    Programa programaSalvo = programaRepository.save(programa);
+    Docente docenteSalvo = docenteRepository.save(docente);
+
+    List<Docente> docentes = new ArrayList<>();
+    List<Tecnica> tecnicas = new ArrayList<>();
+    List<Programa> programas = new ArrayList<>();
+
+    docentes.add(docenteSalvo);
+    tecnicas.add(tecnicaSalva);
+    programas.add(programaSalvo);
+
+    docenteSalvo.setTecnicas(tecnicas);
+    docenteSalvo.setProgramas(programas);
+    tecnicaSalva.setDocentes(docentes);
+    programaSalvo.setDocentes(docentes);
+
+    tecnicaSalva = tecnicaRepository.save(tecnicaSalva);
+    docenteSalvo = docenteRepository.save(docenteSalvo);
+    programaSalvo = programaRepository.save(programaSalvo);
+
+    // Ação
+
+    Optional<List<Tecnica>> tecnicasOptional = tecnicaService.obterTecnicasDocentePorPeriodo(docenteSalvo.getId(),
+        anoInicio, anoFim);
+    List<Tecnica> tecnicasBanco = tecnicasOptional.get();
+
+    Optional<List<Tecnica>> tecnicasOptional2 = tecnicaService.obterTecnicasDocentePorPeriodo(docenteSalvo.getId(),
+        anoInicio, 2022);
+    List<Tecnica> tecnicasBanco2 = tecnicasOptional2.get();
+
+    Optional<List<Tecnica>> tecnicasOptional3 = tecnicaService.obterTecnicasDocentePorPeriodo(docenteSalvo.getId(),
+        2023, 2023);
+    List<Tecnica> tecnicasBanco3 = tecnicasOptional3.get();
+
+    Tecnica tecnicaAux = tecnicaRepository.findById(tecnicaSalva.getId()).get();
+
+    // Verificação
+    Assertions.assertNotNull(tecnicasBanco);
+
+    Assertions.assertEquals(tecnicaSalva.getId(), tecnicaAux.getId());
+    Assertions.assertEquals(tecnicaSalva.getId(), tecnicasBanco.get(0).getId());
+    Assertions.assertEquals(tecnicas.size(), tecnicasBanco.size());
+
+    // tem que ficar vazio, já que o registro feito é de 2023
+    // pq o intervalo nesse tecnicasBanco2 é de 2020 - 2022
+    Assertions.assertEquals(0, tecnicasBanco2.size());
+    Assertions.assertNotEquals(tecnicas.size(), tecnicasBanco2.size());
+
+    // o intervalo do tecnicasBanco3 é de 2023 - 2023
+    Assertions.assertEquals(tecnicaSalva.getId(), tecnicasBanco3.get(0).getId());
+
+    Assertions.assertEquals(docenteSalvo.getTecnicas().size(), tecnicasBanco.size());
+    Assertions.assertEquals(docenteSalvo.getTecnicas().get(0).getId(), tecnicasBanco.get(0).getId());
   }
 }

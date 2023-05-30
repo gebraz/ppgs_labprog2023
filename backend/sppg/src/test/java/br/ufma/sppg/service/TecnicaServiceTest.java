@@ -65,6 +65,13 @@ public class TecnicaServiceTest {
     return tecnica;
   }
 
+  private Programa programaFactory() throws ParseException {
+    Programa programa = Programa.builder()
+        .nome("programaTeste")
+        .build();
+    return programa;
+  }
+
   @Test
   public void deveInformarIntervaloDeTempoComoDoisInteiros() throws ParseException {
 
@@ -96,13 +103,60 @@ public class TecnicaServiceTest {
     Assertions.assertFalse(tecnicasBanco.isEmpty());
 
     // O tipo informado pelo usuário deve ser o mesmo que o que está nas técnicas
-    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoInicio);
-    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoFim);
+    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(),
+        anoInicio);
+    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(),
+        anoFim);
 
     // Se esse teste falhar, quer dizer que o service ainda não implementou a
     // mensagem de erro
     Assertions.assertThrows(ServicoRuntimeException.class,
-        () -> tecnicaService.obterTecnicasDocentePorPeriodo(docenteTeste.getId(), -100, anoFim),
+        () -> tecnicaService.obterTecnicasDocentePorPeriodo(docenteTeste.getId(),
+            -100, anoFim),
         "O período informado é inválido!");
+  }
+
+  @Test
+  public void deveConseguirRecuperarTecnicasPPGNumIntervaloDeTempo() throws ParseException {
+
+    // Cenario
+    Tecnica tecnica = tecnicaFactory();
+    Docente docente = docenteFactory();
+    Programa programa = programaFactory();
+
+    Integer anoInicio = 2020;
+    Integer anoFim = 2023;
+
+    Tecnica tecnicaSalva = tecnicaRepository.save(tecnica);
+    Docente docenteSalvo = docenteRepository.save(docente);
+    Programa programaSalvo = programaRepository.save(programa);
+
+    List<Docente> docentes = new ArrayList<>();
+    List<Tecnica> tecnicas = new ArrayList<>();
+    List<Programa> programas = new ArrayList<>();
+
+    docentes.add(docenteSalvo);
+    tecnicas.add(tecnicaSalva);
+    programas.add(programaSalvo);
+
+    docenteSalvo.setTecnicas(tecnicas);
+    docenteSalvo.setProgramas(programas);
+    tecnicaSalva.setDocentes(docentes);
+    programaSalvo.setDocentes(docentes);
+
+    // Ação
+
+    Optional<List<Tecnica>> tecnicasOptional = tecnicaService.obterTecnicasPPGPorPeriodo(programaSalvo.getId(),
+        anoInicio, anoFim);
+    List<Tecnica> tecnicasBanco = tecnicasOptional.get();
+
+    Tecnica tecnicaAux = tecnicaRepository.findById(tecnicaSalva.getId()).get();
+
+    // Verificação
+    Assertions.assertNotNull(tecnicasBanco);
+
+    Assertions.assertEquals(tecnicaSalva.getId(), tecnicaAux.getId());
+    Assertions.assertEquals(tecnicaSalva.getId(), tecnicasBanco.get(0).getId());
+    Assertions.assertEquals(tecnicas.size(), tecnicasBanco.size());
   }
 }

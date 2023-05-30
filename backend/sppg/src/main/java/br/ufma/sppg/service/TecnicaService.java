@@ -1,6 +1,5 @@
 package br.ufma.sppg.service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +66,7 @@ public class TecnicaService {
 
         return tecnicaRepo.findAll(example);
     }
-    
+
     @Transactional
     public void removerTecnica(Tecnica tecnica) {
         verificarIdTecnica(tecnica);
@@ -111,7 +110,7 @@ public class TecnicaService {
         if (tecnica == null || tecnica.getId() == null || !(tecnicaRepo.existsById(tecnica.getId()))) {
             throw new ServicoRuntimeException("Id inválido!");
         }
-    }    
+    }
 
     // Retorna todas as orientações de uma téncnica
     public List<Orientacao> obterOrientacoesTecnica(Integer idTecnica) {
@@ -137,6 +136,10 @@ public class TecnicaService {
 
                 anoInicio = anoFim;
                 anoInicio = dataAuxiliar;
+            }
+
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+                throw new ServicoRuntimeException("O período informado é inválido!");
             }
 
             return tecnicaRepo.obterTecnicasOrientacaoPorPeriodo(idOrientacao, anoInicio, anoFim);
@@ -184,6 +187,10 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+                throw new ServicoRuntimeException("O período informado é inválido!");
+            }
+
             return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, anoInicio, anoFim);
         }
 
@@ -215,6 +222,10 @@ public class TecnicaService {
 
                 anoInicio = anoFim;
                 anoInicio = dataAuxiliar;
+            }
+
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+                throw new ServicoRuntimeException("O período informado é inválido!");
             }
 
             return tecnicaRepo.obterTecnicasPPGPorPeriodo(idPrograma, anoInicio, anoFim);

@@ -96,12 +96,13 @@ public class TecnicaServiceTest {
     Assertions.assertFalse(tecnicasBanco.isEmpty());
 
     // O tipo informado pelo usuário deve ser o mesmo que o que está nas técnicas
-    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoInicio.getClass());
-    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoFim.getClass());
+    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoInicio);
+    Assertions.assertInstanceOf(tecnicasBanco.get(0).getAno().getClass(), anoFim);
 
-    // 'Limpando' o banco
-    tecnicaRepository.delete(tecnicaTeste);
-    docenteRepository.delete(docenteTeste);
+    // Se esse teste falhar, quer dizer que o service ainda não implementou a
+    // mensagem de erro
+    Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> tecnicaService.obterTecnicasDocentePorPeriodo(docenteTeste.getId(), -100, anoFim),
+        "O período informado é inválido!");
   }
-
 }

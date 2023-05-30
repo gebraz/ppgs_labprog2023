@@ -114,6 +114,10 @@ public class TecnicaServiceTest {
         () -> tecnicaService.obterTecnicasDocentePorPeriodo(docenteTeste.getId(),
             -100, anoFim),
         "O período informado é inválido!");
+    Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> tecnicaService.obterTecnicasDocentePorPeriodo(docenteTeste.getId(),
+            anoInicio, 5000),
+        "O período informado é inválido!");
   }
 
   @Test

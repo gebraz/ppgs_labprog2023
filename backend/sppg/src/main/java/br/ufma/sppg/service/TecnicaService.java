@@ -112,6 +112,12 @@ public class TecnicaService {
         }
     }
 
+    private void verificarAno(Integer anoInicio, Integer anoFim) {
+        if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
+            throw new ServicoRuntimeException("O período informado é inválido!");
+        }
+    }
+
     // Retorna todas as orientações de uma téncnica
     public List<Orientacao> obterOrientacoesTecnica(Integer idTecnica) {
         Optional<Tecnica> tecnica = tecnicaRepo.findById(idTecnica);
@@ -138,9 +144,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
-                throw new ServicoRuntimeException("O período informado é inválido!");
-            }
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasOrientacaoPorPeriodo(idOrientacao, anoInicio, anoFim);
         }
@@ -187,9 +191,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
-                throw new ServicoRuntimeException("O período informado é inválido!");
-            }
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, anoInicio, anoFim);
         }
@@ -224,9 +226,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
-                throw new ServicoRuntimeException("O período informado é inválido!");
-            }
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasPPGPorPeriodo(idPrograma, anoInicio, anoFim);
         }

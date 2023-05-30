@@ -138,7 +138,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
                 throw new ServicoRuntimeException("O período informado é inválido!");
             }
 
@@ -187,7 +187,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
                 throw new ServicoRuntimeException("O período informado é inválido!");
             }
 
@@ -224,7 +224,7 @@ public class TecnicaService {
                 anoInicio = dataAuxiliar;
             }
 
-            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2023) {
+            if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
                 throw new ServicoRuntimeException("O período informado é inválido!");
             }
 

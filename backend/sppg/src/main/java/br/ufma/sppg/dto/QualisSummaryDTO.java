@@ -1,6 +1,12 @@
 package br.ufma.sppg.dto;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
 public class QualisSummaryDTO {
-    Integer quantidade;
-    QualisENUM tipo;
+    private Integer prod;
+    private Integer tec;
+    private Integer ori;
 }

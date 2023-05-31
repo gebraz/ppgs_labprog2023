@@ -21,10 +21,6 @@ public class ProgramaService {
     @Autowired
     ProgramaRepository repository;
 
-    public List<Programa> todos() {
-        return repository.findAll();
-    }
-
     // TODO faltou incluir obterPrograma por ID
     public List<Programa> obterPrograma(String nome) {
         verificarNome(nome);
@@ -137,7 +133,6 @@ public class ProgramaService {
 
             producoesDoc = docente.getProducoes();
             for (Producao producao : producoesDoc) {
-
                 if (producao.getAno() >= anoIni && producao.getAno() <= anoFin
                         && !idProducoes.contains(producao.getId())) {
 

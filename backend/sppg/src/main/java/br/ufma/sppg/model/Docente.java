@@ -52,6 +52,7 @@ public class Docente {
     @Column(name = "data_atualizacao")
     Date dataAtualizacao;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "docentes")
     List<Programa> programas;
 
@@ -74,19 +75,21 @@ public class Docente {
         dataAtualizacao = new Date();
     }
 
-
     public void adicionarProducao(Producao a) {
-        if (producoes==null) producoes = new ArrayList<>();
+        if (producoes == null)
+            producoes = new ArrayList<>();
         producoes.add(a);
     }
 
     public void adicionarOrientacao(Orientacao a) {
-        if (orientacoes==null) orientacoes = new ArrayList<>();
+        if (orientacoes == null)
+            orientacoes = new ArrayList<>();
         orientacoes.add(a);
     }
 
     public void adicionarTecnica(Tecnica a) {
-        if (tecnicas==null) tecnicas = new ArrayList<>();
+        if (tecnicas == null)
+            tecnicas = new ArrayList<>();
         tecnicas.add(a);
     }
 

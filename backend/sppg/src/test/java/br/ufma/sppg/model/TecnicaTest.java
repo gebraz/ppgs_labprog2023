@@ -1,138 +1,102 @@
 package br.ufma.sppg.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 
 @SpringBootTest
 public class TecnicaTest {
 
     @Autowired
-    TecnicaRepository tec;
+    TecnicaRepository repositoryTec;
+
+    @Autowired
+    OrientacaoRepository repositoryOri;
 
     @Test
-    public void deveSalvarTecnica() throws ParseException {
-        //cenário
-        Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
-                                            .ano(2023)
-                                            .financiadora("teste_financiadora")
-                                            .outrasInformacoes("teste_outrasInformacoes")
-                                            .qtdGrad(1)
-                                            .qtdMestrado(2)
-                                            .qtdDoutorado(3).build();
+    public void deveSalvarTecnica() {
+        // Cenario
+        Tecnica tecnica = Tecnica.builder().tipo("tipo1")
+                .titulo("titulo1")
+                .ano(1111)
+                .financiadora("financiadora1")
+                .outrasInformacoes("informações1")
+                .qtdGrad(1)
+                .qtdDoutorado(11)
+                .qtdMestrado(111)
+                .build();
 
-        //ação
-        Tecnica tecSalva = tec.save(novTecnica);
+        // Ação
+        Tecnica salvo = repositoryTec.save(tecnica);
 
-        //verificação
-        
-        Assertions.assertNotNull(tecSalva);
-        Assertions.assertEquals(novTecnica.getId(), tecSalva.getId());
-        Assertions.assertEquals(novTecnica.getTipo(), tecSalva.getTipo());
-        Assertions.assertEquals(novTecnica.getTitulo(), tecSalva.getTitulo());
-        Assertions.assertEquals(novTecnica.getAno(), tecSalva.getAno());
-        Assertions.assertEquals(novTecnica.getFinanciadora(), tecSalva.getFinanciadora());
-        Assertions.assertEquals(novTecnica.getOutrasInformacoes(), tecSalva.getOutrasInformacoes());
-        Assertions.assertEquals(novTecnica.getQtdGrad(), tecSalva.getQtdGrad());
-        Assertions.assertEquals(novTecnica.getQtdMestrado(), tecSalva.getQtdMestrado());
-        Assertions.assertEquals(novTecnica.getQtdDoutorado(), tecSalva.getQtdDoutorado());
+        // Verificação
+        Assertions.assertNotNull(salvo);
+        Assertions.assertEquals(tecnica.getId(), salvo.getId());
+        Assertions.assertEquals(tecnica.getTipo(), salvo.getTipo());
+        Assertions.assertEquals(tecnica.getTitulo(), salvo.getTitulo());
+        Assertions.assertEquals(tecnica.getAno(), salvo.getAno());
+        Assertions.assertEquals(tecnica.getFinanciadora(), salvo.getFinanciadora());
+        Assertions.assertEquals(tecnica.getOutrasInformacoes(), salvo.getOutrasInformacoes());
+        Assertions.assertEquals(tecnica.getQtdGrad(), salvo.getQtdGrad());
+        Assertions.assertEquals(tecnica.getQtdDoutorado(), salvo.getQtdDoutorado());
+        Assertions.assertEquals(tecnica.getQtdMestrado(), salvo.getQtdMestrado());
     }
 
     @Test
-    public void deveAtualizarEstatisticasTecnica() throws ParseException{
-        //cenário
-        Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
-                                            .ano(2023)
-                                            .financiadora("teste_financiadora")
-                                            .outrasInformacoes("teste_outrasInformacoes")
-                                            .qtdGrad(1)
-                                            .qtdMestrado(2)
-                                            .qtdDoutorado(3).build();
+    public void deveAtualizarEstatisticasTecnica() {
+        // Cenario
+        Tecnica tecnicaG = Tecnica.builder().tipo("tipo1")
+                .titulo("titulo1")
+                .ano(1111)
+                .financiadora("financiadora1")
+                .outrasInformacoes("informações1")
+                .qtdGrad(1)
+                .qtdDoutorado(11)
+                .qtdMestrado(111)
+                .build();
 
-        //ação
-        //graduados
-        int novaQtdGrad = novTecnica.getQtdGrad() + 1;
-        novTecnica.setQtdGrad(novaQtdGrad);
+        Tecnica tecnicaD = Tecnica.builder().tipo("tipo2")
+                .titulo("titulo2")
+                .ano(2222)
+                .financiadora("financiadora2")
+                .outrasInformacoes("informações2")
+                .qtdGrad(2)
+                .qtdDoutorado(22)
+                .qtdMestrado(222)
+                .build();
 
-        //mestrados
-        int novaQtdMest = novTecnica.getQtdMestrado() + 1;
-        novTecnica.setQtdMestrado(novaQtdMest);
+        Tecnica tecnicaM = Tecnica.builder().tipo("tipo3")
+                .titulo("titulo3")
+                .ano(3333)
+                .financiadora("financiadora3")
+                .outrasInformacoes("informações3")
+                .qtdGrad(3)
+                .qtdDoutorado(33)
+                .qtdMestrado(333)
+                .build();
+        // Ação
+        repositoryTec.save(tecnicaG);
+        repositoryTec.save(tecnicaM);
+        repositoryTec.save(tecnicaD);
 
-        //doutorados
-        int novaQtdDout = novTecnica.getQtdDoutorado() + 1;
-        novTecnica.setQtdDoutorado(novaQtdDout);
+        tecnicaG.setQtdGrad(123);
+        tecnicaM.setQtdMestrado(456);
+        tecnicaD.setQtdDoutorado(789);
 
-        Tecnica tecSalva = tec.save(novTecnica);
-        
-        //verificação
-        Assertions.assertEquals(novaQtdGrad, tecSalva.getQtdGrad());
-        Assertions.assertEquals(novaQtdMest, tecSalva.getQtdMestrado());
-        Assertions.assertEquals(novaQtdDout, tecSalva.getQtdDoutorado());
+        repositoryTec.save(tecnicaG);
+        repositoryTec.save(tecnicaM);
+        repositoryTec.save(tecnicaD);
 
+        // Verificação
+        Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).isPresent(), true);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaM.getId()).isPresent(), true);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaD.getId()).isPresent(), true);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaG.getId()).get().getQtdGrad(), 123);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaM.getId()).get().getQtdMestrado(), 456);
+        Assertions.assertEquals(repositoryTec.findById(tecnicaD.getId()).get().getQtdDoutorado(), 789);
     }
-
-    /*@Test
-    public void deveImpedirRemoverTecnicaComDependencia() throws ParseException{
-        //cenário
-        Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
-                                            .ano(2023)
-                                            .financiadora("teste_financiadora")
-                                            .outrasInformacoes("teste_outrasInformacoes")
-                                            .qtdGrad(1)
-                                            .qtdMestrado(2)
-                                            .qtdDoutorado(3).build();
-
-        //ação
-        Tecnica tecSalva = tec.save(novTecnica);
-        
-        //verificação
-
-    }*/
-
-    // @Test
-    // public void deveVerificarRemoverPrograma() throws ParseException{
-    //     //cenário
-    //     Tecnica novTecnica = Tecnica.builder().id(1).tipo("teste_tipo").titulo("teste_titulo")
-    //                                         .ano(2023)
-    //                                         .financiadora("teste_financiadora")
-    //                                         .outrasInformacoes("teste_outrasInformacoes")
-    //                                         .qtdGrad(1)
-    //                                         .qtdMestrado(2)
-    //                                         .qtdDoutorado(3).build();
-        
-    //     Docente novDocente = Docente.builder().nome("Geraldo Braz Junior")
-    //                                         .lattes("123")
-    //                                         .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/04/2023"))
-    //                                         .build();
-
-
-    //     Orientacao novOrientacao = Orientacao.builder().id(1).tipo("teste").discente("teste_disc")
-    //                                         .titulo("teste_titulo")
-    //                                         .ano(2023)
-    //                                         .modalidade("teste_modalidade")
-    //                                         .instituicao("teste_orientacao")
-    //                                         .curso("teste_curso")
-    //                                         .status("teste_status")
-    //                                         .orientador(novDocente).build();
-                                            
-
-    //     //ação
-    //     Tecnica tecSalva = tec.save(novTecnica);
-    //     Integer id = tecSalva.getId();
-    //     tec.deleteById(tecSalva.getId());
-
-    //     //verificação
-        
-    //     Optional<Tecnica> temp = tec.findById(id);        
-    //     Assertions.assertFalse(temp.isPresent());
-    // }
-    
-
 }

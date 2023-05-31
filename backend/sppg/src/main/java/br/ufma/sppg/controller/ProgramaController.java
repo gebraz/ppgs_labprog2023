@@ -15,8 +15,8 @@ import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Programa;
 import br.ufma.sppg.model.Tecnica;
-import br.ufma.sppg.services.ProgramaService;
-import br.ufma.sppg.services.exceptions.RegraNegocioRunTime;
+import br.ufma.sppg.service.ProgramaService;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 
 @RestController
@@ -26,57 +26,57 @@ public class ProgramaController {
     @Autowired
     ProgramaService programa;
 
-    @GetMapping("/obterProgramaController")
-    public ResponseEntity obterProgramaController(
+    @GetMapping("/obterPrograma")
+    public ResponseEntity obterPrograma(
             @RequestParam("programa") String nome){
         try{
             List <Programa> programas = programa.obterPrograma(nome);
             return new ResponseEntity(programas, HttpStatus.OK);
-        }catch (RegraNegocioRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/obterDocentesProgramaController")
-    public ResponseEntity obterDocentesProgramaController(
+    @GetMapping("/obterDocentesPrograma")
+    public ResponseEntity obterDocentesPrograma(
         @RequestParam("docente") Integer idPrograma){
         try{
-            List <Docente> docentes = programa.obterDocentePrograma(idPrograma);
+            List <Docente> docentes = programa.obterDocentesPrograma(idPrograma);
             return new ResponseEntity(docentes, HttpStatus.OK);
-        }catch (RegraNegocioRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/obterProducoesProgramaController")
-    public ResponseEntity obterProducoesProgramaController(
+    @GetMapping("/obterProducoesPrograma")
+    public ResponseEntity obterProducoesPrograma(
         @RequestParam("programa") Integer idPrograma, Integer anoIni, Integer anoFin){
         try{
             List <Producao> producoes = programa.obterProducoes(idPrograma, anoIni, anoFin);
             return new ResponseEntity(producoes, HttpStatus.OK);
-        }catch (RegraNegocioRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/obterOrientacoesProgramaController")
-    public ResponseEntity obterOrientacoesPorgramaController(
+    @GetMapping("/obterOrientacoesPrograma")
+    public ResponseEntity obterOrientacoesPorgrama(
         @RequestParam("programa") Integer idPrograma, Integer anoIni, Integer anoFin){
         try{
             List <Orientacao> orientacoes = programa.obterOrientacoes(idPrograma, anoIni, anoFin);
             return new ResponseEntity(orientacoes, HttpStatus.OK);
-        }catch (RegraNegocioRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/obterTecnicasProgramaController")
-    public ResponseEntity obterTecnicasProgramaController(
+    @GetMapping("/obterTecnicasPrograma")
+    public ResponseEntity obterTecnicasPrograma(
         @RequestParam("programa") Integer idPrograma, Integer anoIni, Integer anoFin){
         try{
             List <Tecnica> tecnicas = programa.obterTecnicas(idPrograma, anoIni, anoFin);
             return new ResponseEntity(tecnicas, HttpStatus.OK);
-        }catch (RegraNegocioRunTime e){
+        }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

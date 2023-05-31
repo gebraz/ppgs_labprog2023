@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufma.sppg.service.ProgramaService;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @RestController
 @RequestMapping("/api/programa")
@@ -27,7 +27,7 @@ public class ProgramaController {
             Integer quantitativo = servicePPG.quantitativoOrientacaoProducao(idPrograma, anoIni, aniFin);
             return new ResponseEntity<Integer>(quantitativo, HttpStatus.OK);
 
-        }catch(RegrasRunTime e){
+        }catch(ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -42,7 +42,7 @@ public class ProgramaController {
             Integer quantitativo = servicePPG.quantitativoOrientacaoTecnica(idPrograma, anoIni, aniFin);
             return new ResponseEntity<Integer>(quantitativo, HttpStatus.OK);
             
-        }catch(RegrasRunTime e){
+        }catch(ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

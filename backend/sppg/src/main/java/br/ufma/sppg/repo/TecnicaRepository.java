@@ -44,4 +44,5 @@ public interface TecnicaRepository extends JpaRepository<Tecnica, Integer> {
             "AND t.ano <= :anoFim")
     Optional<List<Tecnica>> obterTecnicasPPGPorPeriodo(Integer idPrograma, Integer anoInicio, Integer anoFim);
 
+    Tecnica findByTitulo(String titulo);
 }

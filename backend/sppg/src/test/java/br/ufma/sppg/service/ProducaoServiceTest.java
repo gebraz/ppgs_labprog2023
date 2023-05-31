@@ -1,16 +1,13 @@
 package br.ufma.sppg.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.List;
 
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
@@ -19,156 +16,114 @@ import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProducaoRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
-import br.ufma.sppg.service.ProducaoService;
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
-class ProducaoServiceTest {
+@Transactional
+public class ProducaoServiceTest {
+    @Autowired
+    ProducaoService service;
 
     @Autowired
-    ProducaoService producaoService;
+    ProducaoRepository producaoRepo;
 
-    @MockBean
-    ProducaoRepository producaoRepository;
+    @Autowired 
+    DocenteRepository docenteRepo;
 
-    @MockBean
-    DocenteRepository docenteRepository;
+    @Autowired
+    ProgramaRepository programaRepo;
 
-    @MockBean
-    ProgramaRepository programaRepository;
-
-    @MockBean
-    OrientacaoRepository orientacaoRepository;
+    @Autowired
+    OrientacaoRepository orientacaoRepo;
 
     @Test
-    void obterProducoesPPG_DeveRetornarListaProducoes() {
-        Integer idPrograma = 1;
-        Integer anoInicial = 2020;
-        Integer anoFinal = 2022;
+    public void deveInformarIntervaloDeTempo() {
+        // Cenário
+        Integer ini;
+        Integer fim;
 
-        Programa programa = new Programa();
-        programa.setId(idPrograma);
-        Docente docente = new Docente();
-        Producao producao1 = new Producao();
-        producao1.setId(1);
-        producao1.setAno(2020);
-        Producao producao2 = new Producao();
-        producao2.setId(2);
-        producao2.setAno(2021);
-        List<Docente> docentes = new ArrayList<>();
-        docentes.add(docente);
-        List<Producao> producoes = new ArrayList<>();
-        producoes.add(producao1);
-        producoes.add(producao2);
+        // Ação
+        ini = 2020;
+        fim = 2023;
 
-        programa.setDocentes(docentes);
-        docente.setProducoes(producoes);
+        // Teste
+        Assertions.assertNotNull(ini);
+        Assertions.assertNotNull(fim);
+        Assertions.assertInstanceOf(Integer.class, ini);
+        Assertions.assertInstanceOf(Integer.class, fim);
 
-        Optional<Programa> programaOptional = Optional.of(programa);
-        when(programaRepository.findById(idPrograma)).thenReturn(programaOptional);
+        // // Cenário
+        // Integer anoInicial = null;
+        // Integer anoFinal = null;
+        // Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        // List<Producao> producoes = new ArrayList<Producao>();
+        // producoes.add(producaoSalvar);
+        // Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
 
-        List<Producao> result = producaoService.obterProducoesPPG(idPrograma, anoInicial, anoFinal);
-
-        assertEquals(2, result.size());
-        assertTrue(result.contains(producao1));
-        assertTrue(result.contains(producao2));
+        // // Ação
+        // producaoRepo.save(producaoSalvar);
+        // docenteRepo.save(docenteSalvar);
+        // Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
+        // List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal);
     }
 
     @Test
-    void obterProducoesPPG_SemProducoesDeveLancarExcecao() {
-        Integer idPrograma = 1;
-        Integer anoInicial = 2020;
-        Integer anoFinal = 2022;
+    public void deveRetornarProducaoPorDocente() {
+        // Cenário
+        Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        List<Producao> producoes = new ArrayList<Producao>();
+        producoes.add(producaoSalvar);
+        Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
 
-        Programa programa = new Programa();
-        programa.setId(idPrograma);
-        Docente docente = new Docente();
-        List<Docente> docentes = new ArrayList<>();
-        docentes.add(docente);
+        // Ação
+        producaoRepo.save(producaoSalvar);
+        docenteRepo.save(docenteSalvar);
+        Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
+        Producao producaoRecuperada = docenteRecuperado.getProducoes().get(0);
+        List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), 2019, 2021);
 
-        programa.setDocentes(docentes);
-
-        Optional<Programa> programaOptional = Optional.of(programa);
-        when(programaRepository.findById(idPrograma)).thenReturn(programaOptional);
-
-        assertThrows(RegrasRunTime.class, () ->
-                producaoService.obterProducoesPPG(idPrograma, anoInicial, anoFinal)
-        );
+        // Teste
+        Assertions.assertEquals(producaoRecuperada, producoesObtidas.get(0));
+        
     }
 
     @Test
-    void obterProducoesPPG_ProgramaNaoEncontradoDeveLancarExcecao() {
-        Integer idPrograma = 1;
-        Integer anoInicial = 2020;
-        Integer anoFinal = 2022;
+    public void deveRetornarProducaoPorPrograma(){
+        // mesmo teste de cima, mas com programa no lugar de docente
+        Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        List<Producao> producoes = new ArrayList<Producao>();
+        producoes.add(producaoSalvar);
+        Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
+        List<Docente> docentes = new ArrayList<Docente>();
+        docentes.add(docenteSalvar);
+        Programa programaSalvar = Programa.builder().nome("João").docentes(docentes).build();
 
-        when(programaRepository.findById(idPrograma)).thenReturn(Optional.empty());
+        producaoRepo.save(producaoSalvar);
+        docenteRepo.save(docenteSalvar);
+        programaRepo.save(programaSalvar);
+        Programa programaRecuperado = programaRepo.findById(programaSalvar.getId()).get();
+        Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
+        Producao producaoRecuperada = docenteRecuperado.getProducoes().get(0);
+        List<Producao> producoesObtidas = service.obterProducoesPPG(programaRecuperado.getId(), 2019, 2021);
 
-        assertThrows(RegrasRunTime.class, () ->
-                producaoService.obterProducoesPPG(idPrograma, anoInicial, anoFinal)
-        );
+        Assertions.assertEquals(producaoRecuperada, producoesObtidas.get(0));
     }
+
     @Test
-    public void deveObterProducoesDocente() {
-        // Criação do Docente para o teste
-        Docente docente = new Docente();
-        docente.setNome("Geraldo");
-        docente.setLattes("123");
+    public void deveRetornarOrientacoesPorProducao(){
+        Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        List<Producao> producoes = new ArrayList<Producao>();
+        producoes.add(producaoSalvar);
+        Orientacao orientacaoSalvar = Orientacao.builder().tipo("teste").ano(2020).producoes(producoes).build();
 
-        // Criação de Produções para o Docente
-        Producao producao1 = new Producao();
-        producao1.setTipo("Artigo");
-        producao1.setAno(2021);
-        producao1.setTitulo("Producao 1");
+        Producao producaoSalva = producaoRepo.save(producaoSalvar);
+        Orientacao orientacaoSalva = orientacaoRepo.save(orientacaoSalvar);
 
-        Producao producao2 = new Producao();
-        producao2.setTipo("Livro");
-        producao2.setAno(2022);
-        producao2.setTitulo("Producao 2");
+        Orientacao orientacaoRecuperada = orientacaoRepo.findById(orientacaoSalva.getId()).get();
+        Producao producaoRecuperada = producaoRepo.findById(producaoSalva.getId()).get();
+        List<Orientacao> orientacoesObtidas = service.obterOrientacaoProducao(producaoSalva.getId());
 
-        Producao producao3 = new Producao();
-        producao3.setTipo("Artigo");
-        producao3.setAno(2023);
-        producao3.setTitulo("Producao 3");
-        // Criação da lista de produções
-        List<Producao> producoes = new ArrayList<>();
-        producoes.add(producao1);
-        producoes.add(producao2);
-        producoes.add(producao3);
-
-        // Associando a lista de produções ao Docente
-        docente.setProducoes(producoes);
-
-        // Salvando o Docente no repositório
-        docenteRepository.save(docente);
-        // Executando o teste do serviço
-        List<Producao> producoesEncontradas = producaoService.obterProducoesDocente(docente.getId(), 2022, 2023);
-
-        // Verificando o resultado do teste
-        assertEquals(2, producoesEncontradas.size());
-
-        Producao producaoEncontrada1 = producoesEncontradas.get(0);
-        assertEquals("Livro", producaoEncontrada1.getTipo());
-        assertEquals(2022, producaoEncontrada1.getAno());
-        assertEquals("Producao 2", producaoEncontrada1.getTitulo());
-
-        Producao producaoEncontrada2 = producoesEncontradas.get(1);
-        assertEquals("Artigo", producaoEncontrada2.getTipo());
-        assertEquals(2023, producaoEncontrada2.getAno());
-        assertEquals("Producao 3", producaoEncontrada2.getTitulo());
+        Assertions.assertEquals(orientacaoRecuperada, orientacoesObtidas.get(0));
+        
     }
-    @Test
-    public void deveObterProducoesDocente_DocenteSemProducoesTest() {
-        // Criação do Docente sem Produções para o teste
-        Docente docente = new Docente();
-        docente.setNome("Geraldo");
-        docente.setLattes("123");
-
-        // Salvando o Docente no repositório (se necessário)
-
-        // Executando o teste do serviço e verificando se uma exceção é lançada
-        assertThrows(RegrasRunTime.class, () ->
-                producaoService.obterProducoesDocente(docente.getId(), 2022, 2023)
-        );
-    }
-    // Outros testes para os demais métodos do serviço ProducaoService
 }

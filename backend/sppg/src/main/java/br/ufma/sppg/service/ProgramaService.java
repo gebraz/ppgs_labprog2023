@@ -13,7 +13,7 @@ import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Programa;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.ProgramaRepository;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @Service
 public class ProgramaService {
@@ -84,7 +84,7 @@ public class ProgramaService {
                             break;
                     
                         default:
-                            throw new RegrasRunTime("Uma das produções possui o Qualis inválido");
+                            throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
                     }
                 }
             }
@@ -224,17 +224,17 @@ public class ProgramaService {
 
     private void verificarNome(String nome){
         if(nome == null){
-            throw new RegrasRunTime("Nome do Programa inválido");
+            throw new ServicoRuntimeException("Nome do Programa inválido");
         }
         if(nome.trim().equals("")){
-            throw new RegrasRunTime("Nome do Programa inválido");
+            throw new ServicoRuntimeException("Nome do Programa inválido");
         }
     }
 
     private void verificarId(Integer idPrograma){
         verificarNumero(idPrograma);
         if(!repository.existsById(idPrograma)){
-            throw new RegrasRunTime("Id do Programa não está registrado");
+            throw new ServicoRuntimeException("Id do Programa não está registrado");
         }
     }
 
@@ -242,13 +242,13 @@ public class ProgramaService {
         verificarNumero(data1);
         verificarNumero(data2);
         if(data1 > data2){
-            throw new RegrasRunTime("Data inical maior que a data final");
+            throw new ServicoRuntimeException("Data inical maior que a data final");
         }
     }
 
     private void verificarNumero(Integer numero){
         if(numero == null){
-            throw new RegrasRunTime("Número Inválido");
+            throw new ServicoRuntimeException("Número Inválido");
         }
 
     }

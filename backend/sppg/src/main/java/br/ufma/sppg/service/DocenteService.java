@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import br.ufma.sppg.dto.Indice;
 import br.ufma.sppg.model.*;
 import br.ufma.sppg.repo.DocenteRepository;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class DocenteService {
@@ -63,7 +64,7 @@ public class DocenteService {
                         break;
                     
                     default:
-                        throw new RegrasRunTime("Uma das produções possui o Qualis inválido");
+                        throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
                     }
             }
 
@@ -96,19 +97,26 @@ public class DocenteService {
 
     }
 
-    private void verificarNome(String nome){
+    @Transactional
+    public Docente salvarDocente(Docente doc){
+        verificarDocente(doc);
+
+        return repository.save(doc);
+    }
+
+    private void verificarPalavra(String nome, String mensagem){
         if(nome == null){
-            throw new RegrasRunTime("Nome do Docente inválido");
+            throw new ServicoRuntimeException(mensagem);
         }
         if(nome.trim().equals("")){
-            throw new RegrasRunTime("Nome do Docente inválido");
+            throw new ServicoRuntimeException(mensagem);
         }
     }
 
     private void verificarId(Integer idDocente){
         verificarNumero(idDocente, "Id Inválido");
         if(!repository.existsById(idDocente)){
-            throw new RegrasRunTime("Id do Docente não está registrado");
+            throw new ServicoRuntimeException("Id do Docente não está registrado");
         }
     }
 
@@ -116,14 +124,37 @@ public class DocenteService {
         verificarNumero(data1, "Data Inválida");
         verificarNumero(data2, "Data Inválida");
         if(data1 > data2){
-            throw new RegrasRunTime("Data inical maior que a data final");
+            throw new ServicoRuntimeException("Data inical maior que a data final");
         }
     }
 
     private void verificarNumero(Integer numero, String mensagem){
         if(numero == null){
-            throw new RegrasRunTime(mensagem);
+            throw new ServicoRuntimeException(mensagem);
         }
 
+    }
+
+    private void verificarDocente(Docente docente){
+        verificarPalavra(docente.getNome(), "Nome inválido");
+        verificarPalavra(docente.getLattes(), "Lattes inválido");
+        verificarNumero(docente.getId(), "Id inválido");
+        if(repository.existsById(docente.getId())){
+            throw new ServicoRuntimeException("Id já registrado");
+        }
+        /*
+        if(docente.getOrientacoes() == null){
+            throw new ServicoRuntimeException("Lista de orientações inexistente");
+        }
+        if(docente.getTecnicas() == null){
+            throw new ServicoRuntimeException("Lista de tecnicas inexistente");
+        }
+        if(docente.getProducoes() == null){
+            throw new ServicoRuntimeException("Lista de produções inexistente");
+        }
+        if(docente.getProgramas() == null){
+            throw new ServicoRuntimeException("Lista de programas inexistente");
+        }
+        */
     }
 }

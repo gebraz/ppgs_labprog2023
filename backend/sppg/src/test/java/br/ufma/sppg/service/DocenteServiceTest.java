@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -2048,5 +2049,147 @@ public class DocenteServiceTest {
         Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.salvarDocente(docente1),
                 "Id já registrado");
+    }
+
+    @Test
+    public void deveObterDocentePorId(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente2")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        Optional<Docente> doc2 = service.obterDocente(doc.getId());
+
+        //Verificação
+        Assertions.assertNotNull(doc2.get());
+        Assertions.assertEquals(doc.getId(),doc2.get().getId());
+        Assertions.assertEquals(doc.getNome(),doc2.get().getNome());
+        Assertions.assertEquals(doc.getLattes(),doc2.get().getLattes());
+    }
+    
+    @Test
+    public void deveGerarErroIdNullObterDocentePorId(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente2")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> service.obterDocente(null),
+        "Id inválido");
+
+    }
+
+    @Test
+    public void deveGerarErroIdInexistenteObterDocentePorId(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente2")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> service.obterDocente(0),
+        "Id do Docente não está registrado");
+
+    }
+
+    @Test
+    public void deveObterDocentesPorNome(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        List<Docente> listaDoc = service.obterDocentesNome(doc.getNome());
+
+        //Verificação
+        Assertions.assertNotNull(listaDoc);
+        Assertions.assertEquals(2, listaDoc.size());
+        Assertions.assertEquals(doc.getNome(), listaDoc.get(0).getNome());
+        Assertions.assertEquals(doc.getNome(), listaDoc.get(1).getNome());
+    }
+
+    @Test
+    public void deveGerarErroNomeNullObterDocentesPorNome(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> service.obterDocentesNome(null),
+        "Nome inválido");
+    }
+
+    @Test
+    public void deveGerarErroNomeVazioObterDocentesPorNome(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes1")
+                .build();
+
+        Docente docente2 = Docente.builder().nome("docente")
+                .dataAtualizacao(new Date())
+                .lattes("lattes2")
+                .build();
+
+        Docente doc = docRepository.save(docente2);
+        docRepository.save(docente1);
+
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+        () -> service.obterDocentesNome(""),
+        "Nome inválido");
     }
 }

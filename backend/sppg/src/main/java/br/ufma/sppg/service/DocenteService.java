@@ -2,6 +2,7 @@ package br.ufma.sppg.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,18 @@ public class DocenteService {
         verificarDocente(doc);
 
         return repository.save(doc);
+    }
+
+    public Optional<Docente> obterDocente(Integer idDocente){
+        verificarId(idDocente);
+
+        return repository.findById(idDocente);
+    }
+
+    public List<Docente> obterDocentesNome(String nome){
+        verificarPalavra(nome, "Nome inválido");
+
+        return repository.findByNome(nome);
     }
 
     private void verificarPalavra(String nome, String mensagem){

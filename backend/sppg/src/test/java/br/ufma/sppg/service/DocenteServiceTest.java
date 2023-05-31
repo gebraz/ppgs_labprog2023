@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import br.ufma.sppg.dto.Indice;
 import br.ufma.sppg.model.*;
 import br.ufma.sppg.repo.*;
-import br.ufma.sppg.service.exceptions.RegrasRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -185,7 +185,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterProducoes(null, 2000, 2010),
                 "Id Inválido");
     }
@@ -259,7 +259,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterProducoes(9999, 2000, 2010),
                 "Id do Docente não está registrado");
     }
@@ -333,7 +333,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterProducoes(salvo1.getId(), null, 2010),
                 "Data Inválida");
     }
@@ -407,7 +407,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterProducoes(salvo1.getId(), 2020, null),
                 "Data Inválida");
     }
@@ -481,7 +481,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterProducoes(salvo1.getId(), 2030, 2020),
                 "Data inical maior que a data final");
     }
@@ -622,7 +622,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterTecnicas(null, 2020, 2030),
                 "Id Inválido");
     }
@@ -690,7 +690,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterTecnicas(9999, 2020, 2030),
                 "Id do Docente não está registrado");
     }
@@ -758,7 +758,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterTecnicas(salvo1.getId(), null, 2030),
                 "Data Inválida");
     }
@@ -826,7 +826,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterTecnicas(salvo1.getId(), 2020, null),
                 "Data Inválida");
     }
@@ -894,7 +894,7 @@ public class DocenteServiceTest {
 
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterTecnicas(salvo1.getId(), 2030, 2020),
                 "Data inical maior que a data final");
     }
@@ -1038,7 +1038,7 @@ public class DocenteServiceTest {
         
         //Ação
         
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterOrientacoes(null, 2000, 2010),
                 "Id Inválido");
     }
@@ -1108,7 +1108,7 @@ public class DocenteServiceTest {
         
         //Ação
         
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterOrientacoes(9999, 2000, 2010),
                 "Id do Docente não está registrado");
     }
@@ -1178,7 +1178,7 @@ public class DocenteServiceTest {
         
         //Ação
         
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterOrientacoes(salvo1.getId(), null, 2010),
                 "Data Inválida");
     }
@@ -1248,7 +1248,7 @@ public class DocenteServiceTest {
         
         //Ação
         
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterOrientacoes(salvo1.getId(), 2000, null),
                 "Data Inválida");
     }
@@ -1318,7 +1318,7 @@ public class DocenteServiceTest {
         
         //Ação
         
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterOrientacoes(salvo1.getId(), 2010, 2000),
                 "Data inical maior que a data final");
     }
@@ -1529,7 +1529,7 @@ public class DocenteServiceTest {
         prodRepository.save(producao5);
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterIndice(null, 2000, 2023),
                 "Id Inválido");
     }
@@ -1630,7 +1630,7 @@ public class DocenteServiceTest {
         prodRepository.save(producao5);
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterIndice(9999, 2000, 2023),
                 "Id do Docente não está registrado");
     }
@@ -1731,7 +1731,7 @@ public class DocenteServiceTest {
         prodRepository.save(producao5);
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterIndice(salvo2.getId(), null, 2023),
                 "Data Inválida");
     }
@@ -1832,7 +1832,7 @@ public class DocenteServiceTest {
         prodRepository.save(producao5);
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterIndice(salvo2.getId(), 2000, null),
                 "Data Inválida");
     }
@@ -1933,8 +1933,120 @@ public class DocenteServiceTest {
         prodRepository.save(producao5);
         //Ação
 
-        Assertions.assertThrows(RegrasRunTime.class,
+        Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> service.obterIndice(salvo2.getId(), 2023, 2000),
                 "Data inical maior que a data final");
+    }
+
+    @Test
+    public void deveSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes1")
+                                            .build();
+        
+        //Ação
+        Docente doc = service.salvarDocente(docente1);
+
+        //Verificação
+        Assertions.assertNotNull(doc);
+        Assertions.assertEquals(docente1.getId(), doc.getId());
+        Assertions.assertEquals(docente1.getNome(), doc.getNome());
+        Assertions.assertEquals(docente1.getLattes(), doc.getLattes());
+        Assertions.assertEquals(docente1.getDataAtualizacao(), doc.getDataAtualizacao());
+    }
+
+    @Test
+    public void deveGerarErroNomeVazioSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes1")
+                                            .build();
+        
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Nome inválido");
+    }
+
+    @Test
+    public void deveGerarErroNomeNullSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome(null)
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes1")
+                                            .build();
+        
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Nome inválido");
+    }
+
+    @Test
+    public void deveGerarErroLattesVazioSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("")
+                                            .build();
+        
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Lattes inválido");
+    }
+
+    @Test
+    public void deveGerarErroLattesNullSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                                            .dataAtualizacao(new Date())
+                                            .lattes(null)
+                                            .build();
+        
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Lattes inválido");
+    }
+
+    @Test
+    public void deveGerarErroIdNullSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().id(null)
+                                            .nome("docente1")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes1")
+                                            .build();
+        
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Id inválido");
+    }
+
+    @Test
+    public void deveGerarErroIdExistenteSalvarDocente(){
+        //Cenário
+        Docente docente1 = Docente.builder().nome("docente1")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes1")
+                                            .build();
+        
+        Docente docente2 = Docente.builder().nome("docente2")
+                                            .dataAtualizacao(new Date())
+                                            .lattes("lattes2")
+                                            .build();
+                            
+        Docente doc = docRepository.save(docente2);
+
+        docente1.setId(doc.getId());
+        //Ação
+        Assertions.assertThrows(ServicoRuntimeException.class,
+                () -> service.salvarDocente(docente1),
+                "Id já registrado");
     }
 }

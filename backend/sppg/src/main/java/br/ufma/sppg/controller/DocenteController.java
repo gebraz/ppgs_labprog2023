@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufma.sppg.dto.OrientacaoResponse;
+//import br.ufma.sppg.dto.OrientacaoResponse;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.service.OrientacaoService;
@@ -40,8 +40,8 @@ public class DocenteController{
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    //@GetMapping
+    /*
+    @GetMapping
     public ResponseEntity<?> obterOrientacoesDeDocente(
             @RequestParam("docente") Integer idDocente){
 
@@ -52,6 +52,7 @@ public class DocenteController{
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+     */
 
     public ResponseEntity<?> obterTecnicasDeDocente(
             @RequestParam("docente") Integer idDocente){

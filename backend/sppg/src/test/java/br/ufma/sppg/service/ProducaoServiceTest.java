@@ -2,9 +2,14 @@ package br.ufma.sppg.service;
 
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.Optional;
 
+//import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,12 +23,19 @@ import br.ufma.sppg.repo.ProducaoRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
 import jakarta.transaction.Transactional;
 
+//import static org.junit.jupiter.api.Assertions.assertThrows;
+//import static org.mockito.ArgumentMatchers.anyInt;
+//import static org.mockito.ArgumentMatchers.eq;
+//import static org.mockito.Mockito.when;
+
 @SpringBootTest
 @Transactional
 public class ProducaoServiceTest {
+//    @InjectMocks
     @Autowired
     ProducaoService service;
 
+//    @Mock
     @Autowired
     ProducaoRepository producaoRepo;
 
@@ -126,4 +138,25 @@ public class ProducaoServiceTest {
         Assertions.assertEquals(orientacaoRecuperada, orientacoesObtidas.get(0));
         
     }
+
+
+//    @Test
+//    void informarEstatisticasProducao_NaoDeveSalvarProducaoComEstatisticasInvalidas() {
+//        Integer qtd_grad = 2;
+//        Integer qtd_mestrado = 3;
+//        Integer qtd_doutorado = 4;
+//
+//        Producao producao = new Producao();
+//
+//        Integer idProducao = producao.getId();
+//
+//        producao.setQtdGrad(qtd_grad);
+//        producao.setQtdMestrado(qtd_mestrado);
+//        producao.setQtdDoutorado(qtd_doutorado);
+//
+//        when(producaoRepo.findById(idProducao)).thenReturn(Optional.empty());
+//        assertThrows(ServicoRuntimeException.class, () ->
+//                service.informarEstatisticasProducao(idProducao, qtd_grad, qtd_mestrado, qtd_doutorado)
+//        );
+//    }
 }

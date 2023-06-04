@@ -20,6 +20,7 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @RestController
 public class OrientacaoController {
+
   @Autowired
   OrientacaoService orientacaoService;
 
@@ -33,46 +34,28 @@ public class OrientacaoController {
   public ResponseEntity<?> obterOrientacoesDocenteComTecnica(
       @RequestParam("docente") Integer idDocente, Integer dataInicio, Integer dataFim) {
     try {
-      List<Orientacao> orientacoes = orientacaoService.obterOrientacaoDocente(idDocente, dataInicio, dataFim);
-
-      for (Orientacao orientacao : orientacoes) {
-        Optional<List<Tecnica>> tecnicas = tecnicaService.obterTecnicasOrientacaoPorPeriodo(orientacao.getId(),
-            dataInicio,
-            dataFim);
-
-        orientacao.setTecnicas(tecnicas.get());
-      }
-
+      Optional<List<Orientacao>> orientacoes = orientacaoService.obterOrientacoesComTecnicaPorPeriodo(idDocente,
+          dataInicio, dataFim);
       return new ResponseEntity<>(
-          orientacoes,
+          orientacoes.get(),
           HttpStatus.OK);
     } catch (ServicoRuntimeException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
 
-  // @GetMapping("/obterOrientacoesDocenteComProducao")
-  // public ResponseEntity<?> obterOrientacaoDocenteComProducao(
-  // @RequestParam("docente") Integer idDocente, Integer dataInicio, Integer
-  // dataFim) {
-  // try {
-  // List<Orientacao> orientacoes =
-  // orientacaoService.obterOrientacaoDocente(idDocente, dataInicio, dataFim);
+  @GetMapping("/obterOrientacoesDocenteComProducao")
+  public ResponseEntity<?> obterOrientacaoDocenteComProducao(
+      @RequestParam("docente") Integer idDocente, Integer dataInicio, Integer dataFim) {
+    try {
+      Optional<List<Orientacao>> orientacoes = orientacaoService.obterOrientacoesComProducaoPorPeriodo(idDocente,
+          dataInicio, dataFim);
 
-  // for (Orientacao orientacao : orientacoes) {
-  // Optional<List<Tecnica>> producoes =
-  // producaoService.obterProducoesOrientacaoPorPeriodo(orientacao.getId(),
-  // dataInicio,
-  // dataFim);
-
-  // orientacao.setTecnicas(tecnicas.get());
-  // }
-
-  // return new ResponseEntity<>(
-  // orientacoes,
-  // HttpStatus.OK);
-  // } catch (ServicoRuntimeException e) {
-  // return ResponseEntity.badRequest().body(e.getMessage());
-  // }
-  // }
+      return new ResponseEntity<>(
+          orientacoes.get(),
+          HttpStatus.OK);
+    } catch (ServicoRuntimeException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
 }

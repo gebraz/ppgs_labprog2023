@@ -8,17 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-//import br.ufma.sppg.dto.OrientacaoResponse;
+import br.ufma.sppg.dto.OrientacaoResponse;
+import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.service.OrientacaoService;
 import br.ufma.sppg.service.ProducaoService;
 import br.ufma.sppg.service.TecnicaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
-
 
 
 @RequestMapping("/api/Docente")
@@ -47,16 +46,17 @@ public class DocenteController{
     }
 
     @GetMapping("/obter_orientacoes/{id}")
-    public ResponseEntity<?> obterOrientacoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente){
+    public ResponseEntity<?> obterOrientacoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente, 
+    @PathVariable(value = "data1", required = true)  Integer data1,
+    @PathVariable(value = "data2", required = true)  Integer data2){
 
         try{
-            ArrayList<OrientacaoResponse> orientacaoDocente = orientacaoServivce.obterOrientacaoDocentes(idDocente);
+            List<Orientacao> orientacaoDocente = orientacaoServivce.obterOrientacaoDocente(idDocente, data1, data2);
             return ResponseEntity.ok(orientacaoDocente);
         }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-     */
 
     @GetMapping("/obter_tecnicas/{id}")
     public ResponseEntity<?> obterTecnicasDeDocente(@PathVariable(value = "id", required = true) Integer idDocente){

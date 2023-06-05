@@ -254,7 +254,7 @@ public class TecnicaServiceTest {
     }
 
     @Test
-    public void naoDeveSalvarTecnicaComEstatisticaInvalida() throws ParseException {
+    public void naoDeveSalvarTecnicaComEstatisticasInvalidas() throws ParseException {
         // Cenario 1
         Tecnica tecnica = tecnicaFactory();
         tecnica.setQtdDoutorado(-1);

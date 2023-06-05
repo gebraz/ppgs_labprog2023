@@ -54,7 +54,7 @@ public class OrientacaoService implements IOrientacao {
 
     @Override
     public String associarOrientacaoProducao(Integer idProducao,Integer idOrientacao) {
-        var producaoOp =producaoRepository.findById(idProducao);
+        var producaoOp =orientacaoRepository.findProducaoDocente(idProducao);
         var orientacaoOp = orientacaoRepository.findById(idOrientacao);
         if (orientacaoOp.isEmpty()) {
             throw new ServicoRuntimeException("A orientação não foi encontrada.");
@@ -85,7 +85,7 @@ public class OrientacaoService implements IOrientacao {
     @Override
     public String associarOrientacaoTecnica(Integer idOrientacao, Integer Idtecnica) {
         var orientacaoOp = orientacaoRepository.findById(idOrientacao);
-        var tecnicaOp = tecnicaRepository.findById(Idtecnica);
+        var tecnicaOp = orientacaoRepository.findTecnicasDocente(Idtecnica);
 
         if (orientacaoOp == null) {
             throw new ServicoRuntimeException("Orientacao com ID " +  idOrientacao + " não encontrada.");

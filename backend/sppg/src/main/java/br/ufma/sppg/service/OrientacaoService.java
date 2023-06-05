@@ -18,7 +18,7 @@ import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
 
 @Service
-public class OrientacaoService  {
+public class OrientacaoService{
 
     @Autowired
     private OrientacaoRepository orientacaoRepository;

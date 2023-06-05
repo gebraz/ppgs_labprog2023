@@ -1,5 +1,7 @@
 package br.ufma.sppg.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,36 +39,41 @@ public class ProducaoServiceTest {
     OrientacaoRepository orientacaoRepo;
 
     @Test
-    public void deveInformarIntervaloDeTempo() {
+    public void deveInformarIntervaloDeTempoNull() {
         // Cenário
-        Integer ini;
-        Integer fim;
+        Integer anoInicial = null;
+        Integer anoFinal = null;
+        Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        List<Producao> producoes = new ArrayList<Producao>();
+        producoes.add(producaoSalvar);
+        Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
 
         // Ação
-        ini = 2020;
-        fim = 2023;
-
-        // Teste
-        Assertions.assertNotNull(ini);
-        Assertions.assertNotNull(fim);
-        Assertions.assertInstanceOf(Integer.class, ini);
-        Assertions.assertInstanceOf(Integer.class, fim);
-
-        // // Cenário
-        // Integer anoInicial = null;
-        // Integer anoFinal = null;
-        // Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
-        // List<Producao> producoes = new ArrayList<Producao>();
-        // producoes.add(producaoSalvar);
-        // Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
-
-        // // Ação
-        // producaoRepo.save(producaoSalvar);
-        // docenteRepo.save(docenteSalvar);
-        // Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
+        producaoRepo.save(producaoSalvar);
+        docenteRepo.save(docenteSalvar);
+        Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
         // List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal);
+        Assertions.assertThrows(NullPointerException.class, ()-> service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal));
     }
 
+    @Test
+    public void deveInformarIntervaloDeTempoValido() {
+        // Cenário
+        Integer anoInicial = 2019;
+        Integer anoFinal = 2022;
+        Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
+        List<Producao> producoes = new ArrayList<Producao>();
+        producoes.add(producaoSalvar);
+        Docente docenteSalvar = Docente.builder().nome("João").producoes(producoes).build();
+
+        // Ação
+        Producao producaoSalva = producaoRepo.save(producaoSalvar);
+        docenteRepo.save(docenteSalvar);
+        Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
+        List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal);
+        
+        Assertions.assertEquals(producaoSalva, producoesObtidas.get(0));
+    }
     @Test
     public void deveRetornarProducaoPorDocente() {
         // Cenário

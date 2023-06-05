@@ -1,6 +1,5 @@
 package br.ufma.sppg.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufma.sppg.dto.OrientacaoResponse;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Tecnica;
@@ -46,7 +44,7 @@ public class DocenteController{
     }
 
     @GetMapping("/obter_orientacoes/{id}")
-    public ResponseEntity<?> obterOrientacoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente, 
+    public ResponseEntity<?> obterOrientacoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente,
     @PathVariable(value = "data1", required = true)  Integer data1,
     @PathVariable(value = "data2", required = true)  Integer data2){
 

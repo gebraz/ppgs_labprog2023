@@ -74,6 +74,20 @@ public class TecnicaServiceTest {
         return programa;
     }
 
+    private Orientacao orientacaoFactory() {
+        Orientacao orientacao = Orientacao.builder()
+                .tipo("tipoTeste")
+                .ano(2023)
+                .discente("discenteTeste")
+                .titulo("tituloTeste")
+                .modalidade("modalidadeTeste")
+                .instituicao("instituicaoTeste")
+                .curso("cursoTeste")
+                .status("statusTeste")
+                .build();
+        return orientacao;
+    }
+
     @Test
     public void deveInformarIntervaloDeTempoComoDoisInteiros() throws ParseException {
 
@@ -301,5 +315,46 @@ public class TecnicaServiceTest {
         Assertions.assertThrows(ServicoRuntimeException.class,
                 () -> tecnicaService.atualizarTecnica(tecnicaBanco),
                 "Estatísticas inválidas!");
+    }
+
+    @Test
+    public void deveObterOrientacoesAssociadasAUmaTecnica() throws ParseException {
+        // Cenario - cria / builder
+        Tecnica tecnica = tecnicaFactory();
+        Docente docente = docenteFactory();
+        Orientacao orientacao = orientacaoFactory();
+
+        Tecnica tecSalvo = tecnicaRepository.save(tecnica);
+        Docente docSalvo = docenteRepository.save(docente);
+        Orientacao oriSalvo = orientacaoRepository.save(orientacao);
+
+        // listas para salvar e setar em cada classe
+        List<Docente> docentes = new ArrayList<>();
+        List<Tecnica> tecnicas = new ArrayList<>();
+        List<Orientacao> orientacoes = new ArrayList<>();
+
+        docentes.add(docSalvo);
+        tecnicas.add(tecSalvo);
+        orientacoes.add(oriSalvo);
+
+        docSalvo.setTecnicas(tecnicas);
+        tecSalvo.setDocentes(docentes);
+        oriSalvo.setTecnicas(tecnicas);
+
+        tecnicaRepository.save(tecSalvo);
+        orientacaoRepository.save(oriSalvo);
+        docenteRepository.save(docSalvo);
+
+        // acao
+        Optional<List<Tecnica>> tecnicaSalva = tecnicaService.obterTecnicasOrientacaoPorPeriodo(oriSalvo.getId(), 2020,
+                2023);
+        List<Tecnica> aux = tecnicaSalva.get();
+
+        // Verificação
+        Assertions.assertNotNull(aux);
+        Assertions.assertFalse(aux.isEmpty());
+        Assertions.assertEquals(orientacoes, aux);
+
+        // Assertions.assertEquals(aux.get(aux.size()).getId(),oriSalvo.getId());
     }
 }

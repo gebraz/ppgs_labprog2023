@@ -43,6 +43,7 @@ public class TecnicaService {
             throw new ServicoRuntimeException(
                     "O ID das tecnicas é gerado automaticamente e não deve ser informado");
         }
+        validarEstatisticasTecnica(tecnica);
         return tecnicaRepo.save(tecnica);
     }
 
@@ -50,6 +51,7 @@ public class TecnicaService {
     public Tecnica atualizarTecnica(Tecnica tecnica) {
         verificarTecnica(tecnica);
         verificarIdTecnica(tecnica);
+        validarEstatisticasTecnica(tecnica);
         return tecnicaRepo.save(tecnica);
     }
 
@@ -115,6 +117,12 @@ public class TecnicaService {
     private void verificarAno(Integer anoInicio, Integer anoFim) {
         if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
             throw new ServicoRuntimeException("O período informado é inválido!");
+        }
+    }
+
+    private void validarEstatisticasTecnica(Tecnica tecnica) {
+        if (tecnica.getQtdGrad() < 0 || tecnica.getQtdMestrado() < 0 || tecnica.getQtdDoutorado() < 0) {
+            throw new ServicoRuntimeException("Estatísticas inválidas!");
         }
     }
 

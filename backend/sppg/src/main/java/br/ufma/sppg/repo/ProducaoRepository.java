@@ -6,4 +6,6 @@ import br.ufma.sppg.model.Producao;
 public interface ProducaoRepository 
     extends JpaRepository<Producao,Integer> {
     
+        Producao findByTituloAndNomeLocal(String titulo, String nomeLocal);
+        Producao findByTitulo(String titulo);
 }

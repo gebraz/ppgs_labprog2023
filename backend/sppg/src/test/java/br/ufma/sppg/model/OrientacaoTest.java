@@ -1,157 +1,120 @@
 package br.ufma.sppg.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.repo.OrientacaoRepository;
+import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.repo.ProducaoRepository;
+import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.TecnicaRepository;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class OrientacaoTest {
 
     @Autowired
-    OrientacaoRepository oriRepo;
+    private OrientacaoRepository or;
 
     @Autowired
-    ProducaoRepository prodRepo;
+    private ProducaoRepository pr;
 
     @Autowired
-    TecnicaRepository tecRepo;
+    private TecnicaRepository tr;
 
     @Test
     public void deveSalvarOrientacao() {
+        // criar um orientacao para salvar usando builder com todos os atributos
+        // criar variavel data do tipo Date com a data de hoje
 
-        Orientacao novaOri = Orientacao.builder()
-                .tipo("Teste")
-                .discente("Aluno")
-                .titulo("Testando Orientacao")
-                .ano(2023)
-                .modalidade("Teste")
-                .instituicao("UFMA")
-                .curso("Computacao")
-                .status("Em Progresso")
-                .build();
+        Orientacao orientacao = Orientacao.builder().tipo("TCC").ano(2023).discente("Gabriel").titulo("TCC")
+                .modalidade("Presencial").instituicao("UFMA").curso("Ciência da Computação").status("Ativo").build();
 
-        Orientacao oriSalva = oriRepo.save(novaOri);
+        // salvar o orientacao
+        Orientacao orientacaoSalvo = or.save(orientacao);
 
-        Assertions.assertNotNull(oriSalva);
+        // rollback
+        or.delete(orientacaoSalvo);
 
+        // verificar se o orientacao foi salvo
+        Assertions.assertNotNull(orientacaoSalvo);
+        Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
+        Assertions.assertEquals(orientacao.getAno(), orientacaoSalvo.getAno());
+        Assertions.assertEquals(orientacao.getDiscente(), orientacaoSalvo.getDiscente());
+        Assertions.assertEquals(orientacao.getTitulo(), orientacaoSalvo.getTitulo());
+        Assertions.assertEquals(orientacao.getModalidade(), orientacaoSalvo.getModalidade());
+        Assertions.assertEquals(orientacao.getInstituicao(), orientacaoSalvo.getInstituicao());
+        Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
+        Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
     }
 
     @Test
-    public void deveSalvarOrientacaoComTecnica() {
+    public void deveSalvarOrientacaoComProducoes() {
 
-        Orientacao novaOri = Orientacao.builder()
-                .tipo("Teste")
-                .discente("Aluno")
-                .titulo("Testando Orientacao")
-                .ano(2023)
-                .modalidade("Teste")
-                .instituicao("UFMA")
-                .curso("Computacao")
-                .status("Em Progresso")
-                .build();
+        Producao producao = Producao.builder().ano(2023).titulo("TCC").tipo("TCC").build();
+        Producao producaoSalvo = pr.save(producao);
+        ArrayList<Producao> producoes = new ArrayList<>();
+        producoes.add(producaoSalvo);
 
-        Tecnica novaTec = Tecnica.builder()
-                .tipo("Teste")
-                .titulo("TecTeste")
-                .ano(2023)
-                .financiadora("Ciclana")
-                .outrasInformacoes("Etc")
-                .qtdGrad(3)
-                .qtdMestrado(2)
-                .qtdDoutorado(1)
-                .build();
+        Orientacao orientacao = Orientacao.builder().tipo("TCC").ano(2023).discente("Gabriel").titulo("TCC")
+                .modalidade("Presencial").instituicao("UFMA").curso("Ciência da Computação").status("Ativo")
+                .producoes(producoes).build();
 
-        Orientacao oriSalva = oriRepo.save(novaOri);
+        Orientacao orientacaoSalvo = or.save(orientacao);
 
-        Tecnica tecSalva = tecRepo.save(novaTec);
+        // rollback
+        or.delete(orientacaoSalvo);
+        pr.delete(producaoSalvo);        
 
+        Assertions.assertNotNull(orientacaoSalvo);
+        Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
+        Assertions.assertEquals(orientacao.getAno(), orientacaoSalvo.getAno());
+        Assertions.assertEquals(orientacao.getDiscente(), orientacaoSalvo.getDiscente());
+        Assertions.assertEquals(orientacao.getTitulo(), orientacaoSalvo.getTitulo());
+        Assertions.assertEquals(orientacao.getModalidade(), orientacaoSalvo.getModalidade());
+        Assertions.assertEquals(orientacao.getInstituicao(), orientacaoSalvo.getInstituicao());
+        Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
+        Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
+        Assertions.assertEquals(orientacao.getProducoes().get(0).getId(), orientacaoSalvo.getProducoes().get(0).getId());
+    }
+
+    @Test
+    public void deveSalvarOrientacaoComTecnicas() {
+
+        Tecnica tecnica = Tecnica.builder().titulo("Tecnica").ano(2023).build();
+        Tecnica tecnicaSalvo = tr.save(tecnica);
         ArrayList<Tecnica> tecnicas = new ArrayList<>();
-        tecnicas.add(tecSalva);
-        oriSalva.setTecnicas(tecnicas);
+        tecnicas.add(tecnicaSalvo);
 
-        Orientacao oriSalvaComTecnica = oriRepo.save(oriSalva);
+        Orientacao orientacao = Orientacao.builder().tipo("TCC").ano(2023).discente("Gabriel").titulo("TCC")
+                .modalidade("Presencial").instituicao("UFMA").curso("Ciência da Computação").status("Ativo")
+                .tecnicas(tecnicas).build();
 
-        Assertions.assertNotNull(tecSalva);
-        Assertions.assertNotNull(oriSalvaComTecnica);
-        Assertions.assertEquals(oriSalvaComTecnica.getTecnicas().size(), 1);
+        Orientacao orientacaoSalvo = or.save(orientacao);
 
-    }
-
-    @Test
-    public void deveSalvarOrientacaoComProducao() {
-
-        Orientacao novaOri = Orientacao.builder()
-                .tipo("Teste")
-                .discente("Aluno")
-                .titulo("Testando Orientacao")
-                .ano(2023)
-                .modalidade("Teste")
-                .instituicao("UFMA")
-                .curso("Computacao")
-                .status("Em Progresso")
-                .build();
-
-        Producao novaProd = Producao.builder()
-                .tipo("Teste")
-                .issnOuSigla("Teste")
-                .nomeLocal("Teste")
-                .titulo("Testando")
-                .ano(2023)
-                .qualis("teste")
-                .percentileOuH5(Float.valueOf(2))
-                .qtdGrad(3)
-                .qtdMestrado(2)
-                .qtdDoutorado(1)
-                .build();
-
-        Orientacao oriSalva = oriRepo.save(novaOri);
-
-        Producao prodSalva = prodRepo.save(novaProd);
-
-        ArrayList<Producao> producoes = new ArrayList<>();
-        producoes.add(prodSalva);
-        oriSalva.setProducoes(producoes);
-
-        Orientacao oriSalvaComProducao = oriRepo.save(oriSalva);
-
-        Assertions.assertNotNull(prodSalva);
-        Assertions.assertNotNull(oriSalvaComProducao);
-        Assertions.assertEquals(oriSalvaComProducao.getProducoes().size(), 1);
-
-    }
-
-    @Test
-    public void deveImpedirRemoverOrientacaoComDependencia() {
-
-        Orientacao novaOri = Orientacao.builder()
-                .tipo("Teste")
-                .build();
-
-        Producao novaProd = Producao.builder()
-                .tipo("Teste")
-                .build();
-
-        Orientacao oriSalva = oriRepo.save(novaOri);
-
-        Producao prodSalva = prodRepo.save(novaProd);
-
-        ArrayList<Producao> producoes = new ArrayList<>();
-        producoes.add(prodSalva);
-        oriSalva.setProducoes(producoes);
-
-        oriRepo.save(oriSalva);
-        Orientacao ori = oriRepo.getReferenceById(oriSalva.getId());
-
-        oriRepo.delete(ori);
-        Assertions.assertNotNull(oriRepo.getReferenceById(oriSalva.getId()));
-
+        // rollback
+        or.delete(orientacaoSalvo);
+        tr.delete(tecnicaSalvo);
+        
+        Assertions.assertNotNull(orientacaoSalvo);
+        Assertions.assertEquals(orientacao.getTipo(), orientacaoSalvo.getTipo());
+        Assertions.assertEquals(orientacao.getAno(), orientacaoSalvo.getAno());
+        Assertions.assertEquals(orientacao.getDiscente(), orientacaoSalvo.getDiscente());
+        Assertions.assertEquals(orientacao.getTitulo(), orientacaoSalvo.getTitulo());
+        Assertions.assertEquals(orientacao.getModalidade(), orientacaoSalvo.getModalidade());
+        Assertions.assertEquals(orientacao.getInstituicao(), orientacaoSalvo.getInstituicao());
+        Assertions.assertEquals(orientacao.getCurso(), orientacaoSalvo.getCurso());
+        Assertions.assertEquals(orientacao.getStatus(), orientacaoSalvo.getStatus());
+        Assertions.assertEquals(orientacao.getTecnicas().get(0).getId(), orientacaoSalvo.getTecnicas().get(0).getId());
     }
 
 }

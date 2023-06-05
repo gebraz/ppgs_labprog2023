@@ -1,6 +1,7 @@
 package br.ufma.sppg.model;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -67,5 +68,26 @@ public class Docente {
     @JsonIgnore
     @OneToMany(mappedBy = "orientador")
     List<Orientacao> orientacoes;
+
+    @PreUpdate
+    protected void onUpdate() {
+        dataAtualizacao = new Date();
+    }
+
+
+    public void adicionarProducao(Producao a) {
+        if (producoes==null) producoes = new ArrayList<>();
+        producoes.add(a);
+    }
+
+    public void adicionarOrientacao(Orientacao a) {
+        if (orientacoes==null) orientacoes = new ArrayList<>();
+        orientacoes.add(a);
+    }
+
+    public void adicionarTecnica(Tecnica a) {
+        if (tecnicas==null) tecnicas = new ArrayList<>();
+        tecnicas.add(a);
+    }
 
 }

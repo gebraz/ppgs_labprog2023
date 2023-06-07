@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.ufma.sppg.Dto.OrientacaoResponse;
+
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.model.Tecnica;
@@ -28,27 +28,24 @@ public class OrientacaoService implements IOrientacao {
 
 
     @Override
-    public ArrayList<OrientacaoResponse> obterOrientacaoPPG(Integer id,Integer anoInicio, Integer anoFim){
+    public List<Orientacao> obterOrientacaoPPG(Integer id,Integer anoInicio, Integer anoFim){
 
         var orientacoes = orientacaoRepository.findOrientacaoPPG(id, anoInicio, anoFim);
-        var responses = new ArrayList<OrientacaoResponse>();
-        for (var orientacao : orientacoes) {
-            var response = new OrientacaoResponse(orientacao);
-            responses.add(response);
+        if (orientacoes.isEmpty()){
+            throw new RuntimeException("Não foram encontrados orientacoes com esse id.");
         }
-        return responses;
+        return orientacoes;
     }
-
     @Override
-    public ArrayList<OrientacaoResponse> obterOrientacaoDocentes(Integer idDocente, Integer anoInicio, Integer anoFim) {
+    public List<Orientacao> obterOrientacaoDocentes(Integer idDocente, Integer anoInicio, Integer anoFim) {
       
         var orientacoes = orientacaoRepository.findDocente(idDocente, anoInicio, anoFim);
-        var responses = new ArrayList<OrientacaoResponse>();
-        for (var orientacao : orientacoes) {
-            var response = new OrientacaoResponse(orientacao);
-            responses.add(response);
+        
+        if (orientacoes.isEmpty()){
+            throw new RuntimeException("Não foram encontrados docentes com esse id.");
         }
-        return responses;
+
+        return orientacoes;
         
     }
 

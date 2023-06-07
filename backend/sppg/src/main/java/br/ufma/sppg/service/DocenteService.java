@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.ufma.sppg.Dto.Indice;
+import br.ufma.sppg.dto.Indice;
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.repo.DocenteRepository;
-import br.ufma.sppg.service.exceptions.RegraAcessoRunTime;
+import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @Service
 public class DocenteService {
@@ -68,7 +68,7 @@ public class DocenteService {
                             break;
                     
                         default:
-                            throw new RegraAcessoRunTime("Uma das produções possui o Qualis inválido");
+                            throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
                     }
                 }
             }
@@ -79,17 +79,17 @@ public class DocenteService {
 
     private void verificarNome(String nome){
         if(nome == null){
-            throw new RegraAcessoRunTime("Nome do Programa inválido");
+            throw new ServicoRuntimeException("Nome do Programa inválido");
         }
         if(nome.trim().equals("")){
-            throw new RegraAcessoRunTime("Nome do Programa inválido");
+            throw new ServicoRuntimeException("Nome do Programa inválido");
         }
     }
 
     private void verificarId(Integer idDocente){
         verificarNumero(idDocente);
         if(!repository.existsById(idDocente)){
-            throw new RegraAcessoRunTime("Id do Programa não está registrado");
+            throw new ServicoRuntimeException("Id do Programa não está registrado");
         }
     }
 
@@ -97,13 +97,13 @@ public class DocenteService {
         verificarNumero(data1);
         verificarNumero(data2);
         if(data1 > data2){
-            throw new RegraAcessoRunTime("Data inical maior que a data final");
+            throw new ServicoRuntimeException("Data inical maior que a data final");
         }
     }
 
     private void verificarNumero(Integer numero){
         if(numero == null){
-            throw new RegraAcessoRunTime("Número Inválido");
+            throw new ServicoRuntimeException("Número Inválido");
         }
 
     }

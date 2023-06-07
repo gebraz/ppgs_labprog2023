@@ -1,4 +1,4 @@
-package br.ufma.sppg.Dto;
+package br.ufma.sppg.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

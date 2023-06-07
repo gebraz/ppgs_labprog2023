@@ -43,10 +43,8 @@ public class DocenteTest {
 
         repo.save(docente);
 
-        List<Docente> queryResult = repo.findByNome("John Doe");
-
-        Assertions.assertFalse(queryResult.isEmpty());
-        Assertions.assertNotNull(queryResult.get(0));
+        Docente queryResult = repo.findByNome("John Doe");        
+        Assertions.assertNotNull(queryResult);
     }
 
     @Test

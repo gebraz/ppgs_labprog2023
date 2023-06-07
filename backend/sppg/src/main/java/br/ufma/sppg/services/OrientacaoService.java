@@ -16,7 +16,7 @@ public class OrientacaoService implements IOrientacao {
 
 
     @Override
-    public ArrayList<OrientacaoResponse> obterOrientacaoPPG(Integer id) {
+    public ArrayList<Orientacao> obterOrientacaoPPG(Integer id) {
        
         var orientacoes = orientacaoRepository.findAllById(id);
         var responses = new ArrayList<OrientacaoResponse>();

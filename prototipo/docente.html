@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sPPGs</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  
+  <!-- Theme style -->
+  <link rel="stylesheet" href="admin-lte/dist/css/adminlte.min.css">
+
+  <!-- Ion Slider -->
+  <link rel="stylesheet" href="admin-lte/plugins/ion-rangeslider/css/ion.rangeSlider.min.css">
+  <!-- bootstrap slider -->
+  <link rel="stylesheet" href="admin-lte/plugins/bootstrap-slider/css/bootstrap-slider.min.css">
+  
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+    <div class="container">
+      <a href="home.html" class="navbar-brand">
+        <span class="brand-text font-weight-light">SPPG</span>
+      </a>
+
+      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="home.html" class="nav-link">Programas</a>
+          </li>
+          <li class="nav-item">
+            <a href="docente.html" class="nav-link">Docentes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0"> Docente: Geraldo Braz Júnior </h1>            
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container">
+        <div class="container-fluid">
+          <h5 class="mb-2">Filtros</h5>
+            <form action="#">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Ano inicial:</label>
+                                    <input class="form-control" value="2019"/>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Ano Final:</label>
+                                    <input class="form-control" value="2023"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- indicadores capes -->
+            <h5 class="mb-2">Indicadores Capes</h5>
+            <div class="row">
+              <!-- /.col -->
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-gray"><i class="far fa-copy"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">Total Produções</span>
+                    <span class="info-box-number">220</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>                  
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info">
+                    <i class="far fa-envelope"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">I Geral</span>
+                    <span class="info-box-number">17,43</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">I Restrito</span>
+                    <span class="info-box-number">16,45</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text">I Não Restrito</span>
+                    <span class="info-box-number">0,99</span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>     
+                  
+            </div>
+            <!-- /.row -->
+
+            <!-- STACKED BAR CHART Produção Em periódicos-->
+            <div class="card card-gray">
+              <div class="card-header">
+                <h3 class="card-title">Produção em Periódicos vs Qualis</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- STACKED BAR CHART Produção Em Congressos-->
+            <div class="card card-gray">
+              <div class="card-header">
+                <h3 class="card-title">Produção em Congressos vs Qualis</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="stackedBarChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- DataTable Orientações --> 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Orientações</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Discente</th>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Ano</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Aluno 1</td>
+                    <td>Dissertação 1</td>
+                    <td>Mestrado</td>
+                    <td>2022</td>
+                  </tr>
+                  <tr>
+                    <td>Aluno 2</td>
+                    <td>TCC 1</td>
+                    <td>TCC</td>
+                    <td>2022</td>
+                  </tr>
+                  <tr>
+                    <td>Aluno 3</td>
+                    <td>PIBIC 1</td>
+                    <td>IC</td>
+                    <td>2022</td>
+                  </tr>
+                  <tr>
+                    <td>Aluno 4</td>
+                    <td>Dissertação 2</td>
+                    <td>Mestrado</td>
+                    <td>2021</td>
+                  </tr>
+                  <tr>
+                    <td>Aluno 5</td>
+                    <td>TCC 2</td>
+                    <td>TCC</td>
+                    <td>2021</td>
+                  </tr>
+                  <tr>
+                    <td>Aluno 6</td>
+                    <td>PIBIC 2</td>
+                    <td>IC</td>
+                    <td>2021</td>
+                  </tr>
+
+
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Discente</th>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Ano</th>
+
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+
+            <!-- DataTable Artigos --> 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Artigos</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Local</th>
+                    <th>Tipo</th>
+                    <th>Qualis</th>
+                    <th>Ano</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr> 
+                    <td>Sobre otimização e desafios</td>
+                    <td>Congresso brasileiro de </td>
+                    <td>Evento</td>
+                    <td>B1</td>
+                    <td>2023</td>                    
+                  </tr>
+
+                  <tr> 
+                    <td>Artigo 2</td>
+                    <td>REvista de </td>
+                    <td>Periódico</td>
+                    <td>A1</td>
+                    <td>2022</td>                    
+                  </tr>
+
+                  <tr> 
+                    <td>Artigo 3</td>
+                    <td>International conference, ... </td>
+                    <td>Evento</td>
+                    <td>A3</td>
+                    <td>2022</td>                    
+                  </tr>
+
+                  <tr> 
+                    <td>Artigo 4</td>
+                    <td>Applied Computing Conference </td>
+                    <td>Evento</td>
+                    <td>A4</td>
+                    <td>2020</td>                    
+                  </tr>
+
+
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Título</th>
+                    <th>Local</th>
+                    <th>Tipo</th>
+                    <th>Qualis</th>
+                    <th>Ano</th>
+
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+
+              <!-- DataTable Artigos --> 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Técnicas</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example3" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Ano</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr> 
+                    <td>Sobre otimização e desafios</td>
+                    <td>Software</td>
+                    <td>2023</td>                    
+                  </tr>
+
+                  <tr> 
+                    <td>Palestra</td>                    
+                    <td>Palestra</td>                    
+                    <td>2022</td>                    
+                  </tr>
+
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Ano</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+
+        </div>
+    </section>
+
+
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="admin-lte/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="admin-lte/dist/js/adminlte.min.js"></script>
+<!-- ChartJS -->
+<script src="admin-lte/plugins/chart.js/Chart.min.js"></script>
+<!-- Page specific script -->
+
+<!-- DataTables  & Plugins -->
+<script src="admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="admin-lte/plugins/jszip/jszip.min.js"></script>
+<script src="admin-lte/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="admin-lte/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="admin-lte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="admin-lte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    var areaChartData = {
+      labels  : ['2023', '2022', '2021', '2020', '2019'],
+      datasets: [
+        {
+          label               : 'A1',
+          data                : [9, 33, 30, 26, 17],
+          backgroundColor     : '#4dc9f6'
+        },
+        {
+          label               : 'A2',
+          data                : [0, 8, 13, 17, 6],
+          backgroundColor     : '#f67019'
+        },
+        {
+          label               : 'A3',
+          data                : [12, 26, 24, 46, 20],
+          backgroundColor     : '#537bc4'
+        },
+        {
+          label               : 'A4',
+          data                : [0, 30, 49, 25, 55],
+          backgroundColor     : '#acc236'
+        },
+      ]
+    }
+    //---------------------
+    //- STACKED BAR CHART -
+    //---------------------
+    var barChartData = $.extend(true, {}, areaChartData)
+    var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+    var stackedBarChartData = $.extend(true, {}, barChartData)
+
+    var stackedBarChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      scales: {
+        xAxes: [{
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    }
+
+    new Chart(stackedBarChartCanvas, {
+      type: 'bar',
+      data: stackedBarChartData,
+      options: stackedBarChartOptions
+    })
+
+
+    //---------------------
+    //- STACKED BAR CHART -
+    //---------------------
+    var barChartData = $.extend(true, {}, areaChartData)
+    var stackedBarChartCanvas2 = $('#stackedBarChart2').get(0).getContext('2d')
+    var stackedBarChartData = $.extend(true, {}, barChartData)
+
+    var stackedBarChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      scales: {
+        xAxes: [{
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    }
+
+    new Chart(stackedBarChartCanvas2, {
+      type: 'bar',
+      data: stackedBarChartData,
+      options: stackedBarChartOptions
+    })
+    
+
+  })
+
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example4').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  $(function () {
+    $("#example2").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+    $('#example4').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  $(function () {
+    $("#example3").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
+    $('#example4').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+
+
+</body>
+</html>

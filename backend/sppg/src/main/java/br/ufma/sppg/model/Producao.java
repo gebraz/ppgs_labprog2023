@@ -2,6 +2,8 @@ package br.ufma.sppg.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -70,14 +72,17 @@ public class Producao {
     @Column(name = "qtd_doutorado", nullable = true)
     Integer qtdDoutorado;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="id_qualis")
+    @JoinColumn(name = "id_qualis")
     Qualis qualisRef;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "producao_orientacao", joinColumns = @JoinColumn(name = "id_producao"), inverseJoinColumns = @JoinColumn(name = "id_orientacao"))
     List<Orientacao> orientacoes;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "docente_producao", joinColumns = @JoinColumn(name = "id_producao"), inverseJoinColumns = @JoinColumn(name = "id_docente"))
     List<Docente> docentes;

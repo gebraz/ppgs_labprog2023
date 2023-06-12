@@ -15,14 +15,12 @@ import br.ufma.sppg.model.Tecnica;
 import br.ufma.sppg.repo.ProgramaRepository;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
-
 @Service
 public class ProgramaService {
 
     @Autowired
     ProgramaRepository repository;
 
-    //TODO faltou incluir obterPrograma por ID
     public List<Programa> obterPrograma(String nome) {
         verificarNome(nome);
         return repository.findAllByNome(nome);
@@ -55,7 +53,7 @@ public class ProgramaService {
                     indicesProd.add(producao.getId());
                     switch (producao.getQualis()) {
                         case "A1":
-                            iRestrito += 1;
+                            iRestrito += 1.0f;
                             break;
 
                         case "A2":
@@ -97,6 +95,7 @@ public class ProgramaService {
         return new Indice(iRestrito, iNRestrito, iGeral);
     }
 
+    // devolve uma List<Orientacao> de um dado programa dentro de um periodo
     public List<Orientacao> obterOrientacoes(Integer idPrograma, Integer anoIni, Integer anoFin) {
         verificarId(idPrograma);
         verificarData(anoIni, anoFin);
@@ -105,6 +104,8 @@ public class ProgramaService {
         List<Orientacao> orientacoesDoc = new ArrayList<>();
         ArrayList<Integer> idOrientacoes = new ArrayList<>();
 
+        // verifica as Orientacões de cada docente e filtra as repetidas para não
+        // adicona-las mais de uma vez
         for (Docente docente : docentes) {
 
             orientacoesDoc = docente.getOrientacoes();
@@ -122,6 +123,7 @@ public class ProgramaService {
         return orientacoes;
     }
 
+    // devolve uma List<Producao> de um dado programa dentro de um periodo
     public List<Producao> obterProducoes(Integer idPrograma, Integer anoIni, Integer anoFin) {
         verificarId(idPrograma);
         verificarData(anoIni, anoFin);
@@ -130,6 +132,8 @@ public class ProgramaService {
         List<Producao> producoesDoc = new ArrayList<>();
         ArrayList<Integer> idProducoes = new ArrayList<>();
 
+        // verifica as producões de cada docente e filtra as repetidas para não
+        // adicona-las mais de uma vez
         for (Docente docente : docentes) {
 
             producoesDoc = docente.getProducoes();
@@ -147,6 +151,7 @@ public class ProgramaService {
         return producoes;
     }
 
+    // devolve uma List<Tecnica> de um dado programa dentro de um periodo
     public List<Tecnica> obterTecnicas(Integer idPrograma, Integer anoIni, Integer anoFin) {
         verificarId(idPrograma);
         verificarData(anoIni, anoFin);
@@ -155,6 +160,8 @@ public class ProgramaService {
         List<Tecnica> tecnicasDoc = new ArrayList<>();
         ArrayList<Integer> idTecnicas = new ArrayList<>();
 
+        // verifica as tecnicas de cada docente e filtra as repetidas para não
+        // adicona-las mais de uma vez
         for (Docente docente : docentes) {
 
             tecnicasDoc = docente.getTecnicas();
@@ -169,6 +176,58 @@ public class ProgramaService {
         }
 
         return tecnicas;
+    }
+
+    // conta quantas orientações possuem ao menos 1 producao e devolve quantas
+    // cumprem essa meta
+    public Integer quantitativoOrientacaoProducao(Integer idPrograma, Integer anoIni, Integer anoFin) {
+        verificarId(idPrograma);
+        verificarData(anoIni, anoFin);
+        List<Docente> docentes = repository.obterDocentes(idPrograma);
+        List<Orientacao> orientacoesDoc = new ArrayList<>();
+        ArrayList<Integer> idOrientacoes = new ArrayList<>();
+
+        // verifica as orientações de cada docente que pertence ao programa
+        for (Docente docente : docentes) {
+
+            orientacoesDoc = docente.getOrientacoes();
+            for (Orientacao orientacao : orientacoesDoc) {
+
+                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin
+                        && !idOrientacoes.contains(orientacao.getId()) && !orientacao.getProducoes().isEmpty()) {
+
+                    idOrientacoes.add(orientacao.getId());
+                }
+            }
+        }
+
+        return idOrientacoes.size();
+    }
+
+    // conta quantas orientações possuem ao menos 1 tecnica e devolve quantas
+    // cumprem essa meta
+    public Integer quantitativoOrientacaoTecnica(Integer idPrograma, Integer anoIni, Integer anoFin) {
+        verificarId(idPrograma);
+        verificarData(anoIni, anoFin);
+        List<Docente> docentes = repository.obterDocentes(idPrograma);
+        List<Orientacao> orientacoesDoc = new ArrayList<>();
+        ArrayList<Integer> idOrientacoes = new ArrayList<>();
+
+        // verifica as orientações de cada docente que pertence ao programa
+        for (Docente docente : docentes) {
+
+            orientacoesDoc = docente.getOrientacoes();
+            for (Orientacao orientacao : orientacoesDoc) {
+
+                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin
+                        && !idOrientacoes.contains(orientacao.getId()) && !orientacao.getTecnicas().isEmpty()) {
+
+                    idOrientacoes.add(orientacao.getId());
+                }
+            }
+        }
+
+        return idOrientacoes.size();
     }
 
     private void verificarNome(String nome) {

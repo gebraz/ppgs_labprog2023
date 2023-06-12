@@ -187,6 +187,7 @@ public class TecnicaService {
     // Retorna todas as técnicas de um docente em um período
     public Optional<List<Tecnica>> obterTecnicasDocentePorPeriodo(Integer idDocente, Integer anoInicio,
             Integer anoFim) {
+        
         Optional<Docente> docente = docenteRepo.findById(idDocente);
 
         // verificando se o docente existe

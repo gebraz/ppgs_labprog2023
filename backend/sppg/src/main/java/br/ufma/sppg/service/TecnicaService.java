@@ -1,6 +1,5 @@
 package br.ufma.sppg.service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +43,7 @@ public class TecnicaService {
             throw new ServicoRuntimeException(
                     "O ID das tecnicas é gerado automaticamente e não deve ser informado");
         }
+        validarEstatisticasTecnica(tecnica);
         return tecnicaRepo.save(tecnica);
     }
 
@@ -51,6 +51,7 @@ public class TecnicaService {
     public Tecnica atualizarTecnica(Tecnica tecnica) {
         verificarTecnica(tecnica);
         verificarIdTecnica(tecnica);
+        validarEstatisticasTecnica(tecnica);
         return tecnicaRepo.save(tecnica);
     }
 
@@ -67,7 +68,7 @@ public class TecnicaService {
 
         return tecnicaRepo.findAll(example);
     }
-    
+
     @Transactional
     public void removerTecnica(Tecnica tecnica) {
         verificarIdTecnica(tecnica);
@@ -111,7 +112,19 @@ public class TecnicaService {
         if (tecnica == null || tecnica.getId() == null || !(tecnicaRepo.existsById(tecnica.getId()))) {
             throw new ServicoRuntimeException("Id inválido!");
         }
-    }    
+    }
+
+    private void verificarAno(Integer anoInicio, Integer anoFim) {
+        if (anoInicio < 1950 || anoFim < 1950 || anoFim > 2050) {
+            throw new ServicoRuntimeException("O período informado é inválido!");
+        }
+    }
+
+    private void validarEstatisticasTecnica(Tecnica tecnica) {
+        if (tecnica.getQtdGrad() < 0 || tecnica.getQtdMestrado() < 0 || tecnica.getQtdDoutorado() < 0) {
+            throw new ServicoRuntimeException("Estatísticas inválidas!");
+        }
+    }
 
     // Retorna todas as orientações de uma téncnica
     public List<Orientacao> obterOrientacoesTecnica(Integer idTecnica) {
@@ -138,6 +151,8 @@ public class TecnicaService {
                 anoInicio = anoFim;
                 anoInicio = dataAuxiliar;
             }
+
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasOrientacaoPorPeriodo(idOrientacao, anoInicio, anoFim);
         }
@@ -172,6 +187,7 @@ public class TecnicaService {
     // Retorna todas as técnicas de um docente em um período
     public Optional<List<Tecnica>> obterTecnicasDocentePorPeriodo(Integer idDocente, Integer anoInicio,
             Integer anoFim) {
+        
         Optional<Docente> docente = docenteRepo.findById(idDocente);
 
         // verificando se o docente existe
@@ -183,6 +199,8 @@ public class TecnicaService {
                 anoInicio = anoFim;
                 anoInicio = dataAuxiliar;
             }
+
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasDocentePorPeriodo(idDocente, anoInicio, anoFim);
         }
@@ -216,6 +234,8 @@ public class TecnicaService {
                 anoInicio = anoFim;
                 anoInicio = dataAuxiliar;
             }
+
+            verificarAno(anoInicio, anoFim);
 
             return tecnicaRepo.obterTecnicasPPGPorPeriodo(idPrograma, anoInicio, anoFim);
         }

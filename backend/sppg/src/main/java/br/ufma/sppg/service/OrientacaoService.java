@@ -21,7 +21,7 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class OrientacaoService{
+public class OrientacaoService {
 
     @Autowired
     private OrientacaoRepository orientacaoRepository;
@@ -38,6 +38,19 @@ public class OrientacaoService{
     @Autowired
     private TecnicaRepository tecnicaRepository;
 
+    // TODO: Validar entrada de dados
+    public Optional<List<Orientacao>> obterOrientacoesComTecnicaPorPeriodo(Integer idDocente, Integer anoInicio,
+            Integer anoFim) {
+        return orientacaoRepository.obterOrientacoesComTecnicaPorPeriodo(idDocente, anoInicio, anoFim);
+    }
+
+    // TODO: Validar entrada de dados
+    public Optional<List<Orientacao>> obterOrientacoesComProducaoPorPeriodo(Integer idDocente, Integer anoInicio,
+            Integer anoFim) {
+        return orientacaoRepository.obterOrientacoesComProducaoPorPeriodo(idDocente, anoInicio, anoFim);
+    }
+
+    // TODO: Validar o período informado
     public List<Orientacao> obterOrientacaoPPG(Integer id, Integer anoIni, Integer anoFim) {
         validarPeriodo(anoIni, anoFim);
         validarOrientacoesPpg(id, anoIni, anoFim);
@@ -46,6 +59,7 @@ public class OrientacaoService{
         return orientacoes;
     }
 
+    // TODO: Validar o período informado
     public List<Orientacao> obterOrientacaoDocente(Integer id, Integer anoIni, Integer anoFim) {
         validarPeriodo(anoIni, anoFim);
         validarOrientacoesDoc(id, anoIni, anoFim);
@@ -96,18 +110,20 @@ public class OrientacaoService{
         return orientacaoRepository.save(orientacao);
     }
 
+    // TODO: Validar o período informado
     private void validarOrientacoesPpg(Integer idPrograma, Integer anoIni, Integer anoFim) {
 
         Optional<Programa> programa = programaRepository.findById(idPrograma);
 
-        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma,  anoIni, anoFim);
-        
+        Optional<List<Orientacao>> orientacoes = orientacaoRepository.findByPPG(idPrograma, anoIni, anoFim);
+
         if (programa.isEmpty())
             throw new RuntimeException("Não foram encontrados programas com este Id.");
         if (orientacoes.isEmpty())
             throw new RuntimeException("Não foram encontradas orientações para este docente.");
     }
 
+    // TODO: Validar o período informado
     private void validarOrientacoesDoc(Integer idDocente, Integer anoIni, Integer anoFim) {
 
         Optional<Docente> docente = docenteRepository.findById(idDocente);
@@ -149,5 +165,4 @@ public class OrientacaoService{
             throw new ServicoRuntimeException("Ano inicial maior que ano fim.");
         }
     }
-
 }

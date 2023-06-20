@@ -1,9 +1,14 @@
-import { NavBar } from "./components";
+import { useEffect } from "react";
+import { Programa } from "./pages";
 
 function App() {
+  useEffect(() => {
+    document.body.classList = "hold-transition layout-top-nav";
+  });
+
   return (
     <>
-      <NavBar />
+      <Programa />
     </>
   );
 }

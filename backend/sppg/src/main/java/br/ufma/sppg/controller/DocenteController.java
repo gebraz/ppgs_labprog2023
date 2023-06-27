@@ -17,10 +17,9 @@ import br.ufma.sppg.service.ProducaoService;
 import br.ufma.sppg.service.TecnicaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
-
 @RequestMapping("/api/Docente")
 @RestController
-public class DocenteController{
+public class DocenteController {
     @Autowired
     TecnicaService tecnicaServivce;
 
@@ -30,39 +29,43 @@ public class DocenteController{
     @Autowired
     OrientacaoService orientacaoServivce;
 
+    // todo: rota de login
+
+    // todo: rota de cadastro
+
     @GetMapping("/obter_producoes/{id}/{data1}/{data2}")
     public ResponseEntity<?> obterProducoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente,
-    @PathVariable(value = "data1", required = true)  Integer data1,
-    @PathVariable(value = "data2", required = true)  Integer data2){
+            @PathVariable(value = "data1", required = true) Integer data1,
+            @PathVariable(value = "data2", required = true) Integer data2) {
 
-        try{
+        try {
             List<Producao> producaoDocente = producaoServivce.obterProducoesDocente(idDocente, data1, data2);
             return ResponseEntity.ok(producaoDocente);
-        }catch (ServicoRuntimeException e){
+        } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/obter_orientacoes/{id}")
     public ResponseEntity<?> obterOrientacoesDeDocente(@PathVariable(value = "id", required = true) Integer idDocente,
-    @PathVariable(value = "data1", required = true)  Integer data1,
-    @PathVariable(value = "data2", required = true)  Integer data2){
+            @PathVariable(value = "data1", required = true) Integer data1,
+            @PathVariable(value = "data2", required = true) Integer data2) {
 
-        try{
+        try {
             List<Orientacao> orientacaoDocente = orientacaoServivce.obterOrientacaoDocente(idDocente, data1, data2);
             return ResponseEntity.ok(orientacaoDocente);
-        }catch (ServicoRuntimeException e){
+        } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/obter_tecnicas/{id}")
-    public ResponseEntity<?> obterTecnicasDeDocente(@PathVariable(value = "id", required = true) Integer idDocente){
+    public ResponseEntity<?> obterTecnicasDeDocente(@PathVariable(value = "id", required = true) Integer idDocente) {
 
-        try{
-            List<Tecnica> tecnicaDocente = tecnicaServivce.obterTecnicasDocente(idDocente); 
+        try {
+            List<Tecnica> tecnicaDocente = tecnicaServivce.obterTecnicasDocente(idDocente);
             return ResponseEntity.ok(tecnicaDocente);
-        }catch (ServicoRuntimeException e){
+        } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

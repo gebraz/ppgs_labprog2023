@@ -30,42 +30,41 @@ public class ImportadorService {
     TecnicaRepository tecRepo;
     @Autowired
     QualisRepository qualisRepo;
-    
-    List<Qualis> eventos;  //caso especial
 
-    //TODO: importa novos caras, mas não está sincronizando diferenças nos dados
-    public List<String> importadorEmMassa(String defFolder){
+    List<Qualis> eventos; // caso especial
+
+    // TODO: importa novos caras, mas não está sincronizando diferenças nos dados
+    public List<String> importadorEmMassa(String defFolder) {
         File dir = new File(defFolder);
         File[] files = dir.listFiles((dir1, name) -> name.endsWith(".xml"));
         String identificador[];
         List<String> importados = new ArrayList<>();
-        
+
         eventos = qualisRepo.findByTipo("eventos");
 
         for (File f : files) {
             identificador = f.getName().split(".x");
             try {
                 Docente ref = importarDocente(defFolder + f.getName());
-                //apenas para ver onde está, comentar
+                // apenas para ver onde está, comentar
                 System.out.println("Executando: " + ref.getNome());
-                //procura pela mesmo docente na base
-                Docente base = repoDoc.findByNome(ref.getNome());                
-                if (base == null)                     
+                // procura pela mesmo docente na base
+                Docente base = repoDoc.findByNome(ref.getNome()).get(0);
+                if (base == null)
                     base = Docente.builder()
-                                .lattes(ref.getLattes())
-                                .nome(ref.getNome())
-                                .dataAtualizacao(ref.getDataAtualizacao())
-                                .build();
+                            .lattes(ref.getLattes())
+                            .nome(ref.getNome())
+                            .dataAtualizacao(ref.getDataAtualizacao())
+                            .build();
 
                 syncProducao(ref.getProducoes(), base);
                 syncTecnica(ref.getTecnicas(), base);
                 syncOrientacao(ref.getOrientacoes(), base);
 
                 importados.add(base.getNome());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (Exception e) {
-               e.printStackTrace();
-            }            
         }
         return importados;
     }
@@ -77,139 +76,141 @@ public class ImportadorService {
         return ref;
     }
 
-    private void syncProducao(List<Producao> importado, Docente base) {        
-        if (importado == null) return;
+    private void syncProducao(List<Producao> importado, Docente base) {
+        if (importado == null)
+            return;
         Producao prodNaBase = null;
 
-        //1) está na base?
-        for (Producao prod : importado) {            
+        // 1) está na base?
+        for (Producao prod : importado) {
 
-            if (prod == null) continue;
-            //TODO: existem publicações repetidas. Tem o mesmo titulo, mas local cadastrado de maneiras diferentes.
+            if (prod == null)
+                continue;
+            // TODO: existem publicações repetidas. Tem o mesmo titulo, mas local cadastrado
+            // de maneiras diferentes.
             prodNaBase = prodRepo.findByTituloAndNomeLocal(prod.getTitulo(), prod.getNomeLocal());
 
-            if (prodNaBase != null) {             
-                //2) se não estiver com qualis, tenta associar   
+            if (prodNaBase != null) {
+                // 2) se não estiver com qualis, tenta associar
                 if (prodNaBase.getQualisRef() == null)
                     associarQualis(prodNaBase);
 
-                //3) se estiver na base, está associado ao docente?                
-                if ((base.getProducoes()!=null) && (!base.getProducoes().contains(prodNaBase)))
-                    base.adicionarProducao(prodNaBase);                
-            }
-            else {             
-                //2) se não estiver na base, coloque lattes, adicione e associe ao docente
-                associarQualis(prod);   
+                // 3) se estiver na base, está associado ao docente?
+                if ((base.getProducoes() != null) && (!base.getProducoes().contains(prodNaBase)))
+                    base.adicionarProducao(prodNaBase);
+            } else {
+                // 2) se não estiver na base, coloque lattes, adicione e associe ao docente
+                associarQualis(prod);
                 prodNaBase = prodRepo.save(prod);
                 base.adicionarProducao(prodNaBase);
-            }    
-            
-        }        
-        repoDoc.save(base);        
+            }
+
+        }
+        repoDoc.save(base);
     }
 
     private void associarQualis(Producao prod) {
         Qualis temp;
-        //se periódico
-        if (prod.getTipo().equals("ARTIGO-PUBLICADO")) {             
+        // se periódico
+        if (prod.getTipo().equals("ARTIGO-PUBLICADO")) {
             String issn = prod.getIssnOuSigla().substring(0, 4) + "-" + prod.getIssnOuSigla().substring(4);
-            //System.out.println(issn);
+            // System.out.println(issn);
             temp = qualisRepo.findByIssnSigla(issn);
-            if (temp != null){
+            if (temp != null) {
                 prod.setQualisRef(temp);
-                if (temp.getEstratoAtualizado()!= null)
+                if (temp.getEstratoAtualizado() != null)
                     prod.setQualis(temp.getEstratoAtualizado());
                 else
                     prod.setQualis(temp.getEstratoSucupira());
-                if ((temp.getPercentil() != null) 
-                    && (!temp.getPercentil().equals(""))
-                    && (!temp.getPercentil().equals("nulo"))
-                    )
+                if ((temp.getPercentil() != null)
+                        && (!temp.getPercentil().equals(""))
+                        && (!temp.getPercentil().equals("nulo")))
                     prod.setPercentileOuH5(Float.parseFloat(temp.getPercentil()));
             }
         }
-        //se evento :(
-        //quebra o titulo -> busca cada palavra como sigla em qualis
+        // se evento :(
+        // quebra o titulo -> busca cada palavra como sigla em qualis
         else {
             String[] palavras = prod.getNomeLocal().split("[\\s+12(),-;']");
             for (String palavra : palavras) {
-                //tem 31 conferências com sigla < 3
-                if (palavra.length()>=3) {
+                // tem 31 conferências com sigla < 3
+                if (palavra.length() >= 3) {
                     temp = qualisRepo.findByIssnSigla(palavra.toUpperCase());
-                    if (temp!=null) {                        
+                    if (temp != null) {
                         prod.setQualisRef(temp);
                         prod.setIssnOuSigla(temp.getIssnSigla());
-                        prod.setQualis(temp.getEstratoSucupira());                        
+                        prod.setQualis(temp.getEstratoSucupira());
                         break;
                     }
                 }
             }
-            //segunda tentativa: encontrar nome completo no local
+            // segunda tentativa: encontrar nome completo no local
             String local = prod.getNomeLocal().toLowerCase();
-            //TODO: melhorar, muito lento
-            for (Qualis q: eventos) {
-                if (local.contains(q.getTitulo().toLowerCase())){
+            // TODO: melhorar, muito lento
+            for (Qualis q : eventos) {
+                if (local.contains(q.getTitulo().toLowerCase())) {
                     prod.setQualisRef(q);
                     prod.setIssnOuSigla(q.getIssnSigla());
-                    prod.setQualis(q.getEstratoSucupira());                        
+                    prod.setQualis(q.getEstratoSucupira());
                     break;
                 }
             }
         }
-        
 
     }
 
-
     private void syncTecnica(List<Tecnica> importado, Docente base) {
-        if (importado == null) return;
+        if (importado == null)
+            return;
         Tecnica tecNaBase = null;
 
-        //1) está na base?
+        // 1) está na base?
         for (Tecnica tec : importado) {
-            if (tec == null) continue;
+            if (tec == null)
+                continue;
             tecNaBase = tecRepo.findByTitulo(tec.getTitulo());
 
             if (tecNaBase != null) {
-                //2) se estiver na base, está associado ao docente?
-                if ((base.getTecnicas()!=null) && (!base.getTecnicas().contains(tecNaBase)))
+                // 2) se estiver na base, está associado ao docente?
+                if ((base.getTecnicas() != null) && (!base.getTecnicas().contains(tecNaBase)))
                     base.adicionarTecnica(tecNaBase);
-            }
-            else {             
-                //3) se não estiver na base, adicione e associe ao docente
+            } else {
+                // 3) se não estiver na base, adicione e associe ao docente
                 tecNaBase = tecRepo.save(tec);
                 base.adicionarTecnica(tecNaBase);
-            }    
-        }        
-        repoDoc.save(base);       
+            }
+        }
+        repoDoc.save(base);
 
     }
 
     private void syncOrientacao(List<Orientacao> importado, Docente base) {
-        if (importado == null) return;
+        if (importado == null)
+            return;
         Orientacao orientacaoNaBase = null;
 
-        //1) está na base?
+        // 1) está na base?
         for (Orientacao ori : importado) {
-            if (ori == null) continue;
-            orientacaoNaBase = oriRepo.findByTipoAndDiscenteAndTitulo(ori.getTipo(), ori.getDiscente(), ori.getTitulo());
+            if (ori == null)
+                continue;
+            orientacaoNaBase = oriRepo.findByTipoAndDiscenteAndTitulo(ori.getTipo(), ori.getDiscente(),
+                    ori.getTitulo());
 
             if (orientacaoNaBase != null) {
-                //2) se estiver na base, está associado ao docente?
-                if ((base.getOrientacoes()!=null) && (!base.getOrientacoes().contains(orientacaoNaBase))) {
+                // 2) se estiver na base, está associado ao docente?
+                if ((base.getOrientacoes() != null) && (!base.getOrientacoes().contains(orientacaoNaBase))) {
                     base.adicionarOrientacao(orientacaoNaBase);
                     orientacaoNaBase.setOrientador(base);
                     oriRepo.save(orientacaoNaBase);
                 }
-            }
-            else {             
-                //3) se não estiver na base, adicione e associe ao docente
-                ori.setOrientador(base);                
+            } else {
+                // 3) se não estiver na base, adicione e associe ao docente
+                ori.setOrientador(base);
                 orientacaoNaBase = oriRepo.save(ori);
                 base.adicionarOrientacao(orientacaoNaBase);
-                
-            }    
-        }        
-        repoDoc.save(base);  
+
+            }
+        }
+        repoDoc.save(base);
     }
 }

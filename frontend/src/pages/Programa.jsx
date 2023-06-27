@@ -1,23 +1,5 @@
-import { CardCapes, NavBar } from "../components";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { useEffect } from "react";
+import { CardCapes, GraficoCard, NavBar } from "../components";
 
 const data = {
   labels: ["2023", "2022", "2021", "2020", "2019"],
@@ -63,6 +45,10 @@ const config = {
 };
 
 export const Programa = () => {
+  useEffect(() => {
+    document.body.classList = "hold-transition layout-top-nav";
+  });
+
   return (
     <div className="wrapper">
       <NavBar />
@@ -144,33 +130,7 @@ export const Programa = () => {
                 />
               </div>
 
-              <div class="card card-gray">
-                <div class="card-header">
-                  <h3 class="card-title">Produção vs Qualis</h3>
-
-                  <div class="card-tools">
-                    <button
-                      type="button"
-                      class="btn btn-tool"
-                      data-card-widget="collapse"
-                    >
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-tool"
-                      data-card-widget="remove"
-                    >
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="chart">
-                    <Bar options={config} data={data} />
-                  </div>
-                </div>
-              </div>
+              <GraficoCard config={config} data={data} />
 
               <div class="card">
                 <div class="card-header">

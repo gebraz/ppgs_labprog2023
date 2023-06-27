@@ -1,4 +1,11 @@
+import { useNavigate } from "react-router-dom";
 export const NavBar = () => {
+  const navigate = useNavigate();
+
+  const tryLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <nav className="main-header navbar navbar-expand-md navbar-light navbar-white">
       <div className="container">
@@ -33,6 +40,11 @@ export const NavBar = () => {
           </ul>
         </div>
       </div>
+      <form class="form-inline mr-5 bg-red">
+        <button type="button" className="btn btn-danger" onClick={tryLogout}>
+          <i class="fa-sharp fa-solid fa-right-to-bracket"></i>
+        </button>
+      </form>
     </nav>
   );
 };

@@ -1,4 +1,4 @@
-package br.ufma.sppg.Dto.Orientação;
+package br.ufma.sppg.dto;
 
 import lombok.Data;
 

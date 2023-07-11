@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.ufma.sppg.dto.DocenteProducao;
 import br.ufma.sppg.model.Docente;
 import br.ufma.sppg.model.Orientacao;
 import br.ufma.sppg.model.Producao;
@@ -171,6 +172,41 @@ public class ProducaoService {
         var producao = prodRepo.findAll();
         return producao;
     }
+
+
+    public List<DocenteProducao>obterProducoesTodosDocentes(Integer data1, Integer data2){
+
+        //É Presumido que o usuário coloque em data1 o valor mais baixo e em data2 o valor mais alto como por exemplo
+        //data1=2016, data2=2023. Esta função verifica se a ordem esperada foi trocada e ajusta para que não ocorra erros
+        if (data1 >= data2){
+            Integer data = data2;
+            data2 = data1;
+            data1 = data;
+        }
+
+        List<Docente> docentes = docRepo.findAll();
+        List<DocenteProducao> producoes = new ArrayList<>();
+        for(Docente docente : docentes){
+            if(docRepo.getReferenceById(docente.getId()).getProducoes() == null 
+            || docRepo.getReferenceById(docente.getId()).getProducoes().isEmpty())
+                throw new ServicoRuntimeException("O Docente não possui nenhuma Produção Registrada");
+            List<Producao> producoesDocente = new ArrayList<>();
+            
+            for(int i = 0; i < docRepo.getReferenceById(docente.getId()).getProducoes().size(); i++){
+                if(docRepo.getReferenceById(docente.getId()).getProducoes().get(i).getAno() >= data1
+                && docRepo.getReferenceById(docente.getId()).getProducoes().get(i).getAno() <= data2){
+                    producoesDocente.add(docRepo.getReferenceById(docente.getId()).getProducoes().get(i));
+                }
+            }
+            DocenteProducao docenteProducao = DocenteProducao.builder().docente(docente).producoes(producoesDocente).build();
+            producoes.add(docenteProducao);
+
+            
+        }
+        return producoes;
+    }
+
+
 
 
 

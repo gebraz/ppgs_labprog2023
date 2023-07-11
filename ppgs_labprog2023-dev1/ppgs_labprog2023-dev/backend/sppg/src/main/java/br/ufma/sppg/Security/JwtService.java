@@ -1,5 +1,6 @@
-package br.ufma.sppg.Security;
 
+package br.ufma.sppg.Security;
+ 
 import java.security.Key;
 import java.util.Date;
 import java.util.UUID;

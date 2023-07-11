@@ -1,0 +1,5 @@
+Para o dump:
+/Applications/Postgres.app/Contents/Versions/14/bin/pg_dump -h horton.db.elephantsql.com -U qonlqrav --dbname qonlqrav > ppgs.dump
+
+Para restaurar:
+/Applications/Postgres.app/Contents/Versions/14/bin/psql -h localhost -U gebraz --dbname teste_ppg < ppgs.dump

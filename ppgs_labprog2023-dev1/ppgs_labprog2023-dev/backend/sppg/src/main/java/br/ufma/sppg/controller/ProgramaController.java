@@ -40,8 +40,7 @@ public class ProgramaController {
     }
 
     @GetMapping("/obterDocentesPrograma")
-    public ResponseEntity obterDocentesPrograma(
-        @RequestParam("docente") Integer idPrograma){
+    public ResponseEntity obterDocentesPrograma(@RequestParam("docente") Integer idPrograma){
         try{
             List <Docente> docentes = programa.obterDocentesPrograma(idPrograma);
             return new ResponseEntity(docentes, HttpStatus.OK);
@@ -49,6 +48,16 @@ public class ProgramaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Programa>> allPrograma(){
+        var response=programa.obterPrograma();
+		if(response!=null) {
+			return ResponseEntity.ok(response);
+		}
+		
+		return ResponseEntity.badRequest().build();
+    } 
 
     @GetMapping("/obterProducoesPrograma")
     public ResponseEntity obterProducoesPrograma(

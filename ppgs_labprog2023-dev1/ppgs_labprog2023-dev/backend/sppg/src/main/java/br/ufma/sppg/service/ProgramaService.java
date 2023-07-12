@@ -261,4 +261,9 @@ public class ProgramaService {
 
     }
 
+    public List<Programa> obterPrograma(){
+        var programa =repository.findAll();
+        return programa;
+    }
+
 }

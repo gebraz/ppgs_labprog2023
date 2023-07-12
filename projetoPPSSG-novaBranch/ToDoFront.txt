@@ -1,0 +1,5 @@
+Indicadores Capes da home
+Fazer as Rotas 
+	Fazer a página de docentes
+Fazer integração com o back-end
+Resolver 

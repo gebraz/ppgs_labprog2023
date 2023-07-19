@@ -23,7 +23,7 @@ public class ProgramaService {
 
     public List<Programa> obterPrograma(String nome) {
         verificarNome(nome);
-        return repository.findAllByNome(nome);
+        return repository.findByNome(nome);
     }
 
     public List<Docente> obterDocentesPrograma(Integer idPrograma) {

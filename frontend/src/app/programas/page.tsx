@@ -3,7 +3,7 @@ import SummaryCard from '@/components/SummaryCard';
 import { StackedBarChart } from '@/components/BarChart';
 import Table from '@/components/Table';
 const data = [
-    { docente: 'Carlos', a1: 25 }
+    { id: 1, docente: 'Carlos', a1: 25 }
 ];
 export default function Programas() {
     return (
@@ -22,7 +22,7 @@ export default function Programas() {
             <p className='text-start my-10 font-bold text-lg' >Produção vs Qualis</p>
             <StackedBarChart data={ data } />
             <p className='text-start my-10 font-bold text-lg' >Relação de docentes</p>
-            <Table data={ data } columns={ ['docente', 'a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4'] } />
+            <Table page='docentes' data={ data } columns={ ['docente', 'a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4'] } />
 
         </div>
     );

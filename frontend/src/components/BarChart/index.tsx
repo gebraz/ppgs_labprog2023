@@ -48,16 +48,18 @@ const tableData = [
 
 interface StackedbarChartProps {
   data: any;
+  width?: number;
+  height?: number;
 }
 export function StackedBarChart(props: StackedbarChartProps) {
-  let { data } = props;
+  let { data, width, height } = props;
   data = tableData;
   return (
 
     <BarChart
       className='w-full h-full'
-      width={ 800 }
-      height={ 400 }
+      width={ width ? width : 800 }
+      height={ height ? height : 400 }
       data={ data }
       margin={ {
         top: 20,

@@ -41,4 +41,5 @@ public class Programa {
     @JoinTable(name = "programa_docente", joinColumns = @JoinColumn(name = "id_programa"), inverseJoinColumns = @JoinColumn(name = "id_docente"))
     List<Docente> docentes;
 
+
 }

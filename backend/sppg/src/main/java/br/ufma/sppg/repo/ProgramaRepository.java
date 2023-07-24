@@ -17,11 +17,11 @@ public interface ProgramaRepository
 
         @Query("select count(o) from Orientacao o join o.orientador d join d.programas p" + 
                " where (p.id = :idPrograma and o.ano >= :anoIni and o.ano <= :anoFin and o.producoes is not empty)")
-        Integer quantitatioOrientacaoProducao(@Param("idPrograma") Integer idPrograma, @Param("anoIni") Integer anoIni, @Param("anoFin") Integer anoFin);
+        Integer quantitatioOrientacaoProducao(@Param("idPrograma") Integer idPrograma, @Param("anoIni") Integer anoIni, @Param("anoFin") Integer anoFim);
 
         @Query("select count(o) from Orientacao o join o.orientador d join d.programas p" + 
         " where (p.id = :idPrograma and o.ano >= :anoIni and o.ano <= :anoFin and o.tecnicas is not empty)")
-        Integer quantitatioOrientacaoTecnica(@Param("idPrograma") Integer idPrograma, @Param("anoIni") Integer anoIni, @Param("anoFin") Integer anoFin);
+        Integer quantitatioOrientacaoTecnica(@Param("idPrograma") Integer idPrograma, @Param("anoIni") Integer anoIni, @Param("anoFin") Integer anoFim);
 }
 /*
 spring.datasource.url=jdbc:postgresql://hckvzauf:Q44izx1iP5Q4pW4dv5UGBU1lIQpKYtrE@horton.db.elephantsql.com/hckvzauf

@@ -42,7 +42,7 @@ public class ProducaoServiceTest {
     public void deveInformarIntervaloDeTempoNull() {
         // Cenário
         Integer anoInicial = null;
-        Integer anoFinal = null;
+        Integer anoFimal = null;
         Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
         List<Producao> producoes = new ArrayList<Producao>();
         producoes.add(producaoSalvar);
@@ -52,15 +52,15 @@ public class ProducaoServiceTest {
         producaoRepo.save(producaoSalvar);
         docenteRepo.save(docenteSalvar);
         Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
-        // List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal);
-        Assertions.assertThrows(NullPointerException.class, ()-> service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal));
+        // List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFimal);
+        Assertions.assertThrows(NullPointerException.class, ()-> service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFimal));
     }
 
     @Test
     public void deveInformarIntervaloDeTempoValido() {
         // Cenário
         Integer anoInicial = 2019;
-        Integer anoFinal = 2022;
+        Integer anoFimal = 2022;
         Producao producaoSalvar = Producao.builder().tipo("teste").ano(2020).build();
         List<Producao> producoes = new ArrayList<Producao>();
         producoes.add(producaoSalvar);
@@ -70,7 +70,7 @@ public class ProducaoServiceTest {
         Producao producaoSalva = producaoRepo.save(producaoSalvar);
         docenteRepo.save(docenteSalvar);
         Docente docenteRecuperado = docenteRepo.findById(docenteSalvar.getId()).get();
-        List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFinal);
+        List<Producao> producoesObtidas = service.obterProducoesDocente(docenteRecuperado.getId(), anoInicial, anoFimal);
         
         Assertions.assertEquals(producaoSalva, producoesObtidas.get(0));
     }

@@ -61,7 +61,49 @@ public class ProgramaTest {
 
   }
   
+
+
   @Test
+  public void shouldAvoidDeleteProgramaWithDocente() throws ParseException {
+      Programa novoPrograma = Programa.builder()
+          .nome("Programa de Pós-Graduação em Engenharia de Eletricidade - PPGEE")
+          .build();
+      Docente novoDocente = Docente.builder()
+          .nome("Geraldo Braz Junior")
+          .lattes("123")
+          .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/05/2022"))
+          .build();
+
+      Programa programaSalvo = programaRepository.save(novoPrograma);
+      Docente docenteSalvo = docenteRepository.save(novoDocente);
+
+      // Associate the Docente with the Programa
+      programaSalvo.getDocentes().add(docenteSalvo);
+
+      // Save the Programa with the associated Docente
+      Programa programaSalvoV2 = programaRepository.save(programaSalvo);
+
+      Assertions.assertNotNull(programaSalvoV2);
+
+      // Now, try to delete the Programa
+      try {
+          programaRepository.delete(programaSalvo);
+          Assertions.fail("Should not delete programa with docente");
+      } catch (DataIntegrityViolationException e) {
+          // The expected exception will be caught here
+      }
+
+      // Verify that the Programa was not deleted
+      Optional<Programa> optionalPrograma = programaRepository.findById(programaSalvo.getId());
+      Assertions.assertTrue(optionalPrograma.isPresent());
+
+      // Verify that the associated Docente still exists
+      Optional<Docente> optionalDocente = docenteRepository.findById(docenteSalvo.getId());
+      Assertions.assertTrue(optionalDocente.isPresent());
+  }
+
+
+  /*@Test
   public void shouldAvoidDeleteProgramaWithDocente() throws ParseException {
     Programa novoPrograma = Programa.builder()
         .nome("Programa de Pós-Graduação em Engenharia de Eletricidade - PPGEE")
@@ -94,7 +136,7 @@ public class ProgramaTest {
     
 
 
-  }
+  }*/
 
   
 }

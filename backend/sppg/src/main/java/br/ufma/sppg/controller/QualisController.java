@@ -1,6 +1,7 @@
 package br.ufma.sppg.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ import br.ufma.sppg.service.ProgramaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @RestController
-@RequestMapping(value = "/api/v1/qualis")
-@CrossOrigin("http://localhost:3000")
- public class QualisController {
+@RequestMapping(value = "/api/qualis")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class QualisController {
 
     @Autowired
     ProgramaService service;
@@ -56,21 +57,19 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
     }
 
     // PASSA O ANO
-    @GetMapping(value = "/indice/{idProg}/filter")
-    public ResponseEntity obterIndicesCapes(@PathVariable Integer idProg, @RequestParam Integer anoIni,
-            @RequestParam Integer anoFim) {
+    @GetMapping(value = "/indice/{idProg}/{anoIni}/{anoFim}")
+    public ResponseEntity obterIndicesCapes(@PathVariable Integer idProg, @PathVariable Integer anoIni,
+            @PathVariable Integer anoFim) {
 
         Indice indice;
-        List<Producao> producoes;
 
         try {
             indice = service.obterProducaoIndices(idProg, anoIni, anoFim);
-            producoes = service.obterProducoes(idProg, anoIni, anoFim);
         } catch (ServicoRuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        IndiceQualisDTO res = IndiceQualisDTO.builder().indice(indice).producoes(producoes).build();
+        IndiceQualisDTO res = IndiceQualisDTO.builder().indice(indice).build();
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -126,9 +125,9 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
     }
 
     // PASSA O ANO
-    @GetMapping(value = "/stats/{idProg}/filter")
-    public ResponseEntity obterEstatisticas(@PathVariable Integer idProg, @RequestParam Integer anoIni,
-            @RequestParam Integer anoFim) {
+    @GetMapping(value = "/stats/{idProg}/{anoIni}/{anoFim}")
+    public ResponseEntity obterEstatisticas(@PathVariable Integer idProg, @PathVariable Integer anoIni,
+            @PathVariable Integer anoFim) {
 
         QualisStatsDTO stats;
 
@@ -164,5 +163,50 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
         }
 
         return new ResponseEntity<QualisStatsDTO>(stats, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{idPrograma}/{anoIni}/{anoFim}")
+    public ResponseEntity obterQualisPorAno(
+            @PathVariable Integer idPrograma,
+            @PathVariable Integer anoIni,
+            @PathVariable Integer anoFim) {
+
+        try {
+            List<Producao> producoes = service.obterProducoes(idPrograma, anoIni, anoFim);
+            List<List<Integer>> qualis = new ArrayList<>();
+
+            for (int i = 0; i < 4; i++) {
+                qualis.add(new ArrayList<>(Collections.nCopies(anoFim - anoIni + 1, 0)));
+            }
+
+            for (Producao prod : producoes) {
+                if (prod.getAno() >= anoIni && prod.getAno() <= anoFim) {
+                    if (prod.getTipo() != null && prod.getQualis() != null) {
+                        int index = getIndexFromQualis(prod.getQualis());
+
+                        if (index != -1) {
+                            qualis.get(index).set(anoFim - prod.getAno(),
+                                    qualis.get(index).get(anoFim - prod.getAno()) + 1);
+                        }
+                    }
+                }
+            }
+
+            return ResponseEntity.ok(qualis);
+        } catch (ServicoRuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private int getIndexFromQualis(String qualisValue) {
+        String[] qualisArray = { "A1", "A2", "A3", "A4" };
+
+        for (int i = 0; i < qualisArray.length; i++) {
+            if (qualisArray[i].equals(qualisValue)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

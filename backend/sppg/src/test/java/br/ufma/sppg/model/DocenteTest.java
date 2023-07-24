@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.ufma.sppg.repo.DocenteRepository;
 import br.ufma.sppg.repo.ProgramaRepository;
@@ -37,17 +39,45 @@ public class DocenteTest {
     @Autowired
     ProducaoRepository prodRepository;
 
+    /*@Test
+    public void deveSalvarDocente() {
+        Docente docente = Docente.builder().nome("John Doe").build();
+
+        repo.save(docente);
+
+        Docente queryResult = repo.findByNome("John Doe"); 
+        //Docente queryResult = repo.getByNome("John Doe");       
+        Assertions.assertNotNull(queryResult);
+    }*/
+
+    /*@Test
+    public void deveSalvarDocente() {
+        Docente docente = Docente.builder().nome("John Doe").build();
+
+        repo.save(docente);
+
+        List<Docente> optionalDocente = repo.findByNome("John Doe");
+        assertTrue(optionalDocente.isPresent()); // Verifica se o Optional contém um valor
+        Docente queryResult = optionalDocente.get(); // Acessa o objeto Docente dentro do Optional
+        assertNotNull(queryResult); // Verifica se o Docente não é nulo
+    }*/
+
+
     @Test
     public void deveSalvarDocente() {
         Docente docente = Docente.builder().nome("John Doe").build();
 
         repo.save(docente);
 
-        Docente queryResult = repo.findByNome("John Doe");        
-        Assertions.assertNotNull(queryResult);
+        List<Docente> docentes = repo.findByNome("John Doe");
+        assertFalse(docentes.isEmpty()); // Verifica se a lista de Docentes não está vazia
+        Docente queryResult = docentes.get(0); // Acessa o primeiro objeto Docente da lista
+        assertNotNull(queryResult); // Verifica se o Docente não é nulo
     }
 
+
     @Test
+    @Transactional // Adicione a anotação @Transactional aqui
     public void deveSalvarDocenteComPrograma() throws ParseException {
         // cenário
         Programa novoPPg = Programa.builder().nome("PPGCC").build();
@@ -70,6 +100,30 @@ public class DocenteTest {
         // Tamanho esperado //valor
         Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
     }
+
+   /* @Test
+    public void deveSalvarDocenteComPrograma() throws ParseException {
+        // cenário
+        Programa novoPPg = Programa.builder().nome("PPGCC").build();
+        Docente novoDocente = Docente.builder().nome("Geraldo Braz Junior")
+                                        .lattes("123")
+                                        .dataAtualizacao(new SimpleDateFormat("dd/MM/yyyy").parse("23/05/2022"))
+                                        .build();
+        
+        Programa progSalvo = prog.save(novoPPg);
+        Docente docSalvo = repo.save(novoDocente);
+
+        //ação
+        List<Programa> programas = new ArrayList<Programa>();
+        programas.add(progSalvo);
+        docSalvo.setProgramas(programas); // adicionar lista de programas em Docente
+
+        Docente docSalvo2 = repo.save(docSalvo);
+
+        Assertions.assertNotNull(docSalvo2);
+        // Tamanho esperado //valor
+        Assertions.assertEquals(docSalvo2.getProgramas().size(), 1);
+    }*/
 
     @Test
     public void deveSalvarDocenteComOrientacao() throws ParseException {

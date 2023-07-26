@@ -26,22 +26,31 @@ import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
 @RestController
 @RequestMapping("/api/programa")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "/**", allowedHeaders = "/**")
 public class ProgramaController {
     @Autowired
-    ProgramaService servicePPG;
-
-    @Autowired
-    ProgramaService programa;
+    ProgramaService programaService;
 
     @Autowired
     ProducaoService producaoService;
+
+    @GetMapping("/obterPrograma/{nomePrograma}")
+    public ResponseEntity obterPrograma(@PathVariable String nomePrograma) {
+        try {
+            List<Programa> programa = programaService.obterPrograma(nomePrograma);
+            return new ResponseEntity(programa, HttpStatus.OK);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
+    }
 
     @GetMapping("/obterDocentesPrograma")
     public ResponseEntity obterDocentesPrograma(
             @RequestParam("docente") Integer idPrograma) {
         try {
-            List<Docente> docentes = programa.obterDocentesPrograma(idPrograma);
+            List<Docente> docentes = programaService.obterDocentesPrograma(idPrograma);
             return new ResponseEntity(docentes, HttpStatus.OK);
         } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -51,7 +60,7 @@ public class ProgramaController {
     @GetMapping("/obterProgramas")
     public ResponseEntity obterProgramas() {
         try {
-            List<Programa> programas = programa.obterProgramas();
+            List<Programa> programas = programaService.obterProgramas();
             return new ResponseEntity(programas, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -113,7 +122,7 @@ public class ProgramaController {
         @PathVariable Integer idPrograma, @PathVariable Integer anoIni,
             @PathVariable Integer anoFim){
         try{
-            List <Producao> producoes = programa.obterProducoes(idPrograma, anoIni, anoFim);
+            List <Producao> producoes = programaService.obterProducoes(idPrograma, anoIni, anoFim);
             return new ResponseEntity(producoes, HttpStatus.OK);
         }catch (ServicoRuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -124,7 +133,7 @@ public class ProgramaController {
     public ResponseEntity obterOrientacoesPorgrama(
             @RequestParam("programa") Integer idPrograma, Integer anoIni, Integer anoFim) {
         try {
-            List<Orientacao> orientacoes = programa.obterOrientacoes(idPrograma, anoIni, anoFim);
+            List<Orientacao> orientacoes = programaService.obterOrientacoes(idPrograma, anoIni, anoFim);
             return new ResponseEntity(orientacoes, HttpStatus.OK);
         } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -135,7 +144,7 @@ public class ProgramaController {
     public ResponseEntity obterTecnicasPrograma(
             @RequestParam("programa") Integer idPrograma, Integer anoIni, Integer anoFim) {
         try {
-            List<Tecnica> tecnicas = programa.obterTecnicas(idPrograma, anoIni, anoFim);
+            List<Tecnica> tecnicas = programaService.obterTecnicas(idPrograma, anoIni, anoFim);
             return new ResponseEntity(tecnicas, HttpStatus.OK);
         } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -149,7 +158,7 @@ public class ProgramaController {
             @RequestParam("anoFimal") Integer aniFin) {
 
         try {
-            Integer quantitativo = servicePPG.quantitativoOrientacaoProducao(idPrograma, anoIni, aniFin);
+            Integer quantitativo = programaService.quantitativoOrientacaoProducao(idPrograma, anoIni, aniFin);
             return new ResponseEntity<Integer>(quantitativo, HttpStatus.OK);
 
         } catch (ServicoRuntimeException e) {
@@ -164,7 +173,7 @@ public class ProgramaController {
             @RequestParam("anoFimal") Integer aniFin) {
 
         try {
-            Integer quantitativo = servicePPG.quantitativoOrientacaoTecnica(idPrograma, anoIni, aniFin);
+            Integer quantitativo = programaService.quantitativoOrientacaoTecnica(idPrograma, anoIni, aniFin);
             return new ResponseEntity<Integer>(quantitativo, HttpStatus.OK);
 
         } catch (ServicoRuntimeException e) {

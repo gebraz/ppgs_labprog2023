@@ -21,6 +21,11 @@ public class ProgramaService {
     @Autowired
     ProgramaRepository repository;
 
+
+    public List<Programa> obterPrograma(String nome) {
+        return repository.findByNome(nome);
+    }
+
     public List<Programa> obterProgramas() {
         return repository.findAll();
     }

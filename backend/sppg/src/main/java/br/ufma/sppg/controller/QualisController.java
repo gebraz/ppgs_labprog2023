@@ -23,9 +23,9 @@ import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.service.ProgramaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/qualis")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QualisController {
 
     @Autowired
@@ -62,14 +62,16 @@ public class QualisController {
             @PathVariable Integer anoFim) {
 
         Indice indice;
+        List<Producao> producoes;
 
         try {
             indice = service.obterProducaoIndices(idProg, anoIni, anoFim);
+            producoes = service.obterProducoes(idProg, anoIni, anoFim);
         } catch (ServicoRuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        IndiceQualisDTO res = IndiceQualisDTO.builder().indice(indice).build();
+        IndiceQualisDTO res = IndiceQualisDTO.builder().indice(indice).producoes(producoes).build();
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

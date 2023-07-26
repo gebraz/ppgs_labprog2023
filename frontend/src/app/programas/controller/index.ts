@@ -10,6 +10,7 @@ const ProgramaSchema = Yup.object().shape({
 });
 
 export default function useProgramaController() {
+   
   const formik = useFormik({
     initialValues: {
       nome: '',
@@ -23,17 +24,17 @@ export default function useProgramaController() {
   });
 
   const getPrograma = async (programa: string) => {
-    const programResponse = await rest.get('/programa/obterPrograma', {
-      params: {
-        programa: programa,
-      },
-    });
+    const programResponse = await rest.get(`/programa/obterPrograma/${programa}`);
     console.log('🚀 ~ file: index.ts:31 ~ getPrograma ~ programResponse:', programResponse);
+    if (programResponse.data.length === 0) {
+      alert('Programa não encontrado');
+      return;
+    }
     await getProdQualis(programResponse.data[0].id);
   };
 
   const getProdQualis = async (idPrograma: string | number) => {
-    const response = await rest.get(`/v1/qualis/indice/${idPrograma}`);
+    const response = await rest.get(`/qualis/indice/${idPrograma}`);
     console.log(response.data);
   };
   useEffect(() => {

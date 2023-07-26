@@ -23,9 +23,9 @@ import br.ufma.sppg.model.Producao;
 import br.ufma.sppg.service.ProgramaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/qualis")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class QualisController {
 
     @Autowired

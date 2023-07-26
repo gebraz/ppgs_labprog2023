@@ -24,9 +24,9 @@ import br.ufma.sppg.service.ProducaoService;
 import br.ufma.sppg.service.ProgramaService;
 import br.ufma.sppg.service.exceptions.ServicoRuntimeException;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/programa")
-@CrossOrigin(origins = "/**", allowedHeaders = "/**")
 public class ProgramaController {
     @Autowired
     ProgramaService programaService;

@@ -46,9 +46,9 @@ public class ProgramaController {
         
     }
 
-    @GetMapping("/obterDocentesPrograma")
+    @GetMapping("/obterDocentesPrograma/{idPrograma}")
     public ResponseEntity obterDocentesPrograma(
-            @RequestParam("docente") Integer idPrograma) {
+            @PathVariable Integer idPrograma) {
         try {
             List<Docente> docentes = programaService.obterDocentesPrograma(idPrograma);
             return new ResponseEntity(docentes, HttpStatus.OK);

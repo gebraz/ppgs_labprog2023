@@ -3,6 +3,7 @@ import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
 interface TableProps {
   data: any[],
@@ -12,9 +13,9 @@ interface TableProps {
 }
 export default function Table(props: TableProps) {
   const { data, columns, selectable = true, page } = props;
+  const programa = useSelector((state: any) => state.programa.value);
   const router = useRouter();
-  console.log("🚀 ~ file: index.tsx:13 ~ Table ~ data:", data);
-
+  console.log(columns);
   return (
     <div className="card w-full flex mb-10 ">
       <DataTable onRowClick={ (e) => {

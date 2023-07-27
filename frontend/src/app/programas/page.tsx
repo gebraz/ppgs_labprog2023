@@ -8,24 +8,28 @@ import InputText from '@/components/InputText';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ProgramaState } from '@/store/programa';
+import Loading from '../loading';
+import ReactLoading from 'react-loading';
+import AutoComplete from '@/components/AutoComplete';
+import { Dropdown } from 'primereact/dropdown';
 const data = [
     { id: 1, docente: 'Carlos', a1: 25 }
 ];
 type inputTypes = 'ano_inicial' | 'ano_final' | 'programa';
 
 export default function Programas() {
-    const { formik, getPrograma, qualisProducao, qualisType } = useProgramaController();
+    const { formik, getPrograma, getAllProgramas, programas, qualisProducao, qualisType, loading } = useProgramaController();
     const programa: any = useSelector((state: any) => state.programa.value);
 
-
+    useEffect(() => {
+        getAllProgramas();
+    }, []);
 
     return (
         <div className="flex flex-col h-full w-full text-center mx-8" >
             <p className='text-start my-10 font-bold text-lg' >Pesquisar por programas</p>
             <div className='flex justify-start'>
-                <InputText className='w-96' label='Programa' placeholder='Nome do programa' value={ formik.values.nome } onChange={ (e) => {
-                    formik.setFieldValue('nome', e);
-                } } />
+                <Dropdown style={ { fontWeight: 'bolder', borderWidth: 2 } } className='font-bold w-72 m-0 h-11 mt-8 mr-4 border-2' onChange={ (e) => formik.setFieldValue('nome', e.value) } optionLabel='nome' optionValue='nome' options={ programas } value={ formik.values.nome } placeholder='Nome do programa' />
                 <InputText label='Ano inicial' placeholder='2023' value={ formik.values.ano_inicial.toString() } onChange={ (e) => {
                     formik.setFieldValue('ano_inicial', e);
                 } } />
@@ -35,11 +39,10 @@ export default function Programas() {
 
 
             </div>
-            <button onClick={ async (e) => {
+            <button disabled={ loading } onClick={ async (e) => {
                 e.preventDefault();
-                console.log('formik', formik.values);
                 await getPrograma(formik.values.nome);
-            } } className='w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5' >Pesquisar</button>
+            } } className='flex justify-around w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5' >{ loading ? <ReactLoading type='bars' className='text-sm' height={ '20%' } width={ '20%' } /> : <span>Pesquisar</span> }  </button>
             <p className='text-start my-10 font-bold text-lg' >Indicadores Capes</p>
 
             <div className='w-full flex'>

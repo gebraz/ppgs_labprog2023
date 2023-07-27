@@ -16,6 +16,8 @@ const ProgramaSchema = Yup.object().shape({
 export default function useProgramaController() {
   const dispatch = useDispatch<AppDispatch>();
   const programa = useSelector((state) => state.programa.value);
+  const [programas, setProgramas] = useState<Programa>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [qualisProducao, setQualisProducao] = useState<any>([]);
   const [qualisType, setQualisType] = useState<any>([]);
   const formik = useFormik({
@@ -30,7 +32,29 @@ export default function useProgramaController() {
     },
   });
 
+  const getAllProgramas = async () => {
+    try {
+      setLoading(true);
+      const allProgramasResponse = await rest.get('/programa/obterProgramas');
+      if (allProgramasResponse.data.length === 0) {
+        alert('Programas não encontrados');
+        return;
+      }
+
+      setProgramas(allProgramasResponse.data);
+
+      formik.setFieldValue('nome', allProgramasResponse.data[0].nome);
+      await getPrograma(allProgramasResponse.data[0].nome);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   const getPrograma = async (programa: string) => {
+    setLoading(true);
+
     const programResponse = await rest.get(`/programa/obterPrograma/${programa}`);
     let programaPayload: ProgramaState = {} as ProgramaState;
     let programaData = programResponse.data[0];
@@ -39,7 +63,7 @@ export default function useProgramaController() {
       return;
     }
     const prodQualis = await getProdQualis(programaData.id, formik.values.ano_inicial, formik.values.ano_final);
-    const docentes = await getProgramaDocente();
+    const docentes = await getProgramaDocente(programaData.id);
     if (!prodQualis) {
       return;
     }
@@ -58,14 +82,14 @@ export default function useProgramaController() {
 
     console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ programaPayload:', programaPayload);
     setQualisProducao(populateQualisProducao(prodQualis.producoes));
-    setQualisType(Object.keys(qualisProducao[0]).filter((qualis) => qualis !== 'name'));
 
     dispatch(setPrograma(programaPayload));
+    setLoading(false);
   };
 
-  const getProgramaDocente = async () => {
+  const getProgramaDocente = async (id: number) => {
     try {
-      const programaDocente = await rest.get(`/programa/obterDocentesPrograma/${programa.id}`);
+      const programaDocente = await rest.get(`/programa/obterDocentesPrograma/${id}`);
       if (programaDocente.data.length === 0) {
         alert('Docentes não encontrados');
         return false;
@@ -87,6 +111,7 @@ export default function useProgramaController() {
       data = await Promise.all(data);
       return data;
     } catch (error) {
+      console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ error', error);
       return false;
     }
   };
@@ -130,6 +155,7 @@ export default function useProgramaController() {
 
       return rowData;
     });
+    setQualisType(Object.keys(tableData[0]).filter((qualis) => qualis !== 'name'));
 
     return tableData;
   }
@@ -183,8 +209,11 @@ export default function useProgramaController() {
 
   return {
     formik,
+    loading,
     getPrograma,
     qualisType,
     qualisProducao,
+    getAllProgramas,
+    programas,
   };
 }

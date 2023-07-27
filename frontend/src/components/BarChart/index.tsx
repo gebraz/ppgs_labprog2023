@@ -30,7 +30,6 @@ export function StackedBarChart(props: StackedbarChartProps) {
       <Tooltip />
       <Legend />
       { dataKeys && dataKeys.map((qualis: string, key) => {
-        console.log('qualis', qualis);
         return <Bar key={ key } dataKey={ qualis } stackId="a" fill="#003554" />;
       }) }
 

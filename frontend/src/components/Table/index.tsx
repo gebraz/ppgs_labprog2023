@@ -15,7 +15,6 @@ export default function Table(props: TableProps) {
   const { data, columns, selectable = true, page } = props;
   const programa = useSelector((state: any) => state.programa.value);
   const router = useRouter();
-  console.log(columns);
   return (
     <div className="card w-full flex mb-10 ">
       <DataTable onRowClick={ (e) => {

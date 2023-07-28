@@ -16,6 +16,8 @@ import br.ufma.sppg.repo.OrientacaoRepository;
 import br.ufma.sppg.repo.ProducaoRepository;
 import br.ufma.sppg.repo.QualisRepository;
 import br.ufma.sppg.repo.TecnicaRepository;
+import java.util.Optional;
+
 
 @Service
 public class ImportadorService {
@@ -34,7 +36,7 @@ public class ImportadorService {
     List<Qualis> eventos;  //caso especial
 
     //TODO: importa novos caras, mas não está sincronizando diferenças nos dados
-    public List<String> importadorEmMassa(String defFolder){
+/*     public List<String> importadorEmMassa(String defFolder){
         File dir = new File(defFolder);
         File[] files = dir.listFiles((dir1, name) -> name.endsWith(".xml"));
         String identificador[];
@@ -56,7 +58,7 @@ public class ImportadorService {
                                 .nome(ref.getNome())
                                 .dataAtualizacao(ref.getDataAtualizacao())
                                 .build();
-
+                
                 syncProducao(ref.getProducoes(), base);
                 syncTecnica(ref.getTecnicas(), base);
                 syncOrientacao(ref.getOrientacoes(), base);
@@ -68,7 +70,53 @@ public class ImportadorService {
             }            
         }
         return importados;
+    }*/
+
+
+    public List<String> importadorEmMassa(String defFolder) {
+    File dir = new File(defFolder);
+    File[] files = dir.listFiles((dir1, name) -> name.endsWith(".xml"));
+    String identificador[];
+    List<String> importados = new ArrayList<>();
+
+    eventos = qualisRepo.findByTipo("eventos");
+
+    for (File f : files) {
+        identificador = f.getName().split("\\."); // Corrigido para escapar o ponto
+        try {
+            Docente ref = importarDocente(defFolder + f.getName());
+            //apenas para ver onde está, comentar
+            System.out.println("Executando: " + ref.getNome());
+            //procura pelo mesmo docente na base
+            List<Docente> baseOptional = repoDoc.findByNome(ref.getNome()); // Verifique se é Optional<Docente>
+            
+           /*  if (baseOptional.isPresent()) {
+                Docente base = baseOptional.get(); // Extrair o Docente do Optional
+                syncProducao(ref.getProducoes(), base);
+                syncTecnica(ref.getTecnicas(), base);
+                syncOrientacao(ref.getOrientacoes(), base);
+
+                importados.add(base.getNome());
+            } else {*/
+            Docente base = Docente.builder()
+                    .lattes(ref.getLattes())
+                    .nome(ref.getNome())
+                    .dataAtualizacao(ref.getDataAtualizacao())
+                    .build();
+
+            syncProducao(ref.getProducoes(), base);
+            syncTecnica(ref.getTecnicas(), base);
+            syncOrientacao(ref.getOrientacoes(), base);
+
+            importados.add(base.getNome());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    return importados;
+}
+
 
     private Docente importarDocente(String arquivo) {
         Docente ref = new Docente();

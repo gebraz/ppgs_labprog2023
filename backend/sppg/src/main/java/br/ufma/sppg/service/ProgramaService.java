@@ -21,9 +21,13 @@ public class ProgramaService {
     @Autowired
     ProgramaRepository repository;
 
+
     public List<Programa> obterPrograma(String nome) {
-        verificarNome(nome);
-        return repository.findAllByNome(nome);
+        return repository.findByNome(nome);
+    }
+
+    public List<Programa> obterProgramas() {
+        return repository.findAll();
     }
 
     public List<Docente> obterDocentesPrograma(Integer idPrograma) {
@@ -31,9 +35,9 @@ public class ProgramaService {
         return repository.obterDocentes(idPrograma);
     }
 
-    public Indice obterProducaoIndices(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public Indice obterProducaoIndices(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         Double iRestrito = 0.0;
         Double iNRestrito = 0.0;
@@ -47,46 +51,46 @@ public class ProgramaService {
 
             for (Producao producao : producoes) {
 
-                if (producao.getAno() >= anoIni && producao.getAno() <= anoFin
+                if (producao.getAno() >= anoIni && producao.getAno() <= anoFim
                         && !indicesProd.contains(producao.getId())) {
 
-                    indicesProd.add(producao.getId());
-                    switch (producao.getQualis()) {
-                        case "A1":
-                            iRestrito += 1.0f;
-                            break;
+                    if (producao.getQualis() != null) {
+                        indicesProd.add(producao.getId());
+                        switch (producao.getQualis()) {
+                            case "A1":
+                                iRestrito += 1.0f;
+                                break;
 
-                        case "A2":
-                            iRestrito += 0.85;
-                            break;
+                            case "A2":
+                                iRestrito += 0.85;
+                                break;
 
-                        case "A3":
-                            iRestrito += 0.725;
-                            break;
+                            case "A3":
+                                iRestrito += 0.725;
+                                break;
 
-                        case "A4":
-                            iRestrito += 0.625;
-                            break;
+                            case "A4":
+                                iRestrito += 0.625;
+                                break;
 
-                        case "B1":
-                            iNRestrito += 0.5;
-                            break;
+                            case "B1":
+                                iNRestrito += 0.5;
+                                break;
 
-                        case "B2":
-                            iNRestrito += 0.25;
-                            break;
+                            case "B2":
+                                iNRestrito += 0.25;
+                                break;
 
-                        case "B3":
-                            iNRestrito += 0.1;
-                            break;
+                            case "B3":
+                                iNRestrito += 0.1;
+                                break;
 
-                        case "B4":
-                            iNRestrito += 0.05;
-                            break;
-
-                        default:
-                            throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
+                            case "B4":
+                                iNRestrito += 0.05;
+                                break;
+                        }
                     }
+
                 }
             }
         }
@@ -96,9 +100,9 @@ public class ProgramaService {
     }
 
     // devolve uma List<Orientacao> de um dado programa dentro de um periodo
-    public List<Orientacao> obterOrientacoes(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public List<Orientacao> obterOrientacoes(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Orientacao> orientacoes = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Orientacao> orientacoesDoc = new ArrayList<>();
@@ -111,7 +115,7 @@ public class ProgramaService {
             orientacoesDoc = docente.getOrientacoes();
             for (Orientacao orientacao : orientacoesDoc) {
 
-                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin
+                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFim
                         && !idOrientacoes.contains(orientacao.getId())) {
 
                     idOrientacoes.add(orientacao.getId());
@@ -124,9 +128,9 @@ public class ProgramaService {
     }
 
     // devolve uma List<Producao> de um dado programa dentro de um periodo
-    public List<Producao> obterProducoes(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public List<Producao> obterProducoes(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Producao> producoes = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Producao> producoesDoc = new ArrayList<>();
@@ -139,7 +143,7 @@ public class ProgramaService {
             producoesDoc = docente.getProducoes();
             for (Producao producao : producoesDoc) {
 
-                if (producao.getAno() >= anoIni && producao.getAno() <= anoFin
+                if (producao.getAno() >= anoIni && producao.getAno() <= anoFim
                         && !idProducoes.contains(producao.getId())) {
 
                     idProducoes.add(producao.getId());
@@ -152,9 +156,9 @@ public class ProgramaService {
     }
 
     // devolve uma List<Tecnica> de um dado programa dentro de um periodo
-    public List<Tecnica> obterTecnicas(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public List<Tecnica> obterTecnicas(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Tecnica> tecnicas = new ArrayList<>();
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Tecnica> tecnicasDoc = new ArrayList<>();
@@ -167,7 +171,7 @@ public class ProgramaService {
             tecnicasDoc = docente.getTecnicas();
             for (Tecnica tecnica : tecnicasDoc) {
 
-                if (tecnica.getAno() >= anoIni && tecnica.getAno() <= anoFin && !idTecnicas.contains(tecnica.getId())) {
+                if (tecnica.getAno() >= anoIni && tecnica.getAno() <= anoFim && !idTecnicas.contains(tecnica.getId())) {
 
                     idTecnicas.add(tecnica.getId());
                     tecnicas.add(tecnica);
@@ -180,9 +184,9 @@ public class ProgramaService {
 
     // conta quantas orientações possuem ao menos 1 producao e devolve quantas
     // cumprem essa meta
-    public Integer quantitativoOrientacaoProducao(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public Integer quantitativoOrientacaoProducao(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Orientacao> orientacoesDoc = new ArrayList<>();
         ArrayList<Integer> idOrientacoes = new ArrayList<>();
@@ -193,7 +197,7 @@ public class ProgramaService {
             orientacoesDoc = docente.getOrientacoes();
             for (Orientacao orientacao : orientacoesDoc) {
 
-                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin
+                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFim
                         && !idOrientacoes.contains(orientacao.getId()) && !orientacao.getProducoes().isEmpty()) {
 
                     idOrientacoes.add(orientacao.getId());
@@ -206,9 +210,9 @@ public class ProgramaService {
 
     // conta quantas orientações possuem ao menos 1 tecnica e devolve quantas
     // cumprem essa meta
-    public Integer quantitativoOrientacaoTecnica(Integer idPrograma, Integer anoIni, Integer anoFin) {
+    public Integer quantitativoOrientacaoTecnica(Integer idPrograma, Integer anoIni, Integer anoFim) {
         verificarId(idPrograma);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         List<Docente> docentes = repository.obterDocentes(idPrograma);
         List<Orientacao> orientacoesDoc = new ArrayList<>();
         ArrayList<Integer> idOrientacoes = new ArrayList<>();
@@ -219,7 +223,7 @@ public class ProgramaService {
             orientacoesDoc = docente.getOrientacoes();
             for (Orientacao orientacao : orientacoesDoc) {
 
-                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFin
+                if (orientacao.getAno() >= anoIni && orientacao.getAno() <= anoFim
                         && !idOrientacoes.contains(orientacao.getId()) && !orientacao.getTecnicas().isEmpty()) {
 
                     idOrientacoes.add(orientacao.getId());
@@ -246,10 +250,10 @@ public class ProgramaService {
         }
     }
 
-    private void verificarData(Integer data1, Integer data2) {
-        verificarNumero(data1);
-        verificarNumero(data2);
-        if (data1 > data2) {
+    private void verificarData(Integer anoIni, Integer anoFim) {
+        verificarNumero(anoIni);
+        verificarNumero(anoFim);
+        if (anoIni > anoFim) {
             throw new ServicoRuntimeException("Data inical maior que a data final");
         }
     }

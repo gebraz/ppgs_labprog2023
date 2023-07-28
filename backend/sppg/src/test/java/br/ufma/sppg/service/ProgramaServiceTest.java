@@ -65,7 +65,7 @@ public class ProgramaServiceTest {
         Programa programaSalvo = repo.save(teste);
 
         // Ação
-        List<Programa> programaEncontrado = service.obterPrograma(teste.getNome());
+        List<Programa> programaEncontrado = service.obterProgramas();
 
         // Teste
         Assertions.assertNotNull(programaEncontrado);

@@ -19,19 +19,24 @@ public class DocenteService {
     @Autowired
     DocenteRepository repository;
 
-    public Indice obterIndice(Integer idDocente, Integer anoIni, Integer anoFin){ 
+    public List<Docente> obterDocentes() {
+        return repository.findAll();
+    }
+
+    public Indice obterIndice(Integer idDocente, Integer anoIni, Integer anoFim){ 
         verificarId(idDocente);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
         Double iRestrito = 0.0;
         Double iNRestrito = 0.0;
         Double iGeral = 0.0;
         List<Producao> producoes = new ArrayList<>();
 
-        producoes = repository.obterProducoes(idDocente, anoIni, anoFin);
+        producoes = repository.obterProducoes(idDocente, anoIni, anoFim);
 
             for(Producao producao : producoes){
-                    
-                switch (producao.getQualis()) {
+                // see producao in text format
+                if (producao.getQualis() != null) {
+                    switch (producao.getQualis()) {
                     case "A1":
                         iRestrito += 1.0f;
                         break;
@@ -65,45 +70,50 @@ public class DocenteService {
                         break;
                     
                     default:
-                        throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
+                        iRestrito += 0f;
+                        iNRestrito += 0.00;
                     }
             }
+                }
+                
 
         iGeral = iRestrito + iNRestrito;
 
         return new Indice(iRestrito, iNRestrito, iGeral);
     }
 
-    public List<Producao> obterProducoes(Integer idDocente, Integer anoIni, Integer anoFin){
+    public List<Producao> obterProducoes(Integer idDocente, Integer anoIni, Integer anoFim){
         verificarId(idDocente);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
 
-        return repository.obterProducoes(idDocente, anoIni, anoFin);
+        return repository.obterProducoes(idDocente, anoIni, anoFim);
 
     }
 
-    public List<Orientacao> obterOrientacoes(Integer idDocente, Integer anoIni, Integer anoFin){
+    public List<Orientacao> obterOrientacoes(Integer idDocente, Integer anoIni, Integer anoFim){
         verificarId(idDocente);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
 
-        return repository.obterOrientacoes(idDocente, anoIni, anoFin);
+        return repository.obterOrientacoes(idDocente, anoIni, anoFim);
 
     }
 
-    public List<Tecnica> obterTecnicas(Integer idDocente, Integer anoIni, Integer anoFin){
+    public List<Tecnica> obterTecnicas(Integer idDocente, Integer anoIni, Integer anoFim){
         verificarId(idDocente);
-        verificarData(anoIni, anoFin);
+        verificarData(anoIni, anoFim);
 
-        return repository.obterTecnicas(idDocente, anoIni, anoFin);
+        return repository.obterTecnicas(idDocente, anoIni, anoFim);
 
     }
 
     @Transactional
-    public Docente salvarDocente(Docente doc){
+    public Docente salvarDocente(Docente doc) {
         verificarDocente(doc);
 
         return repository.save(doc);
     }
+    
+    
 
     public Optional<Docente> obterDocente(Integer idDocente){
         verificarId(idDocente);
@@ -133,10 +143,10 @@ public class DocenteService {
         }
     }
 
-    private void verificarData(Integer data1, Integer data2){
-        verificarNumero(data1, "Data Inválida");
-        verificarNumero(data2, "Data Inválida");
-        if(data1 > data2){
+    private void verificarData(Integer anoIni, Integer anoFim){
+        verificarNumero(anoIni, "Data Inválida");
+        verificarNumero(anoFim, "Data Inválida");
+        if(anoIni > anoFim){
             throw new ServicoRuntimeException("Data inical maior que a data final");
         }
     }
@@ -155,19 +165,9 @@ public class DocenteService {
         if(repository.existsById(docente.getId())){
             throw new ServicoRuntimeException("Id já registrado");
         }
-        /*
-        if(docente.getOrientacoes() == null){
-            throw new ServicoRuntimeException("Lista de orientações inexistente");
-        }
-        if(docente.getTecnicas() == null){
-            throw new ServicoRuntimeException("Lista de tecnicas inexistente");
-        }
-        if(docente.getProducoes() == null){
-            throw new ServicoRuntimeException("Lista de produções inexistente");
-        }
-        if(docente.getProgramas() == null){
-            throw new ServicoRuntimeException("Lista de programas inexistente");
-        }
-        */
+    }
+
+    public Optional<Docente> obterDocentePorId(Integer idDocente) {
+        return repository.findById(idDocente);
     }
 }

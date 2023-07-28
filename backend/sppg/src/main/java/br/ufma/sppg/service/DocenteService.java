@@ -34,8 +34,10 @@ public class DocenteService {
         producoes = repository.obterProducoes(idDocente, anoIni, anoFim);
 
             for(Producao producao : producoes){
-                    
-                switch (producao.getQualis()) {
+                // see producao in text format
+                System.out.println(producao.getId() + " " + producao.getQualis());
+                if (producao.getQualis() != null) {
+                    switch (producao.getQualis()) {
                     case "A1":
                         iRestrito += 1.0f;
                         break;
@@ -69,9 +71,12 @@ public class DocenteService {
                         break;
                     
                     default:
-                        throw new ServicoRuntimeException("Uma das produções possui o Qualis inválido");
+                        iRestrito += 0f;
+                        iNRestrito += 0.00;
                     }
             }
+                }
+                
 
         iGeral = iRestrito + iNRestrito;
 

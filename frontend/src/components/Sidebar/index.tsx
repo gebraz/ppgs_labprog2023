@@ -9,7 +9,7 @@ export default function Sidebar() {
                 <div className="flex flex-col justify-between px-3 py-4 overflow-y-auto rounded bg-gray-50 dark:bg-gray-800 h-full">
                     <ul className="space-y-2">
                         <li>
-                            <Link href="/programas"
+                            <Link href="/"
                                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <PiColumnsBold className="h-6 w-6 text-gray-400" />
                                 <span className="ml-3">Programas</span>

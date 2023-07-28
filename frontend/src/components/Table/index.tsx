@@ -10,16 +10,18 @@ interface TableProps {
   columns: any[];
   selectable?: boolean;
   page?: string;
+  isLoading?: boolean;
 }
 export default function Table(props: TableProps) {
-  const { data, columns, selectable = true, page } = props;
+  const { data, columns, selectable = true, page, isLoading = false } = props;
   const programa = useSelector((state: any) => state.programa.value);
   const router = useRouter();
   return (
     <div className="card w-full flex mb-10 ">
-      <DataTable onRowClick={ (e) => {
+      <DataTable loading={ isLoading } onRowClick={ (e) => {
         if (e.data.id && selectable && page)
-          router.push(`${page}/${e.data.id}`);
+          // router.push(`${page}/${e.data.id}`);
+          return;
       } } selection={ selectable } selectionMode="single" filterDisplay='menu' emptyMessage='Não possui registros' className='w-10/12 ' value={ data } paginator rows={ 5 } rowsPerPageOptions={ [5, 10, 25, 50] } tableStyle={ { minWidth: '50rem' } }>
         {
           columns.length > 0 && columns.map((col: string) => (

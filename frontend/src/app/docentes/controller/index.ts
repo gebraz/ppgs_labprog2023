@@ -251,14 +251,18 @@ export default function useDocenteController() {
         alert('Programa não encontrado');
         return false;
       }
+
       return response.data;
-    } catch (error) {}
+    } catch (error) {
+      console.log('🚀 ~ file: index.ts:259 ~ useDocenteController ~ error:', error);
+    }
   };
 
   return {
     formik,
     loading,
     getDocente,
+    getProdQualis,
     qualisType,
     docente,
     qualisProducao,

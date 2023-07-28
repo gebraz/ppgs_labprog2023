@@ -9,7 +9,7 @@ type InitialState = {
 
 const docenteInitialState: InitialState = {
   value: {
-    id: 0,
+    id: -1,
     nome: '',
     indice: {
       indiceGeral: 0,

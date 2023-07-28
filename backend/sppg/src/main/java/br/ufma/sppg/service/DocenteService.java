@@ -35,7 +35,6 @@ public class DocenteService {
 
             for(Producao producao : producoes){
                 // see producao in text format
-                System.out.println(producao.getId() + " " + producao.getQualis());
                 if (producao.getQualis() != null) {
                     switch (producao.getQualis()) {
                     case "A1":

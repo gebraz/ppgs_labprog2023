@@ -88,10 +88,25 @@ public class DocenteController {
     }
 
     @GetMapping("/obterTecnicas/{id}")
-    public ResponseEntity<?> obterTecnicasDeDocente(@PathVariable(value = "id", required = true) Integer idDocente) {
+    public ResponseEntity<?> obterTecnicasDeDocentePorPeriodo(@PathVariable(value = "id", required = true) Integer idDocente) {
 
         try {
             List<Tecnica> tecnicaDocente = tecnicaServivce.obterTecnicasDocente(idDocente);
+            return ResponseEntity.ok(tecnicaDocente);
+        } catch (ServicoRuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/obterTecnicas/{id}/{anoIni}/{anoFim}")
+    public ResponseEntity<?> obterTecnicasDeDocente(@PathVariable(value = "id", required = true) Integer idDocente,
+             @PathVariable(value = "anoIni", required = true) Integer anoIni,
+            @PathVariable(value = "anoFim", required = true) Integer anoFim) {
+
+        try {
+            Optional<List<Tecnica>> tecnicaDocente = tecnicaServivce.obterTecnicasDocentePorPeriodo(idDocente, anoIni,
+                    anoFim);
+            
             return ResponseEntity.ok(tecnicaDocente);
         } catch (ServicoRuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

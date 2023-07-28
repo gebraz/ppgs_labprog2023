@@ -103,11 +103,13 @@ public class DocenteService {
     }
 
     @Transactional
-    public Docente salvarDocente(Docente doc){
+    public Docente salvarDocente(Docente doc) {
         verificarDocente(doc);
 
         return repository.save(doc);
     }
+    
+    
 
     public Optional<Docente> obterDocente(Integer idDocente){
         verificarId(idDocente);

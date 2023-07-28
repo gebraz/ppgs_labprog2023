@@ -107,10 +107,6 @@ public class ProducaoService {
             }
         }
 
-        if (producoes.isEmpty()) {
-            throw new ServicoRuntimeException("O Docente não possui nenhuma Produção no período especificado");
-        }
-
         return producoes;
     }
     

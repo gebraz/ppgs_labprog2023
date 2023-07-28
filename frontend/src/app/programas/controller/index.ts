@@ -62,6 +62,7 @@ export default function useProgramaController() {
       alert('Programa não encontrado');
       return;
     }
+    console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ programaData.id', programaData.id);
     const prodQualis = await getProdQualis(programaData.id, formik.values.ano_inicial, formik.values.ano_final);
     const docentes = await getProgramaDocente(programaData.id);
     if (!prodQualis) {
@@ -99,6 +100,9 @@ export default function useProgramaController() {
         let producoes = await rest.get(
           `/docente/obterProducoes/${docente.id}/${formik.values.ano_inicial}/${formik.values.ano_final}`
         );
+        if (producoes.data.length === 0) {
+          return {};
+        }
         return {
           id: docente.id,
           docente: docente.nome,
@@ -109,6 +113,7 @@ export default function useProgramaController() {
       });
 
       data = await Promise.all(data);
+      data = data.filter((d: any) => Object.prototype.hasOwnProperty.call(d, 'id'));
       return data;
     } catch (error) {
       console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ error', error);

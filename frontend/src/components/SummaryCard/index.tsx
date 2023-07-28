@@ -14,7 +14,7 @@ export default function SummaryCard(props: SummaryCardProps): React.JSX.Element 
       <div>
         <p className='text-start py-1 px-2 font-semibold text-white' >{ label }</p>
       </div>
-      <div className={ `flex justify-end align-center mr-10 text-3xl  ${valueColor}` }>
+      <div className={ `flex justify-end font-bold align-center mr-10 text-3xl  ${valueColor}` }>
         { value }
       </div>
       <div className='text-white mt-4'>

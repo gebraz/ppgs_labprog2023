@@ -12,6 +12,10 @@ import Loading from '../loading';
 import ReactLoading from 'react-loading';
 import AutoComplete from '@/components/AutoComplete';
 import { Dropdown } from 'primereact/dropdown';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { A1Template, A2Template, A3Template, A4Template, B1Template, B2Template, B3Template, B4Template, CTemplate, TotalTemplate } from '@/components/Table/DocenteQualisTemplate';
+import { useRouter } from 'next/navigation';
 const data = [
     { id: 1, docente: 'Carlos', a1: 25 }
 ];
@@ -20,10 +24,13 @@ type inputTypes = 'ano_inicial' | 'ano_final' | 'programa';
 export default function Programas() {
     const { formik, getPrograma, getAllProgramas, programas, qualisProducao, qualisType, loading } = useProgramaController();
     const programa: any = useSelector((state: any) => state.programa.value);
+    const router = useRouter();
 
     useEffect(() => {
         getAllProgramas();
     }, []);
+
+
 
     return (
         <div className="flex flex-col h-full w-full text-center mx-8" >
@@ -55,8 +62,24 @@ export default function Programas() {
             <p className='text-start my-10 font-bold text-lg' >Produção vs Qualis</p>
             <StackedBarChart data={ qualisProducao } dataKeys={ qualisType } />
             <p className='text-start my-10 font-bold text-lg' >Relação de docentes</p>
-            <Table page='docentes' data={ programa.docentes } columns={ ['docente', 'qtdQualis.qualis', 'a2', 'a3', 'a4', 'b1', 'b2', 'b3', 'b4'] } />
-
+            <div className="card w-full flex mb-10 ">
+                <DataTable onRowClick={ (e) => {
+                    if (e.data.id)
+                        router.push(`docentes/${e.data.id}`);
+                } } selection={ true } selectionMode="single" emptyMessage='Não possui registros' className='w-10/12 ' value={ programa.docentes } paginator rows={ 10 } rowsPerPageOptions={ [5, 10, 25, 50] } tableStyle={ { minWidth: '50rem', } }>
+                    <Column sortable key={ 'docente' } field={ 'docente' } header={ 'Docente' } style={ { width: '30%', fontWeight: 'bolder' } }></Column>
+                    <Column sortable key={ 'a1' } header={ 'A1' } style={ { width: '10%' } } body={ A1Template }></Column>
+                    <Column sortable key={ 'a2' } header={ 'A2' } style={ { width: '10%  ', } } body={ A2Template }></Column>
+                    <Column sortable key={ 'a3' } header={ 'A3' } style={ { width: '10%' } } body={ A3Template }></Column>
+                    <Column sortable key={ 'a4' } header={ 'A4' } style={ { width: '10%' } } body={ A4Template }></Column>
+                    <Column sortable key={ 'b1' } header={ 'B1' } style={ { width: '10%' } } body={ B1Template }></Column>
+                    <Column sortable key={ 'b2' } header={ 'B2' } style={ { width: '10%' } } body={ B2Template }></Column>
+                    <Column sortable key={ 'b3' } header={ 'B3' } style={ { width: '10%' } } body={ B3Template }></Column>
+                    <Column sortable key={ 'b4' } header={ 'B4' } style={ { width: '10%' } } body={ B4Template }></Column>
+                    <Column sortable key={ 'c' } header={ 'C' } style={ { width: '10%' } } body={ CTemplate }></Column>
+                    <Column sortable key={ 'total' } header={ 'Total' } style={ { width: '10%' } } body={ TotalTemplate }></Column>
+                </DataTable>
+            </div>
         </div>
     );
 }

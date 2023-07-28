@@ -18,7 +18,7 @@ export default function Table(props: TableProps) {
   return (
     <div className="card w-full flex mb-10 ">
       <DataTable onRowClick={ (e) => {
-        if (e.data.id && selectable)
+        if (e.data.id && selectable && page)
           router.push(`${page}/${e.data.id}`);
       } } selection={ selectable } selectionMode="single" filterDisplay='menu' emptyMessage='Não possui registros' className='w-10/12 ' value={ data } paginator rows={ 5 } rowsPerPageOptions={ [5, 10, 25, 50] } tableStyle={ { minWidth: '50rem' } }>
         {

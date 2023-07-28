@@ -18,6 +18,7 @@ const docenteInitialState: InitialState = {
     },
     producoes: [],
     orientacoes: [],
+    tecnicas: [],
     qtdProducoes: 0,
 
     lattes: '',

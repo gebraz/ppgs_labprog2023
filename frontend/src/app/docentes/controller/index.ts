@@ -63,6 +63,8 @@ export default function useDocenteController() {
         formik.values.ano_final
       );
 
+      const tecnicas = await getDocenteTecnicas(docenteData.id, formik.values.ano_inicial, formik.values.ano_final);
+
       docentePayload = {
         id: docenteData.id,
         nome: docenteData.nome,
@@ -73,6 +75,7 @@ export default function useDocenteController() {
         },
         producoes: prodQualis.producoes,
         orientacoes: orientacoes,
+        tecnicas: tecnicas,
         lattes: docenteData.lattes,
         qtdProducoes: prodQualis.producoes.length,
       };
@@ -100,9 +103,30 @@ export default function useDocenteController() {
       anoFinal = moment().year();
       formik.setFieldValue('ano_final', moment().year());
     }
-    console.log(`/docente/obterOrientacoes/${idDocente}/${anoInicial}/${anoFinal}}`);
     try {
       const response = await rest.get(`/docente/obterOrientacoes/${idDocente}/${anoInicial}/${anoFinal}`);
+      if (response.data.length === 0) {
+        alert('orientacoes não encontradas');
+        return false;
+      }
+      return response.data;
+    } catch (error) {}
+  };
+  const getDocenteTecnicas = async (
+    idDocente: string | number,
+    anoInicial: number = 1950,
+    anoFinal: number = moment().year()
+  ) => {
+    if (!anoInicial) {
+      anoInicial = 1950;
+      formik.setFieldValue('ano_inicial', 1950);
+    }
+    if (!anoFinal) {
+      anoFinal = moment().year();
+      formik.setFieldValue('ano_final', moment().year());
+    }
+    try {
+      const response = await rest.get(`/docente/obterTecnicas/${idDocente}/${anoInicial}/${anoFinal}`);
       if (response.data.length === 0) {
         alert('orientacoes não encontradas');
         return false;

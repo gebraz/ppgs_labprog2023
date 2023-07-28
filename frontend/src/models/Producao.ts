@@ -14,4 +14,7 @@ export interface Producao {
   qualis?: String;
   tipo?: String;
   titulo?: String;
+  docente?: string;
+  estatisticas?: string;
+  orientacao?: string;
 }

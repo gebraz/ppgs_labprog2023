@@ -2,7 +2,8 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { rest } from '@/api';
 import { useEffect, useState } from 'react';
-import { ProgramaState, setPrograma } from '@/store/programa';
+import { setPrograma } from '@/store/programa';
+import { ProgramaState } from '@/models/Programa';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/store';
 import moment from 'moment';
@@ -16,7 +17,7 @@ const ProgramaSchema = Yup.object().shape({
 export default function useProgramaController() {
   const dispatch = useDispatch<AppDispatch>();
   const programa = useSelector((state) => state.programa.value);
-  const [programas, setProgramas] = useState<Programa>([]);
+  const [programas, setProgramas] = useState<ProgramaState[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [qualisProducao, setQualisProducao] = useState<any>([]);
   const [qualisType, setQualisType] = useState<any>([]);
@@ -62,7 +63,6 @@ export default function useProgramaController() {
       alert('Programa não encontrado');
       return;
     }
-    console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ programaData.id', programaData.id);
     const prodQualis = await getProdQualis(programaData.id, formik.values.ano_inicial, formik.values.ano_final);
     const docentes = await getProgramaDocente(programaData.id);
     if (!prodQualis) {
@@ -81,7 +81,6 @@ export default function useProgramaController() {
       qtdProducoes: prodQualis.producoes.length,
     };
 
-    console.log('🚀 ~ file: index.ts:47 ~ getPrograma ~ programaPayload:', programaPayload);
     setQualisProducao(populateQualisProducao(prodQualis.producoes));
 
     dispatch(setPrograma(programaPayload));
@@ -161,7 +160,6 @@ export default function useProgramaController() {
       return rowData;
     });
     setQualisType(Object.keys(tableData[0]).filter((qualis) => qualis !== 'name'));
-
     return tableData;
   }
 

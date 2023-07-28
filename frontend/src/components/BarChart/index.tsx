@@ -8,9 +8,13 @@ interface StackedbarChartProps {
   width?: number;
   height?: number;
   dataKeys?: string[];
+  name?: string;
 }
 export function StackedBarChart(props: StackedbarChartProps) {
-  let { data, width, height, dataKeys } = props;
+  let { data, width, height, dataKeys, name } = props;
+  if (name) {
+    data = data[name];
+  }
   return (
 
     <BarChart

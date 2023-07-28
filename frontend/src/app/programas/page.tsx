@@ -1,16 +1,11 @@
 'use client';
-import Filters from '@/components/Filters';
 import SummaryCard from '@/components/SummaryCard';
 import { StackedBarChart } from '@/components/BarChart';
-import Table from '@/components/Table';
 import useProgramaController from './controller';
 import InputText from '@/components/InputText';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { ProgramaState } from '@/store/programa';
-import Loading from '../loading';
 import ReactLoading from 'react-loading';
-import AutoComplete from '@/components/AutoComplete';
 import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';

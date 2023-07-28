@@ -135,7 +135,6 @@ export function CTemplate(rowData: any) {
 }
 export function TotalTemplate(rowData: { qtdQualis: any[]; }) {
   let qtdQualis = rowData?.qtdQualis?.reduce((curr, acc) => curr + acc.quantidade, 0);
-  console.log('qtdQualis', qtdQualis);
   if (qtdQualis)
     return (
       <div className='text-white bg-green-600 h-full rounded-full flex justify-center font-semibold'>

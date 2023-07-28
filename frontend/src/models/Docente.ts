@@ -1,4 +1,5 @@
 import { Indice } from './Indice';
+import { Orientacao } from './Orientacao';
 import { Producao } from './Producao';
 
 export interface Docente {
@@ -6,6 +7,7 @@ export interface Docente {
   lattes: string;
   nome: string;
   producoes: Producao[];
+  orientacoes: Orientacao[];
   indice: Indice;
   qtdProducoes: number;
 }

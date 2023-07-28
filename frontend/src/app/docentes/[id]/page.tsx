@@ -61,7 +61,7 @@ export default function Programas() {
             <p className='text-start my-10 font-bold text-lg' >Orientações</p>
             <Table data={ docente.orientacoes } columns={ ['discente', 'titulo', 'tipo', 'ano'] } />
             <p className='text-start my-10 font-bold text-lg' >Artigos</p>
-            <Table data={ data } columns={ ['titulo', 'local', 'tipo', 'qualis', 'ano'] } />
+            <Table data={ docente.producoes } columns={ ['titulo', 'local', 'tipo', 'qualis', 'ano'] } />
             <p className='text-start my-10 font-bold text-lg' >Técnicas</p>
             <Table data={ data } columns={ ['titulo', 'tipo', 'ano'] } />
 

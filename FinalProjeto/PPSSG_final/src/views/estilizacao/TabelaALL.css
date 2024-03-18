@@ -1,0 +1,56 @@
+
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  table {
+    max-width: 100%;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 200px; /* Defina o limite máximo para a quebra de linha aqui */
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:first-child td {
+    vertical-align: top;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .pagination a {
+    margin: 0 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .pagination a.active {
+    background-color: #ccc;
+    color: #fff;
+  }
+  
+  .pagination a:hover {
+    background-color: #eee;
+  }
+  
